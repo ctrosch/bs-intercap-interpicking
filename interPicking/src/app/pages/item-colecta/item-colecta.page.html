@@ -1,0 +1,149 @@
+<app-header titulo="Item"></app-header>
+
+<ion-content>
+
+    <ion-list>
+        <ion-item>
+            <ion-avatar>
+                <img src="/assets/producto.jpg" />
+            </ion-avatar>
+
+            <ion-label> {{ item.descripcion }}</ion-label>
+        </ion-item>
+
+        <ion-item>
+            <ion-label> Código: </ion-label>
+            <ion-label> {{ item.codigo }}</ion-label>
+        </ion-item>
+
+        <ion-item>
+            <ion-label> Estado: - {{ item.estadoPicking }} </ion-label>
+            <ion-label color="{{ item.cantidadPicking == 0 ? 'danger' : item.estadoPicking == 'A'? 'warning' : 'success' }}">
+                {{ item.cantidadPicking == 0 ? 'No iniciado' : item.estadoPicking == 'A'? 'En progreso' : 'Finalizado' }}
+            </ion-label>
+        </ion-item>
+
+        <ion-item>
+            <ion-label> Presentación: </ion-label>
+            <ion-label> {{ item.unidadConversion }} {{ item.factorConversion | number:'1.0-0' }} {{ item.unidadMedida }}
+            </ion-label>
+        </ion-item>
+
+        <ion-item>
+            <ion-label> Ubicación: </ion-label>
+            <ion-label> {{ item.ubicacion }}</ion-label>
+        </ion-item>
+
+        <!--
+        <ion-item>
+            <ion-label> Cantidad: </ion-label>
+            <ion-label> {{ item.cantidadPicking }}/ {{ item.cantidad }}  </ion-label>
+        </ion-item>
+        -->
+    </ion-list>
+
+    <ion-grid class="paddin padding-calc">
+        <ion-row>
+
+            <ion-col size="12" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button color="medium" expand="full" size="large">
+                    <ion-label>Cantidad: {{ cantidadManual }} / {{ item.cantidad}} {{ item.unidadMedida }}</ion-label>
+                </ion-button>
+            </ion-col>
+
+            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button (click)="add(1)" [disabled]="item.estadoPicking == 'B'" color="primary" expand="full">
+                    <ion-label>1</ion-label>
+                </ion-button>
+            </ion-col>
+            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button (click)="add(2)" [disabled]="item.estadoPicking == 'B'" color="primary" expand="full">
+                    <ion-label>2</ion-label>
+                </ion-button>
+            </ion-col>
+            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button (click)="add(3)" [disabled]="item.estadoPicking == 'B'" color="primary" expand="full">
+                    <ion-label>3</ion-label>
+                </ion-button>
+            </ion-col>
+
+            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button (click)="add(4)" [disabled]="item.estadoPicking == 'B'" color="primary" expand="full">
+                    <ion-label>4</ion-label>
+                </ion-button>
+            </ion-col>
+            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button (click)="add(5)" [disabled]="item.estadoPicking == 'B'" color="primary" expand="full">
+                    <ion-label>5</ion-label>
+                </ion-button>
+            </ion-col>
+            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button (click)="add(6)" [disabled]="item.estadoPicking == 'B'" color="primary" expand="full">
+                    <ion-label>6</ion-label>
+                </ion-button>
+            </ion-col>
+
+            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button (click)="add(7)" [disabled]="item.estadoPicking == 'B'" color="primary" expand="full">
+                    <ion-label>7</ion-label>
+                </ion-button>
+            </ion-col>
+            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button (click)="add(8)" [disabled]="item.estadoPicking == 'B'" color="primary" expand="full">
+                    <ion-label>8</ion-label>
+                </ion-button>
+            </ion-col>
+            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button (click)="add(9)" [disabled]="item.estadoPicking == 'B'" color="primary" expand="full">
+                    <ion-label>9</ion-label>
+                </ion-button>
+            </ion-col>
+
+            <ion-col size="8" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button (click)="add(0)" [disabled]="item.estadoPicking == 'B'" color="primary" expand="full">
+                    <ion-label>0</ion-label>
+                </ion-button>
+            </ion-col>
+            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button (click)="clean()" color="danger" expand="full">
+                    <ion-icon slot="start" name="refresh"></ion-icon>
+                </ion-button>
+            </ion-col>
+
+            <ion-col *ngIf="item.estadoPicking == 'A' && cantidadManual <= item.cantidad && cantidadManual > 0" size="12" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button (click)="confirmar()" color="success" expand="full">
+                    <ion-icon slot="start" name="checkmark"></ion-icon>
+                    <ion-label>Confirmar</ion-label>
+                </ion-button>
+            </ion-col>
+
+            <ion-col *ngIf="item.estadoPicking == 'B'" size="12" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button (click)="resetCantidad()" color="danger" expand="full">
+                    <ion-icon slot="start" name="undo"></ion-icon>
+                    <ion-label>Deshacer </ion-label>
+                </ion-button>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+
+</ion-content>
+
+
+<ion-footer>
+    <ion-toolbar>
+
+        <ion-input [(ngModel)]="codigoBarra" (keyup.enter)="procesarCodigoBarra()"></ion-input>
+
+        <ion-buttons slot="end">
+            <ion-button shape="round" (click)="procesarCodigoBarra()" [disabled]="item.estadoPicking == 'B'" color="success">
+                <ion-icon slot="icon-only" name="add"></ion-icon>
+            </ion-button>
+            <ion-button shape="round" (click)="scanCode()" [disabled]="item.estadoPicking == 'B'" color="primary">
+                <ion-icon slot="icon-only" name="barcode"></ion-icon>
+            </ion-button>
+
+        </ion-buttons>
+
+    </ion-toolbar>
+</ion-footer>

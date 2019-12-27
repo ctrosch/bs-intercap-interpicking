@@ -1,0 +1,72 @@
+<ion-header no-border="no-border">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/"></ion-back-button>
+        </ion-buttons>
+
+        <ion-title ion-text-capitalize="ion-text-capitalize">Colecta</ion-title>
+
+        <ion-buttons slot="end">
+            <ion-button shape="round" (click)="resetDatos()" color="danger">
+                <ion-icon slot="icon-only" name="refresh-circle"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-item *ngFor="let i of datos" (click)="seleccionarItem( i )">
+            <!--
+            <ion-icon
+                slot="start"
+                name="{{ i.estadoPicking == 'A'? 'close-circle' : 'checkmark-circle' }}"
+                size="large"
+                color="{{ i.estadoPicking == 'A'? 'danger' : 'success' }}"
+            ></ion-icon>
+
+            -->
+
+            <ion-avatar slot="start">
+                <img src="/assets/producto.jpg" />
+            </ion-avatar>
+
+            <ion-label>
+                <h2>{{ i.descripcion }}</h2>
+
+                <p>{{ i.codigo }}</p>
+
+                <p>{{ i.cliente }}</p>
+
+                <p>Ubicación: {{ i.ubicacion }}</p>
+            </ion-label>
+
+            <ion-chip slot="end" color="{{ i.cantidadPicking == 0 ? 'danger' : i.estadoPicking == 'A'? 'warning' : 'success' }}">
+                <ion-label>
+                    {{ i.cantidadPicking }} / {{ i.cantidad }}
+                </ion-label>
+            </ion-chip>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()"></ion-input>
+
+        <ion-buttons slot="end">
+            <ion-button shape="round" (click)="procesarCodigoBarra()" color="success">
+                <ion-icon slot="icon-only" name="add"> </ion-icon>
+            </ion-button>
+
+            <ion-button shape="round" (click)="scanCode()" color="primary">
+                <ion-icon slot="icon-only" name="barcode"></ion-icon>
+            </ion-button>
+
+            <ion-button shape="round" (click)="sendInfo()" color="secondary">
+                <ion-icon slot="icon-only" name="send"></ion-icon>
+            </ion-button>
+
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>
