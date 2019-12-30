@@ -28,22 +28,22 @@
             -->
 
             <ion-avatar slot="start">
-                <img src="/assets/producto.jpg" />
+                <img [src]="i.IMGPRD" />
             </ion-avatar>
 
             <ion-label>
-                <h2>{{ i.descripcion }}</h2>
+                <h2>{{ i.DESCRP }}</h2>
 
-                <p>{{ i.codigo }}</p>
+                <p>{{ i.ARTCOD }}</p>
 
-                <p>{{ i.cliente }}</p>
+                <p>{{ i.NOMBRE }}</p>
 
-                <p>Ubicación: {{ i.ubicacion }}</p>
+                <p>Ubicación: {{ i.NUBICA }}</p>
             </ion-label>
 
             <ion-chip slot="end" color="{{ i.cantidadPicking == 0 ? 'danger' : i.estadoPicking == 'A'? 'warning' : 'success' }}">
                 <ion-label>
-                    {{ i.cantidadPicking }} / {{ i.cantidad }}
+                    {{ i.CNTPCK }} / {{ i.CANTID }}
                 </ion-label>
             </ion-chip>
         </ion-item>

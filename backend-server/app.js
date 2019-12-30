@@ -45,7 +45,6 @@ var connection = mssql.connect(config, function(err, res) {
     }
 });
 
-
 // Rutas
 app.use('/colecta', colectaRoutes);
 app.use('/usuario', usuarioRoutes);

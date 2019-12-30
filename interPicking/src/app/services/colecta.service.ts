@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { URL_REST } from '../config/config';
 
 
 @Injectable({
@@ -15,8 +16,14 @@ export class ColectaService {
   constructor(private http: HttpClient,
     public toastController: ToastController) {
 
-    this.getDatosIniciales();
+    this.getPendientes();
     
+  }
+
+  getPendientes(){
+
+    let url = URL_REST + "/colecta" + "/000004" + "/40"
+    return this.http.get<any[]>(url); 
   }
 
   async presentToast(mensaje: string) {
@@ -28,7 +35,10 @@ export class ColectaService {
   }
 
   getDatosIniciales() {
-    this.http.get<any[]>('/assets/data/colecta.json').subscribe(results => this.datosIniciales = results);
+
+    let url = URL_REST + "/colecta" + "/000004" + "/40"
+
+    this.http.get<any[]>(url).subscribe(results => this.datosIniciales = results);
   }
 
   cargarStorage() {
@@ -153,26 +163,6 @@ export class ColectaService {
     item.estadoPicking = 'A';
 
   }
-
-  public getPendientes() {
-
-    console.log('getPendientes');
-    let headers = new HttpHeaders();
-    headers.set('Authorization', 'Basic ' + btoa('zoho:Ss2M3iso0n'));
-
-    let headers_object = new HttpHeaders();
-    headers_object.append('Content-Type', 'application/json');
-    headers_object.append("Authorization", "Basic " + btoa("zoho:Ss2M3iso0n"));
-    
-    const httpOptions = { headers: headers_object };
-    
-    console.log(httpOptions);
-
-
-    return this.http.get('http://localhost:8080/API/rs/colecta/pendiente2/000002/20', httpOptions);
-
-  }
-
 
   public getPendientes2() {
 

@@ -25,10 +25,9 @@ export class ColectaPage implements OnInit {
   ngOnInit() {
 
     this.colectaService.getPendientes()
-    .subscribe((data:any) => { 
-        
-      console.log(data); 
-      this.datos = data;
+    .subscribe((resp:any) => { 
+      
+      this.datos = resp.colecta;
     });
   }
 
