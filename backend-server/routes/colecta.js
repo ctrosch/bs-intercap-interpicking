@@ -46,6 +46,43 @@ app.get('/:sitio/:deposito', (req, res, next) => {
     });
 });
 
+// ==========================================
+// Obtener un item penditne
+// ==========================================
+app.get('/:id', (req, res, next) => {
+
+    var id = req.params.id;
+
+    var request = new mssql.Request();
+    request.input('id', mssql.NVarChar, id);
+    request.query('SELECT TOP 1 * FROM PCK_PENDIENTE_PRODUCTO WHERE ID = @id', function(err, result) {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error obteniendo item colecta con el id ' + id,
+                errors: err
+            });
+        }
+
+        if (!result.recordset || result.recordset.length === 0) {
+            return res.status(400).json({
+                ok: false,
+                mensaje: 'No existe item colecta con id ' + id,
+                errors: { message: 'No existe item colecta con id ' + id }
+            });
+        }
+
+
+        var colecta = result.recordset;
+
+        res.status(200).json({
+            ok: true,
+            colecta: colecta
+        });
+    });
+});
+
 
 // ==========================================
 // Actualizar cantidades picking
@@ -104,7 +141,6 @@ app.put('/', (req, res) => {
     });
 
 });
-
 
 
 module.exports = app;
