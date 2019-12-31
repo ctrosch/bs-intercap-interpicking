@@ -18,7 +18,7 @@ app.get('/:sitio/:deposito', (req, res, next) => {
     var request = new mssql.Request();
     request.input('sitio', mssql.NVarChar, sitio);
     request.input('deposito', mssql.NVarChar, deposito);
-    request.query('SELECT TOP 50 * FROM PCK_PENDIENTE_PRODUCTO WHERE SITIOS = @sitio AND DEPOSI = @deposito', function(err, result) {
+    request.query('SELECT TOP 20 P.* FROM PCK_PENDIENTE_PRODUCTO P WHERE P.SITIOS = @sitio AND P.DEPOSI = @deposito', function(err, result) {
 
         if (err) {
             return res.status(500).json({
@@ -141,6 +141,8 @@ app.put('/', (req, res) => {
     });
 
 });
+
+
 
 
 module.exports = app;
