@@ -20,15 +20,70 @@ export class ColectaPage implements OnInit {
   constructor(private colectaService: ColectaService,
     private router: Router,
     private barcodeScanner: BarcodeScanner,
-    public toastController: ToastController) { }
+    public toastController: ToastController) {     
+      
+  }
 
   ngOnInit() {
 
-    this.colectaService.getPendientes()
-    .subscribe((resp:any) => { 
+    this.colectaService.cargarPendientes().then((datos:any) => {
+      this.datos = datos;
+      console.log('datos cargados correcctamente');
+    }, (err) => {
+        console.log(err);
+    });    
+  }
+
+  cargarPendientes() {
+    this.datos = this.colectaService.datos;
+  }
+
+  seleccionarItem(i: any) {
+
+    this.colectaService.item = i;
+    this.router.navigateByUrl('item-colecta/' + i.ID);
+  }
+
+  procesarCodigoBarra(codigoBarra: string) {
+
+    if (codigoBarra !== undefined) {
+
+      this.datos.find(item => {
+        
+        item.CODBAR.split('|').find(i => {
+          
+          if (i === codigoBarra) {
+            this.seleccionarItem(item);
+          }
+          
+        });
+        
+      });
+
+    } else {
+      this.presentToast('Código de barra vacío');
+    }
+  }
+
+  scanCode() {
+
+    this.barcodeScanner.scan().then(barcodeData => {
+
+      console.log('Barcode data', barcodeData);
+      this.procesarCodigoBarra(barcodeData.text);   
+
+    }).catch(err => {
       
-      this.datos = resp.colecta;
+      console.log('Error', err);
+      this.presentToast('Error leyendo código de barra');
     });
+  }
+
+  procesarCodigoManual() {
+
+    this.procesarCodigoBarra(this.codigoManual);
+    this.codigoManual = '';
+    
   }
 
   async presentToast(mensaje: string) {
@@ -39,72 +94,12 @@ export class ColectaPage implements OnInit {
     toast.present();
   }
 
-  resetDatos() {
 
-    this.colectaService.resetStorage();
+  confirmarColecta() {
+    
+    this.colectaService.confirmarColecta();
     this.datos = this.colectaService.datos;
+
   }
-
-  scanCode() {
-
-    this.barcodeScanner.scan().then(barcodeData => {
-      console.log('Barcode data', barcodeData);
-
-      const item: any = this.colectaService.getItemByCodigoBarra(barcodeData.text);
-
-      if (item !== undefined) {
-
-        this.seleccionarItem(item);
-
-      }
-
-
-    }).catch(err => {
-      console.log('Error', err);
-      this.presentToast('Error leyendo código de barra');
-    });
-  }
-
-  procesarCodigoManual() {
-
-    if (this.codigoManual !== undefined) {
-
-      let item: any = this.colectaService.getItemByCodigoBarra(this.codigoManual);
-      this.seleccionarItem(item);
-      this.codigoManual = '';
-
-    } else {
-      this.presentToast('Código de barra vacío');
-    }
-  }
-
-  scanCodeOld() {
-
-    this.barcodeScanner.scan().then(barcodeData => {
-      console.log('Barcode data', barcodeData);
-
-      this.procesarCodigoBarra(barcodeData.text);
-
-    }).catch(err => {
-      console.log('Error', err);
-      this.presentToast('Error leyendo código de barra');
-    });
-  }
-
-  procesarCodigoBarra(codigoBarra: string) {
-
-    if (codigoBarra !== undefined) {
-
-      this.colectaService.procesarCodigoBarra(codigoBarra);
-
-    } else {
-      this.presentToast('Código de barra vacío');
-    }
-  }
-
-  seleccionarItem(i: any) {
-
-    this.router.navigateByUrl('item-colecta/' + i.numeroFormulario + '-' + i.itemAplicacion);
-  }
-
+  
 }

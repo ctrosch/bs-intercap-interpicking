@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { URL_REST } from '../config/config';
+import { async } from '@angular/core/testing';
+import { resolve } from 'url';
 
 
 @Injectable({
@@ -10,23 +12,47 @@ import { URL_REST } from '../config/config';
 })
 export class ColectaService {
 
-  //datos: any[] = [];
-  datosIniciales: any[] = [];
+  datos: any[];
+  item: any;
 
-  constructor(private http: HttpClient,
+  constructor(
+    private http: HttpClient,
     public toastController: ToastController) {
 
-    this.getPendientes();
+    this.cargarPendientes();
     
   }
 
-  getPendientes(){
+  cargarPendientes = () => {
 
-    const url = URL_REST + '/colecta' + '/000004' + '/40';
-    return this.http.get<any[]>(url); 
+    console.log('ColectaService - cargarPendientes');
+
+    return new Promise((resolve, reject) => {
+
+      const url = URL_REST + '/colecta' + '/000004' + '/40';
+
+      this.http.get<any[]>(url)
+        .subscribe((resp: any) => {
+          this.datos = resp.colecta;
+          this.guardarStorage();
+
+          if (!this.datos) {
+            reject('No se encontraron pendientes');
+          } else {
+            resolve(this.datos);
+          }
+
+        });
+  
+     });
   }
+    
+    
+  
 
-  getItemPendinte(id: string) {
+    
+
+  getItemPendiente(id: string) {
 
     if (id.length <= 0) {
       return;
@@ -37,7 +63,59 @@ export class ColectaService {
     
   }
 
+  confirmarCantidad(item: any, cantidad: number) {
+    
+    if (item === undefined) {
+      this.presentToast('No se encontró producto');
+      return;
+    }
 
+    if (cantidad <= item.CANTID) {
+
+      item.CNTPCK = cantidad;
+
+      if (item.CNTPCK === item.CANTID) {
+
+        item.ESTPCK = 'B';
+
+      }
+
+      this.guardarStorage();      
+      this.presentToast('Producto registrado');
+      return true;
+    } else {
+      this.presentToast('El valor para cantidad no puede ser mayor a lo solicitado');
+      return false;
+    }
+
+  }
+
+  guardarItem(item: any) {
+
+    const url = URL_REST + '/colecta';
+    this.http.put<any>(url, item)
+      .subscribe(resp => {
+
+        if (resp.ok) {
+          console.log('ColectaService - guardarItem', item);
+        }
+
+      });
+  }
+
+  confirmarColecta() {
+
+    console.log('ColectaService - confirmar colecta');
+
+    this.datos.forEach(i => {
+
+      if (i.ESTPCK === 'B') {
+        this.guardarItem(i);
+      }
+    });
+
+    this.cargarPendientes();   
+  }
 
   async presentToast(mensaje: string) {
     const toast = await this.toastController.create({
@@ -47,34 +125,26 @@ export class ColectaService {
     toast.present();
   }
 
-  getDatosIniciales() {
-
-    let url = URL_REST + "/colecta" + "/000004" + "/40"
-
-    this.http.get<any[]>(url).subscribe(results => this.datosIniciales = results);
-  }
-
+  
   cargarStorage() {
 
-    if (localStorage.getItem('data')) {
-      this.datos = JSON.parse(localStorage.getItem('data'));
-    } else {
-
-      this.datos = this.datosIniciales;
-      this.guardarStorage();
+    if (localStorage.getItem('data-colecta')) {
+      this.datos = JSON.parse(localStorage.getItem('data-colecta'));
     }
   }
 
   guardarStorage() {
+  
+    console.log('ColectaService - guardarStorage');
 
-    localStorage.setItem('data', JSON.stringify(this.datos));
+    localStorage.setItem('data-colecta', JSON.stringify(this.datos));
 
   }
 
   resetStorage() {
 
-    this.datos.forEach(function (item) {
-      item.cantidadPicking = 0;
+    this.datos.forEach(item => {
+      item.CNTPCK = 0;
       item.estadoPicking = 'A';
     });
 
@@ -82,132 +152,13 @@ export class ColectaService {
     this.presentToast('Datos reiniciados');
   }
 
-  getItem(id: string) {
-
-    let parametros: string[] = id.split('-');
-
-    let numeroFormulario: Number = new Number(parametros[0]);
-    let itemAplicacion: Number = new Number(parametros[1]);
-
-    return this.datos.find(dato => {
-
-      //console.log('id: ' + id + 'numero formulario' + dato.numeroFormulario) ;
-      //console.log(dato.numeroFormulario == id);
-
-      return (dato.numeroFormulario == numeroFormulario && dato.itemAplicacion == itemAplicacion);
-    });
-
-  }
-
-  getItemByCodigoBarra(codigoBarra: string) {
-
-    return this.datos.find(dato => {
-
-      return (dato.codigo == codigoBarra && dato.cantidadPicking < dato.cantidad);
-    });
-
-  }
-
-  procesarCodigoBarra(codigoBarra: string) {
-
-    if (codigoBarra.length === 0) {
-      this.presentToast('Código de barra vacío');
-      return;
-    }
-
-    let item: any = this.getItemByCodigoBarra(codigoBarra);
-
-    return this.confirmarCantidad(item);
-
-  }
-
-
-  confirmarCantidad(item: any) {
-
-    if (item === undefined) {
-      this.presentToast('No se encontró producto');
-      return;
-    }
-
-    if (item.cantidadPicking < item.cantidad) {
-
-      item.cantidadPicking = item.cantidadPicking + 1;
-
-      if (item.cantidadPicking == item.cantidad) {
-
-        item.estadoPicking = 'B';
-
-      }
-      this.guardarStorage();
-      this.presentToast('Producto registrado');
-    } else {
-      this.presentToast('Ha ingresado todos las cantidades necesarias');
-    }
-
-  }
-
-  confirmarCantidadManual(item: any, cantidad: number) {
-
-    if (item === undefined) {
-      this.presentToast('No se encontró producto');
-      return;
-    }
-
-    if (cantidad <= item.cantidad) {
-
-      item.cantidadPicking = cantidad;
-
-      if (item.cantidadPicking == item.cantidad) {
-
-        item.estadoPicking = 'B';
-
-      }
-      this.guardarStorage();
-      this.presentToast('Producto registrado');
-    } else {
-      this.presentToast('El valor para cantidad no puede ser mayor a lo solicitado');
-    }
-
-  }
-
   resetCantidad(item: any){
 
-    item.cantidadPicking = 0;
+    item.CNTPCK = 0;
     item.estadoPicking = 'A';
 
+    
+
   }
 
-  public getPendientes2() {
-
-    let headers = new HttpHeaders();
-
-    //headers.set('Content-Type', 'application/json;charset=UTF-8');
-    //headers.set('Authorization', 'Basic ' + btoa('zoho:Ss2M3iso0n'));
-    //return this.http.get('http://localhost:8090/API/rs/colecta/pendiente/40', { headers: headers} );
-
-
-    return this.http.get('http://localhost:8080/API/rs/colecta/pendiente2/000002/20', {
-
-      headers: {
-        'Authorization': 'Basic em9obzpTczJNM2lzbzBu',       
-        'Accept': '*/*',
-        'Cache-Control': 'no-cache',
-        'Postman-Token': '49f36ea4-87d1-4b18-a8b4-76465f28f119,9397fb19-0e23-49fb-9b48-e689179291f5',        
-        'cache-control': 'no-cache'      
-      }
-    });
-    /**
-    getCurrentUser() {
-      let url = this.baseUrl + 'user';
-      let token = localStorage.getItem('token');
-      let head = new Headers({
-          'Content-Type': 'application/json',
-          'X-Access-Token': token,
-      });
-      let options = new RequestOptions({ headers: head });
-
-      return this.http.get(url, this.options).map(res => res.json());
-  }
-     */
-  }
 }

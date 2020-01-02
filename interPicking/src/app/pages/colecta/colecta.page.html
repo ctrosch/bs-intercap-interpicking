@@ -7,7 +7,7 @@
         <ion-title ion-text-capitalize="ion-text-capitalize">Colecta</ion-title>
 
         <ion-buttons slot="end">
-            <ion-button shape="round" (click)="resetDatos()" color="danger">
+            <ion-button shape="round" (click)="cargarPendientes()" color="danger">
                 <ion-icon slot="icon-only" name="refresh-circle"></ion-icon>
             </ion-button>
         </ion-buttons>
@@ -15,17 +15,18 @@
 </ion-header>
 
 <ion-content>
+
     <ion-list>
         <ion-item *ngFor="let i of datos" (click)="seleccionarItem( i )">
             <!--
-            <ion-icon
-                slot="start"
-                name="{{ i.estadoPicking == 'A'? 'close-circle' : 'checkmark-circle' }}"
-                size="large"
-                color="{{ i.estadoPicking == 'A'? 'danger' : 'success' }}"
-            ></ion-icon>
-
-            -->
+                    <ion-icon
+                        slot="start"
+                        name="{{ i.ESTPCK == 'A'? 'close-circle' : 'checkmark-circle' }}"
+                        size="large"
+                        color="{{ i.ESTPCK == 'A'? 'danger' : 'success' }}"
+                    ></ion-icon>
+        
+                    -->
 
             <ion-avatar slot="start">
                 <img [src]="i.IMGPRD" />
@@ -34,14 +35,16 @@
             <ion-label>
                 <h2>{{ i.DESCRP }}</h2>
 
-                <p>{{ i.ARTCOD }}</p>
+                <p>{{ i.TIPPRO }} - {{ i.ARTCOD }}</p>
 
                 <p>{{ i.NOMBRE }}</p>
 
                 <p>Ubicación: {{ i.NUBICA }}</p>
+
+                <p>Código Barra: {{ i.CODBAR }}</p>
             </ion-label>
 
-            <ion-chip slot="end" color="{{ i.cantidadPicking == 0 ? 'danger' : i.estadoPicking == 'A'? 'warning' : 'success' }}">
+            <ion-chip slot="end" color="{{ i.CNTPCK == 0 ? 'danger' : i.ESTPCK == 'A'? 'warning' : 'success' }}">
                 <ion-label>
                     {{ i.CNTPCK }} / {{ i.CANTID }}
                 </ion-label>
@@ -63,7 +66,7 @@
                 <ion-icon slot="icon-only" name="barcode"></ion-icon>
             </ion-button>
 
-            <ion-button shape="round" (click)="sendInfo()" color="secondary">
+            <ion-button shape="round" (click)="confirmarColecta()" color="secondary">
                 <ion-icon slot="icon-only" name="send"></ion-icon>
             </ion-button>
 

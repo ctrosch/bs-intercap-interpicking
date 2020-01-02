@@ -17,31 +17,39 @@ export class ItemColectaPage implements OnInit {
   cantidadManual: number = 0;
 
   constructor(private route: ActivatedRoute,
-    private router: Router,
-    private colectaService: ColectaService,
-    private barcodeScanner: BarcodeScanner,
+          private router: Router,
+          private colectaService: ColectaService,
+          private barcodeScanner: BarcodeScanner,
     public toastController: ToastController) {
+    
+      console.log('ItemColecta - constructor ');
 
+    /**
     const id = this.route.snapshot.paramMap.get('id');
-    this.item = this.colectaService.getItem(id);
+    this.item = this.colectaService.getItemPendiente(id)
+      .subscribe( (resp: any) => {
 
-    if (this.item.cantidadPicking) {
-      this.cantidadManual = this.item.cantidadPicking;
+        console.log(resp);
+        this.item = resp.colecta[0] ;
+
+      });
+
+    if (this.item.CANTID) {
+      this.cantidadManual = this.item.CNTPCK;
     }
 
-    console.log('cantidad picking ' + this.item.cantidadPicking);
-    console.log('this.cantidadManual ' + this.cantidadManual);
-
-
-
-    //console.log(id);
-    //console.log(this.item);
+    console.log('cantidad picking ' + this.item);
+     */
 
   }
 
   ngOnInit() {
 
-  }
+    console.log('ItemColecta - ngOnInit');    
+    this.item = this.colectaService.item;
+    console.log(this.item);
+
+  }  
 
   async presentToast(mensaje: string) {
     const toast = await this.toastController.create({
@@ -51,7 +59,11 @@ export class ItemColectaPage implements OnInit {
     toast.present();
   }
 
-  scanCode() {
+  
+
+  /**
+   * 
+   * scanCode() {
 
     this.barcodeScanner.scan().then(barcodeData => {
       console.log('Barcode data', barcodeData);
@@ -65,7 +77,7 @@ export class ItemColectaPage implements OnInit {
       //this.presentToast('Error leyendo código de barra');
     });
   }
-
+   * 
   procesarCodigoBarra() {
 
     if (this.codigoBarra !== undefined) {
@@ -78,6 +90,7 @@ export class ItemColectaPage implements OnInit {
       //this.presentToast('Código de barra vacío');
     }
   }
+   */
 
   add(key: number) {
 
@@ -107,14 +120,17 @@ export class ItemColectaPage implements OnInit {
 
   confirmar() {
 
-    this.colectaService.confirmarCantidadManual(this.item, Number(this.cantidadManual));
-    this.router.navigateByUrl('colecta');
+    let resultado: boolean = this.colectaService.confirmarCantidad(this.item, Number(this.cantidadManual));
+
+    if (resultado) {
+        this.router.navigateByUrl('colecta');  
+    }
   }
 
   resetCantidad() {
 
     this.colectaService.resetCantidad(this.item);
-    this.cantidadManual = this.item.cantidadPicking;
+    this.cantidadManual = this.item.CNTPCK;
 
   }
 
