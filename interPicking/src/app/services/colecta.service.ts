@@ -45,12 +45,7 @@ export class ColectaService {
         });
   
      });
-  }
-    
-    
-  
-
-    
+  } 
 
   getItemPendiente(id: string) {
 
