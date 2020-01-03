@@ -5,6 +5,7 @@ import { ColectaService } from '../../services/colecta.service';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { ToastController } from '@ionic/angular';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-colecta',
@@ -20,22 +21,33 @@ export class ColectaPage implements OnInit {
   constructor(private colectaService: ColectaService,
     private router: Router,
     private barcodeScanner: BarcodeScanner,
-    public toastController: ToastController) {     
-      
+    public toastController: ToastController) {
+
   }
 
   ngOnInit() {
 
-    this.colectaService.cargarPendientes().then((datos:any) => {
-      this.datos = datos;
-      console.log('datos cargados correcctamente');
-    }, (err) => {
-        console.log(err);
-    });    
+    console.log('ColectaPage - ngOnInit()');
+    this.cargarPendientes();
+
   }
 
   cargarPendientes() {
-    this.datos = this.colectaService.datos;
+
+    this.colectaService.getPendientes()
+      .subscribe((resp: any) => {
+
+        if (resp.ok) {
+
+          this.datos = resp.colecta;
+          this.colectaService.guardarStorage(this.datos);
+
+        } else {
+          console.log('No hay pendientes de picking en estos momentos');
+        }
+
+      });
+
   }
 
   seleccionarItem(i: any) {
@@ -49,15 +61,15 @@ export class ColectaPage implements OnInit {
     if (codigoBarra !== undefined) {
 
       this.datos.find(item => {
-        
+
         item.CODBAR.split('|').find(i => {
-          
+
           if (i === codigoBarra) {
             this.seleccionarItem(item);
           }
-          
+
         });
-        
+
       });
 
     } else {
@@ -70,10 +82,10 @@ export class ColectaPage implements OnInit {
     this.barcodeScanner.scan().then(barcodeData => {
 
       console.log('Barcode data', barcodeData);
-      this.procesarCodigoBarra(barcodeData.text);   
+      this.procesarCodigoBarra(barcodeData.text);
 
     }).catch(err => {
-      
+
       console.log('Error', err);
       this.presentToast('Error leyendo código de barra');
     });
@@ -83,7 +95,7 @@ export class ColectaPage implements OnInit {
 
     this.procesarCodigoBarra(this.codigoManual);
     this.codigoManual = '';
-    
+
   }
 
   async presentToast(mensaje: string) {
@@ -96,10 +108,9 @@ export class ColectaPage implements OnInit {
 
 
   confirmarColecta() {
-    
-    this.colectaService.confirmarColecta();
-    this.datos = this.colectaService.datos;
 
+    this.router.navigateByUrl('colecta-confirmacion');
+    
   }
-  
 }
+

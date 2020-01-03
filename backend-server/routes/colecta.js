@@ -47,7 +47,7 @@ app.get('/:sitio/:deposito', (req, res, next) => {
 });
 
 // ==========================================
-// Obtener un item penditne
+// Obtener un item pendiente
 // ==========================================
 app.get('/:id', (req, res, next) => {
 
@@ -90,59 +90,70 @@ app.get('/:id', (req, res, next) => {
 app.put('/', (req, res) => {
 
     var body = req.body;
-    var request = new mssql.Request();
-    var sQuery = '';
+    var resultado = '';
+    var error = '';
 
-    request.input('MODFOR', mssql.NVarChar, body.MODFOR);
-    request.input('CODFOR', mssql.NVarChar, body.CODFOR);
-    request.input('NROFOR', mssql.Int, body.NROFOR);
-    request.input('NROITM', mssql.Int, body.NROITM);
-    request.input('NIVEXP', mssql.NVarChar, body.NIVEXP);
-    request.input('TIPPRO', mssql.NVarChar, body.TIPPRO);
-    request.input('ARTCOD', mssql.NVarChar, body.ARTCOD);
-    request.input('CNTPCK', mssql.Int, body.CNTPCK);
-    request.input('ESTPCK', mssql.NVarChar, body.ESTPCK);
+    var datos = JSON.parse(JSON.stringify(body));
 
+    datos.forEach(item => {
 
-    sQuery = 'UPDATE FCRMVI ';
-    sQuery += 'SET USR_FCRMVI_CNTPCK = @CNTPCK , USR_FCRMVI_ESTPCK = @ESTPCK '
-    sQuery += ' WHERE FCRMVI_MODFOR = @MODFOR '
-    sQuery += ' AND FCRMVI_CODFOR = @CODFOR '
-    sQuery += ' AND FCRMVI_NROFOR = @NROFOR '
-    sQuery += ' AND FCRMVI_NROITM = @NROITM '
-    sQuery += ' AND FCRMVI_NIVEXP = @NIVEXP '
-    sQuery += ' AND FCRMVI_TIPPRO = @TIPPRO '
-    sQuery += ' AND FCRMVI_ARTCOD = @ARTCOD '
+        if (item.ESTPCK === 'B') {
 
-    request.query(sQuery, function(err, result) {
+            var request = new mssql.Request();
+            var sQuery = '';
+            request.input('MODFOR', mssql.NVarChar, item.MODFOR);
+            request.input('CODFOR', mssql.NVarChar, item.CODFOR);
+            request.input('NROFOR', mssql.Int, item.NROFOR);
+            request.input('NROITM', mssql.Int, item.NROITM);
+            request.input('NIVEXP', mssql.NVarChar, item.NIVEXP);
+            request.input('TIPPRO', mssql.NVarChar, item.TIPPRO);
+            request.input('ARTCOD', mssql.NVarChar, item.ARTCOD);
+            request.input('CNTPCK', mssql.Int, item.CNTPCK);
+            request.input('ESTPCK', mssql.NVarChar, item.ESTPCK);
 
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                mensaje: 'Error actualizando cantidades picking',
-                errors: err
+            sQuery = 'UPDATE FCRMVI ';
+            sQuery += 'SET USR_FCRMVI_CNTPCK = @CNTPCK , USR_FCRMVI_ESTPCK = @ESTPCK ';
+            sQuery += ' WHERE FCRMVI_MODFOR = @MODFOR ';
+            sQuery += ' AND FCRMVI_CODFOR = @CODFOR ';
+            sQuery += ' AND FCRMVI_NROFOR = @NROFOR ';
+            sQuery += ' AND FCRMVI_NROITM = @NROITM ';
+            sQuery += ' AND FCRMVI_NIVEXP = @NIVEXP ';
+            sQuery += ' AND FCRMVI_TIPPRO = @TIPPRO ';
+            sQuery += ' AND FCRMVI_ARTCOD = @ARTCOD ';
+
+            request.query(sQuery, function(err, result) {
+
+                if (err) {
+                    return res.status(500).json({
+                        ok: false,
+                        mensaje: 'Error actualizando cantidades picking',
+                        errors: err
+                    });
+                }
+
+                if (!result) {
+                    return res.status(400).json({
+                        ok: false,
+                        mensaje: 'Error actualizando cantidades picking',
+                        errors: { message: 'Error actualizando cantidades picking' + body }
+                    });
+                }
+
+                resultado = result;
+
             });
+
+
         }
-
-        if (!result) {
-            return res.status(400).json({
-                ok: false,
-                mensaje: 'Error actualizando cantidades picking',
-                errors: { message: 'Error actualizando cantidades picking' + body }
-            });
-        }
-
-
-        res.status(200).json({
-            ok: true,
-            result: result
-        });
-
     });
 
+    res.status(200).json({
+        ok: true,
+        result: resultado
+    });
+
+
 });
-
-
 
 
 module.exports = app;

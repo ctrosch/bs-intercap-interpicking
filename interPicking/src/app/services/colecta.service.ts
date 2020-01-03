@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { URL_REST } from '../config/config';
 import { async } from '@angular/core/testing';
 import { resolve } from 'url';
+import { Storage } from '@ionic/storage';
+import { ok } from 'assert';
 
 
 @Injectable({
@@ -12,40 +14,22 @@ import { resolve } from 'url';
 })
 export class ColectaService {
 
-  datos: any[];
   item: any;
 
   constructor(
     private http: HttpClient,
+    private storage: Storage,
     public toastController: ToastController) {
 
-    this.cargarPendientes();
-    
   }
 
-  cargarPendientes = () => {
+  getPendientes() {
 
-    console.log('ColectaService - cargarPendientes');
+    console.log('ColectaService - getPendientes');
+    const url = URL_REST + '/colecta' + '/000004' + '/40';
+    return this.http.get<any[]>(url);
 
-    return new Promise((resolve, reject) => {
-
-      const url = URL_REST + '/colecta' + '/000004' + '/40';
-
-      this.http.get<any[]>(url)
-        .subscribe((resp: any) => {
-          this.datos = resp.colecta;
-          this.guardarStorage();
-
-          if (!this.datos) {
-            reject('No se encontraron pendientes');
-          } else {
-            resolve(this.datos);
-          }
-
-        });
-  
-     });
-  } 
+  }
 
   getItemPendiente(id: string) {
 
@@ -55,11 +39,11 @@ export class ColectaService {
 
     const url = URL_REST + '/colecta/' + id;
     return this.http.get(url);
-    
+
   }
 
   confirmarCantidad(item: any, cantidad: number) {
-    
+
     if (item === undefined) {
       this.presentToast('No se encontró producto');
       return;
@@ -74,9 +58,8 @@ export class ColectaService {
         item.ESTPCK = 'B';
 
       }
-
-      this.guardarStorage();      
       this.presentToast('Producto registrado');
+
       return true;
     } else {
       this.presentToast('El valor para cantidad no puede ser mayor a lo solicitado');
@@ -88,28 +71,22 @@ export class ColectaService {
   guardarItem(item: any) {
 
     const url = URL_REST + '/colecta';
-    this.http.put<any>(url, item)
+    return this.http.put<any>(url, item)
       .subscribe(resp => {
-
-        if (resp.ok) {
-          console.log('ColectaService - guardarItem', item);
-        }
 
       });
   }
 
-  confirmarColecta() {
+  removerItem(arr, item) {
+    var i = arr.indexOf(item);
+    i !== -1 && arr.splice(i, 1);
+  }
 
-    console.log('ColectaService - confirmar colecta');
+  guardarDatos(datos: any[]) {
 
-    this.datos.forEach(i => {
+    const url = URL_REST + '/colecta';
+    return this.http.put<any>(url, datos);
 
-      if (i.ESTPCK === 'B') {
-        this.guardarItem(i);
-      }
-    });
-
-    this.cargarPendientes();   
   }
 
   async presentToast(mensaje: string) {
@@ -120,39 +97,39 @@ export class ColectaService {
     toast.present();
   }
 
-  
-  cargarStorage() {
 
-    if (localStorage.getItem('data-colecta')) {
-      this.datos = JSON.parse(localStorage.getItem('data-colecta'));
+  async cargarStorage() {
+
+    console.log('ColectaService - cargarStorage');
+    const datos = this.storage.get('data-colecta');
+
+    if (datos) {
+      return datos;
     }
   }
 
-  guardarStorage() {
-  
-    console.log('ColectaService - guardarStorage');
+  guardarStorage(datos: any[]) {
 
-    localStorage.setItem('data-colecta', JSON.stringify(this.datos));
+    console.log('ColectaService - guardarStorage');
+    this.storage.set('data-colecta', datos);
 
   }
 
-  resetStorage() {
+  resetStorage(datos: any[]) {
 
-    this.datos.forEach(item => {
+    datos.forEach(item => {
       item.CNTPCK = 0;
       item.estadoPicking = 'A';
     });
 
-    this.guardarStorage();
+    this.guardarStorage(datos);
     this.presentToast('Datos reiniciados');
   }
 
-  resetCantidad(item: any){
+  resetCantidad(item: any) {
 
     item.CNTPCK = 0;
     item.estadoPicking = 'A';
-
-    
 
   }
 
