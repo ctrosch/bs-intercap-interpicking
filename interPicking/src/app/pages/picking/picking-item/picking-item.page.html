@@ -18,8 +18,8 @@
 
         <ion-item>
             <ion-label> Estado: </ion-label>
-            <ion-label color="{{ item.CNTPCK == 0 ? 'danger' : item.ESTPCK == 'A'? 'warning' : 'success' }}">
-                {{ item.CNTPCK == 0 ? 'No iniciado' : item.ESTPCK == 'A'? 'En progreso' : 'Finalizado' }}
+            <ion-label color="{{ item.CNTPCK == 0 ? 'danger' :  item.CANTID > item.CNTPCK ? 'warning' : 'success' }}">
+                {{ item.CNTPCK == 0 ? 'No iniciado' : item.CANTID > item.CNTPCK ? 'En progreso' : 'Completado' }}
             </ion-label>
         </ion-item>
 
@@ -107,18 +107,18 @@
             </ion-col>
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
                 <ion-button (click)="clean()" color="danger" expand="full">
-                    <ion-icon slot="start" name="refresh"></ion-icon>
+                    <ion-icon slot="start" name="backspace"></ion-icon>
                 </ion-button>
             </ion-col>
 
-            <ion-col *ngIf="item.ESTPCK == 'A' && cantidadManual <= item.CANTID && cantidadManual > 0" size="12" class="ion-no-margin ion-no-padding ion-text-center">
+            <ion-col *ngIf="item.ESTPCK == 'A' && cantidadManual <= item.CANTID && cantidadManual > 0 && item.CANTID > item.CNTPCK" size="12" class="ion-no-margin ion-no-padding ion-text-center">
                 <ion-button (click)="confirmar()" color="success" expand="full">
                     <ion-icon slot="start" name="checkmark"></ion-icon>
                     <ion-label>Confirmar</ion-label>
                 </ion-button>
             </ion-col>
 
-            <ion-col *ngIf="item.ESTPCK == 'B'" size="12" class="ion-no-margin ion-no-padding ion-text-center">
+            <ion-col *ngIf="item.CANTID == item.CNTPCK " size="12" class="ion-no-margin ion-no-padding ion-text-center">
                 <ion-button (click)="resetCantidad()" color="danger" expand="full">
                     <ion-icon slot="start" name="undo"></ion-icon>
                     <ion-label>Deshacer </ion-label>

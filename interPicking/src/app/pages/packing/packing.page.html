@@ -1,5 +1,58 @@
-<app-header titulo="Armado"></app-header>
+<ion-header no-border="no-border">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/"></ion-back-button>
+        </ion-buttons>
+
+        <ion-title ion-text-capitalize="ion-text-capitalize">Armado</ion-title>
+
+        <ion-buttons slot="end">
+            <ion-button shape="round" (click)="cargarPendientes()" color="danger">
+                <ion-icon slot="icon-only" name="refresh-circle"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
 
 <ion-content>
 
+    <ion-list>
+        <ion-item *ngFor="let i of datos" (click)="seleccionarItem( i )">
+
+            <ion-label>
+                <h2>{{ i.NOMBRE }}</h2>
+
+                <p>{{ i.TRADES }} </p>
+
+                <p>Cantidad: {{ i.CANTID }}</p>
+            </ion-label>
+
+            <ion-chip slot="end" color="{{ i.CNTPK2 == 0 ? 'danger' : i.ESTPK2 == 'A'? 'warning' : 'success' }}">
+                <ion-label>
+                    {{ i.CNTPK2 }} / {{ i.CANTID }}
+                </ion-label>
+            </ion-chip>
+        </ion-item>
+    </ion-list>
 </ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()"></ion-input>
+
+        <ion-buttons slot="end">
+            <ion-button shape="round" (click)="procesarCodigoBarra()" color="success">
+                <ion-icon slot="icon-only" name="add"> </ion-icon>
+            </ion-button>
+
+            <ion-button shape="round" (click)="scanCode()" color="primary">
+                <ion-icon slot="icon-only" name="barcode"></ion-icon>
+            </ion-button>
+
+            <ion-button shape="round" (click)="confirmarPacking()" color="secondary">
+                <ion-icon slot="icon-only" name="send"></ion-icon>
+            </ion-button>
+
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

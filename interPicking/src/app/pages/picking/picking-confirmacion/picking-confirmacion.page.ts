@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { ColectaService } from '../../services/colecta.service';
 import { Router } from '@angular/router';
+import { PickingService } from '../../../services/picking.service';
 
 @Component({
-  selector: 'app-colecta-confirmacion',
-  templateUrl: './colecta-confirmacion.page.html',
-  styleUrls: ['./colecta-confirmacion.page.scss'],
+  selector: 'app-picking-confirmacion',
+  templateUrl: './picking-confirmacion.page.html',
+  styleUrls: ['./picking-confirmacion.page.scss'],
 })
-export class ColectaConfirmacionPage implements OnInit {
+export class PickingConfirmacionPage implements OnInit {
 
   datos: any[] = [];
 
   constructor(
     private router: Router,
-    private colectaService: ColectaService) { }
+    private pickingService: PickingService) { }
 
   ngOnInit() {
 
-    this.colectaService.cargarStorage().then(datos => {
+    this.pickingService.cargarStorage().then(datos => {
 
       this.datos = datos;
       console.log(this.datos);
@@ -27,7 +27,7 @@ export class ColectaConfirmacionPage implements OnInit {
 
   confirmarColecta() {
 
-    this.colectaService.guardarDatos(this.datos)
+    this.pickingService.guardarDatos(this.datos)
       .subscribe(resp => {
         if (resp.ok) {
           console.log('Datos guardados correctamente');
@@ -39,5 +39,4 @@ export class ColectaConfirmacionPage implements OnInit {
   volver(){
     this.router.navigateByUrl('colecta');
   }
-
 }

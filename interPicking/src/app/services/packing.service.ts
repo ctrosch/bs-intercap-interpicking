@@ -1,18 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
-import { Observable } from 'rxjs';
 import { URL_REST } from '../config/config';
-import { async } from '@angular/core/testing';
-import { resolve } from 'url';
 import { Storage } from '@ionic/storage';
-import { ok } from 'assert';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ColectaService {
+export class PackingService {
 
   item: any;
 
@@ -25,8 +21,8 @@ export class ColectaService {
 
   getPendientes() {
 
-    console.log('ColectaService - getPendientes');
-    const url = URL_REST + '/colecta' + '/000004' + '/40';
+    console.log('PackingService - getPendientes');
+    const url = URL_REST + '/packing' + '/000004' + '/40';
     return this.http.get<any[]>(url);
 
   }
@@ -37,7 +33,7 @@ export class ColectaService {
       return;
     }
 
-    const url = URL_REST + '/colecta/' + id;
+    const url = URL_REST + '/packing/' + id;
     return this.http.get(url);
 
   }
@@ -51,9 +47,9 @@ export class ColectaService {
 
     if (cantidad <= item.CANTID) {
 
-      item.CNTPCK = cantidad;
+      item.CNTPK2 = cantidad;
 
-      if (item.CNTPCK === item.CANTID) {
+      if (item.CNTPK2 === item.CANTID) {
 
         item.ESTPCK = 'B';
 
@@ -70,7 +66,7 @@ export class ColectaService {
 
   guardarItem(item: any) {
 
-    const url = URL_REST + '/colecta';
+    const url = URL_REST + '/packing';
     return this.http.put<any>(url, item)
       .subscribe(resp => {
 
@@ -82,9 +78,9 @@ export class ColectaService {
     i !== -1 && arr.splice(i, 1);
   }
 
-  guardarDatos(datos: any[]) {
+  confirmarPacking(datos: any[]) {
 
-    const url = URL_REST + '/colecta';
+    const url = URL_REST + '/packing';
     return this.http.put<any>(url, datos);
 
   }
@@ -101,7 +97,7 @@ export class ColectaService {
   async cargarStorage() {
 
     console.log('ColectaService - cargarStorage');
-    const datos = this.storage.get('data-colecta');
+    const datos = this.storage.get('data-packing');
 
     if (datos) {
       return datos;
@@ -111,15 +107,15 @@ export class ColectaService {
   guardarStorage(datos: any[]) {
 
     console.log('ColectaService - guardarStorage');
-    this.storage.set('data-colecta', datos);
+    this.storage.set('data-packing', datos);
 
   }
 
   resetStorage(datos: any[]) {
 
     datos.forEach(item => {
-      item.CNTPCK = 0;
-      item.estadoPicking = 'A';
+      item.CNTPK2 = 0;
+      item.ESTPK2 = 'A';
     });
 
     this.guardarStorage(datos);
@@ -128,9 +124,8 @@ export class ColectaService {
 
   resetCantidad(item: any) {
 
-    item.CNTPCK = 0;
-    item.estadoPicking = 'A';
+    item.CNTPK2 = 0;
+    item.ESTPK2 = 'A';
 
   }
-
 }

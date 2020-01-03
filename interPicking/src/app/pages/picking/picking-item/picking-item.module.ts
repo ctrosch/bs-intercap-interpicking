@@ -5,13 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ItemColectaPage } from './item-colecta.page';
-import { ComponentsModule } from '../../components/components.module';
+import { PickingItemPage } from './picking-item.page';
+import { ComponentsModule } from '../../../components/components.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: ItemColectaPage
+    component: PickingItemPage
   }
 ];
 
@@ -23,6 +23,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     ComponentsModule
   ],
-  declarations: [ItemColectaPage]
+  declarations: [PickingItemPage]
 })
-export class ItemColectaPageModule {}
+export class PickingItemPageModule {}

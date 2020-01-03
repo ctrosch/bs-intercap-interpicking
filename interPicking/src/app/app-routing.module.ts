@@ -12,16 +12,13 @@ const routes: Routes = [
   },
   { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' },
   { path: 'picking', loadChildren: './pages/picking/picking.module#PickingPageModule' },
-  { path: 'packing', loadChildren: './pages/packing/packing.module#PackingPageModule' },
-  { path: 'armado', loadChildren: './pages/armado/armado.module#ArmadoPageModule' },
-  { path: 'colecta', loadChildren: './pages/colecta/colecta.module#ColectaPageModule' },
-  { path: 'item-colecta/:id', loadChildren: './pages/item-colecta/item-colecta.module#ItemColectaPageModule' },  
-  { path: 'colecta-confirmacion', loadChildren: './pages/colecta-confirmacion/colecta-confirmacion.module#ColectaConfirmacionPageModule'},
+  { path: 'picking-item/:id', loadChildren: './pages/picking/picking-item/picking-item.module#PickingItemPageModule' },
+  { path: 'picking-confirmacion', loadChildren: './pages/picking/picking-confirmacion/picking-confirmacion.module#PickingConfirmacionPageModule' },
+  { path: 'packing', loadChildren: './pages/packing/packing.module#PackingPageModule' },  
   { path: 'toma-inventario', loadChildren: './pages/toma-inventario/toma-inventario.module#TomaInventarioPageModule' },
   { path: 'recepcion', loadChildren: './pages/recepcion/recepcion.module#RecepcionPageModule' },  
   { path: 'configuracion', loadChildren: './pages/configuracion/configuracion.module#ConfiguracionPageModule' },
-  { path: 'usuario', loadChildren: './pages/usuario/usuario.module#UsuarioPageModule' }
-  
+  { path: 'usuario', loadChildren: './pages/usuario/usuario.module#UsuarioPageModule' }  
 ];
 @NgModule({
   imports: [

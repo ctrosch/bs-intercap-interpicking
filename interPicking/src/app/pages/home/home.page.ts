@@ -13,14 +13,14 @@ export class HomePage implements OnInit {
       icon: 'codebar',
       name: 'Colecta',
       imagen: '/assets/img/colecta.png',
-      redirectTo: '/colecta',
+      redirectTo: '/picking',
       detalle: 'Realizar colecta general para todos los despachos pendientes'
     },
     {
       icon: 'appstore',
       name: 'Armado',
       imagen: '/assets/img/armado.png',
-      redirectTo: '/armado',
+      redirectTo: '/packing',
       detalle: 'Realizar armado despacho por clientes'
     },
     {

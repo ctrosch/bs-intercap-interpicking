@@ -5,13 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ColectaConfirmacionPage } from './colecta-confirmacion.page';
-import { ComponentsModule } from '../../components/components.module';
+import { PickingConfirmacionPage } from './picking-confirmacion.page';
+import { ComponentsModule } from '../../../components/components.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: ColectaConfirmacionPage
+    component: PickingConfirmacionPage
   }
 ];
 
@@ -23,6 +23,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     ComponentsModule
   ],
-  declarations: [ColectaConfirmacionPage]
+  declarations: [PickingConfirmacionPage]
 })
-export class ColectaConfirmacionPageModule {}
+export class PickingConfirmacionPageModule {}
