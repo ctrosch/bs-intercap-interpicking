@@ -4,8 +4,6 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { ToastController } from '@ionic/angular';
 import { PickingService } from '../../../services/picking.service';
 
-import * as swal from 'sweetalert';
-
 
 @Component({
   selector: 'app-picking-item',
@@ -16,30 +14,29 @@ export class PickingItemPage implements OnInit {
 
   item: any;
   codigoBarra: string;
-  cantidadManual: number = 0;
+  cantidadManual = 0;
 
   constructor(private route: ActivatedRoute,
-          private router: Router,
-          private pickingService: PickingService,
-          private barcodeScanner: BarcodeScanner,
-    public toastController: ToastController) {
-    
-      console.log('ItemColecta - constructor ');
+              private router: Router,
+              private pickingService: PickingService,
+              private barcodeScanner: BarcodeScanner,
+              public toastController: ToastController) {
 
+     // console.log('ItemColecta - constructor ');
   }
 
   ngOnInit() {
 
-    //console.log('ItemColecta - ngOnInit');    
+    // console.log('ItemColecta - ngOnInit');
     this.item = this.pickingService.item;
 
     if (this.item) {
       this.cantidadManual = this.item.CNTPCK;
     }
 
-    //console.log(this.item);
+    // console.log(this.item);
 
-  }  
+  }
 
   async presentToast(mensaje: string) {
     const toast = await this.toastController.create({
@@ -64,7 +61,18 @@ export class PickingItemPage implements OnInit {
   }
 
   clean() {
-    this.cantidadManual = 0;
+
+    if (this.cantidadManual === 0) {
+      return;
+    }
+
+    if (this.cantidadManual < 10) {
+      this.cantidadManual = 0;
+      return;
+    }
+
+    this.cantidadManual = Number(String(this.cantidadManual).substring(0, String(this.cantidadManual).length - 1 ));
+
   }
 
   confirmar() {
@@ -73,18 +81,18 @@ export class PickingItemPage implements OnInit {
 
     if (resultado) {
 
-      //if (this.item.ESTPCK === 'B') {
+      // if (this.item.ESTPCK === 'B') {
         this.pickingService.confirmarItem(this.item)
           .subscribe(resp => {
             if (resp.ok) {
-              
+
                 this.router.navigateByUrl('picking');
-              
+
             } else {
-              swal("Error", "Problemas para confirmar picking", "error");
+              // swal({title: 'Error',text: 'Problemas para confirmar picking',icon: 'error',});
             }
           });
-      //}
+      // }
     }
   }
 
@@ -92,9 +100,6 @@ export class PickingItemPage implements OnInit {
 
     this.pickingService.resetCantidad(this.item);
     this.cantidadManual = this.item.CNTPCK;
-
-    console.log(this.item);
-
   }
 
   sendInfo() {

@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { ToastController } from '@ionic/angular';
+import { ToastController, IonSegment } from '@ionic/angular';
 import { PickingService } from '../../services/picking.service';
-
-import * as swal from 'sweetalert';
-
+import { LoadingController } from '@ionic/angular';
 
 
 @Component({
@@ -15,34 +13,58 @@ import * as swal from 'sweetalert';
 })
 export class PickingPage implements OnInit {
 
+  @ViewChild(IonSegment, {static: true}) segment: IonSegment;
+
   datos: any[];
+  pendientes: any[];
+  completados: any[];
+
   codigoManual: string;
   porcentaje = 0;
+  cargando = false;
+  procesando: any;
+
+  circuito: string;
+
 
   constructor(private pickingService: PickingService,
-    private router: Router,
-    private barcodeScanner: BarcodeScanner,
-    public toastController: ToastController) {
+              private router: Router,
+              private barcodeScanner: BarcodeScanner,
+              public toastController: ToastController,
+              public loadingController: LoadingController) {
 
   }
 
   ngOnInit() {
 
-    console.log('ColectaPage - ngOnInit()');
-    this.cargarPendientes();
+    if (this.segment) {
+      this.segment.value = 'pendientes';
+    }
 
+    this.cargarPendientes();
   }
 
-  cargarPendientes() {
+  cargarPendientes( event? ) {
+
+    this.cargando = true;
+
+    if (this.segment) {
+      this.segment.value = 'pendientes';
+    }
 
     this.pickingService.getPendientes()
-      
       .subscribe((resp: any) => {
 
         if (resp.ok) {
 
           this.datos = resp.colecta;
-          this.pickingService.guardarStorage(this.datos);
+          this.filtrarItems();
+
+          if (event) {
+            event.target.complete();
+          }
+
+          this.cargando = false;
 
         } else {
           console.log('No hay pendientes de picking en estos momentos');
@@ -52,9 +74,20 @@ export class PickingPage implements OnInit {
 
   }
 
-  seleccionarItem(i: any) {
+  filtrarItems() {
 
-    console.log('item seleccionado', i);
+    this.pendientes = this.datos.filter(item => item.CNTPCK < item.CANTID);
+    this.completados = this.datos.filter(item => item.CNTPCK === item.CANTID);
+
+  }
+
+  recargar(event) {
+
+    this.cargarPendientes(event);
+
+  }
+
+  seleccionarItem(i: any) {
 
     this.pickingService.item = i;
     this.router.navigateByUrl('picking-item/' + i.ID);
@@ -69,8 +102,8 @@ export class PickingPage implements OnInit {
 
     }).catch(err => {
 
-      console.log('Error', err);
-      swal("Error", "Error leyendo código de barra", "error");
+      // console.log('Error', err);
+      // swal({title: 'Error',text: 'Error leyendo código de barra',icon: 'error',});
     });
   }
 
@@ -91,25 +124,48 @@ export class PickingPage implements OnInit {
 
       this.datos.find(item => {
 
-        item.CODBAR.split('|').find(i => {
+        if (item.CNTPCK < item.CANTID) {
 
-          if (i === codigoBarra) {
-            itemEncontrado = item;
-          }
+          item.CODBAR.split('|').find(i => {
 
-        });
+            if (i === codigoBarra ) {
+              itemEncontrado = item;
+            }
+          });
+        }
 
       });
 
       if (itemEncontrado) {
         this.seleccionarItem(itemEncontrado);
       } else {
-        swal("Error", "El código de barra obtenido no pertenece a ningún producto pendiente de picking", "error");
+        // swal({title: 'Error',text: 'El código de barra no pertenece a ningún producto pendiene de picking',icon: 'error',});
       }
 
     } else {
       this.presentToast('Código de barra vacío');
     }
+  }
+
+  confirmarPicking() {
+
+    this.presentLoading();
+
+    this.pickingService.confirmarPicking('CTROSCH')
+      .subscribe(resp => {
+
+        console.log(resp);
+
+        if (resp.ok) {
+
+          this.cargarPendientes();
+          this.procesando.dismiss();
+
+          // swal("Picking confirmado","Los productos fueron confirmados correctamente","success").then(value => {});
+        } else {
+          // swal("Error", "No es posible guardar los datos", "error");
+        }
+      });
   }
 
   async presentToast(mensaje: string) {
@@ -120,25 +176,18 @@ export class PickingPage implements OnInit {
     toast.present();
   }
 
-
-  confirmarPicking() {
-
-    console.log('confirmar picking');
-
-    this.pickingService.confirmarPicking('CTROSCH')
-      .subscribe(resp => {
-
-        console.log(resp);
-
-        if (resp.ok) {
-          swal("Picking confirmado","Los productos fueron confirmados correctamente","success")
-          .then(value => {
-            this.cargarPendientes();
-          });
-        } else {
-          swal("Error", "No es posible guardar los datos", "error");
-        }
-      });
+  async presentLoading() {
+    this.procesando = await this.loadingController.create({
+      message: 'Procesando información'
+    });
+    return this.procesando.present();
   }
+
+  segmentChanged(event) {
+
+    this.filtrarItems();
+
+  }
+
 }
 

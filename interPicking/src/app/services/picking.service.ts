@@ -20,8 +20,8 @@ export class PickingService {
 
   getPendientes() {
 
-    console.log('PackingService - getPendientes');
-    const url = URL_REST + '/colecta' + '/000004' + '/40';
+    // console.log('PackingService - getPendientes');
+    const url = URL_REST + '/colecta' + '/000004' + '/40' + '/ctrosch';
     return this.http.get<any[]>(url);
 
   }
@@ -87,7 +87,7 @@ export class PickingService {
 
   confirmarItem(item: any) {
 
-    console.log('Confirmar item' + item.ID);
+    //console.log('Confirmar item' + item.ID);
 
     const url = URL_REST + '/colecta';
     return this.http.put<any>(url, item);
@@ -105,19 +105,18 @@ export class PickingService {
 
   async cargarStorage() {
 
-    console.log('PackingService - cargarStorage');
-    const datos = this.storage.get('data-colecta');
+    //console.log('PackingService - cargarStorage');
+    //const datos = this.storage.get('data-colecta');
 
-    if (datos) {
-      return datos;
-    }
+    //if (datos) {
+    //  return datos;
+    //}
   }
 
   guardarStorage(datos: any[]) {
 
-    console.log('PackingService - guardarStorage');
-    this.storage.set('data-colecta', datos);
-
+    //console.log('PackingService - guardarStorage');
+    //this.storage.set('data-colecta', datos);
   }
 
   resetStorage(datos: any[]) {

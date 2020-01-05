@@ -34,7 +34,9 @@ var config = {
     user: 'sa',
     password: 'serverlogic=2012',
     server: 'INTER2\\SQLSERVER',
-    database: 'TEM'
+    database: 'TEM',
+    connectionTimeout: 45000,
+    requestTimeout: 45000
 };
 
 //En caso de error

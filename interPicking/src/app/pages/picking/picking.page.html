@@ -7,41 +7,53 @@
         <ion-title ion-text-capitalize="ion-text-capitalize">Colecta</ion-title>
 
         <ion-buttons slot="end">
-            <ion-button shape="round" (click)="cargarPendientes()" color="danger">
+            <ion-button shape="round" (click)="cargarPendientes()">
                 <ion-icon slot="icon-only" name="refresh-circle"></ion-icon>
             </ion-button>
+
+            <ion-button shape="round" (click)="cargarPendientes()">
+                <ion-icon slot="icon-only" name="ios-funnel"></ion-icon>
+            </ion-button>
+
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
+<ion-toolbar>
+    <ion-segment #segmento (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="pendientes">
+            <ion-label>Pendientes</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="completados">
+            <ion-label>Completados</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+</ion-toolbar>
+
 <ion-content>
 
-    <ion-list>
-        <ion-item *ngFor="let i of datos" (click)="seleccionarItem( i )">
-            <!--
-                    <ion-icon
-                        slot="start"
-                        name="{{ i.ESTPCK == 'A'? 'close-circle' : 'checkmark-circle' }}"
-                        size="large"
-                        color="{{ i.ESTPCK == 'A'? 'danger' : 'success' }}"
-                    ></ion-icon>
-        
-            -->
+    <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list *ngIf="!cargando">
+
+        <ion-item *ngFor="let i of (segment.value === 'pendientes'? pendientes:completados)" (click)="seleccionarItem( i )">
 
             <ion-avatar slot="start">
-                <img [src]="i.IMGPRD" />
+                <ion-img [src]="i.IMGPRD"></ion-img>
             </ion-avatar>
 
             <ion-label>
                 <h2>{{ i.DESCRP }}</h2>
 
-                <p>{{ i.TIPPRO }} - {{ i.ARTCOD }}</p>
-
-                <p>{{ i.NOMBRE }}</p>
+                <p>{{ i.TIPPRO }} - {{ i.ARTCOD }} | N° Parte: {{ i.NROPAR }}</p>
 
                 <p>Ubicación: {{ i.NUBICA }}</p>
 
                 <p>Código Barra: {{ i.CODBAR }}</p>
+
+                <p>Cliente: {{ i.NOMBRE }} | Formulario: {{ i.CODFOR }} - {{ i.NROFOR }} {{ i.NROITM }} </p>
             </ion-label>
 
             <ion-chip slot="end" color="{{ i.CNTPCK == 0 ? 'danger' : i.CANTID > i.CNTPCK ? 'warning' : 'success' }}">
@@ -51,14 +63,53 @@
             </ion-chip>
         </ion-item>
     </ion-list>
+
+    <ion-list *ngIf="cargando">
+
+        <ion-item *ngFor="let i of [1,1,1,1,1,1,1,1,1,1]">
+
+            <ion-avatar slot="start">
+                <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-avatar>
+
+            <ion-label>
+                <h2>
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                </h2>
+
+                <p>
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                </p>
+
+                <p>
+                    <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                </p>
+
+                <p>
+                    <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                </p>
+
+                <p>
+                    <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                </p>
+            </ion-label>
+
+            <ion-chip slot="end">
+                <ion-label>
+                    <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                </ion-label>
+            </ion-chip>
+        </ion-item>
+    </ion-list>
+
 </ion-content>
 
 <ion-footer>
-    <ion-toolbar>
+    <ion-toolbar *ngIf="segment.value === 'pendientes'">
         <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()"></ion-input>
 
         <ion-buttons slot="end">
-            <ion-button shape="round" (click)="procesarCodigoBarra()" color="success">
+            <ion-button shape="round" (click)="procesarCodigoManual()" color="success">
                 <ion-icon slot="icon-only" name="add"> </ion-icon>
             </ion-button>
 
@@ -66,10 +117,17 @@
                 <ion-icon slot="icon-only" name="barcode"></ion-icon>
             </ion-button>
 
-            <ion-button shape="round" (click)="confirmarPicking()" color="secondary">
-                <ion-icon slot="icon-only" name="send"></ion-icon>
-            </ion-button>
+
 
         </ion-buttons>
+    </ion-toolbar>
+
+    <ion-toolbar *ngIf="segment.value === 'completados'">
+
+        <ion-button (click)="confirmarPicking()" color="primary" expand="full">
+            <ion-icon slot="start" name="send"></ion-icon>
+            Confirmar Picking
+        </ion-button>
+
     </ion-toolbar>
 </ion-footer>

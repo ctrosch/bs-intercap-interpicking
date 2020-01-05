@@ -19,7 +19,7 @@ export class PickingConfirmacionPage implements OnInit {
 
     this.pickingService.cargarStorage().then(datos => {
 
-      this.datos = datos;
+      // this.datos = datos;
       console.log(this.datos);
     });
 
@@ -27,6 +27,7 @@ export class PickingConfirmacionPage implements OnInit {
 
   confirmarColecta() {
 
+    /**
     this.pickingService.guardarDatos(this.datos)
       .subscribe(resp => {
         if (resp.ok) {
@@ -34,6 +35,7 @@ export class PickingConfirmacionPage implements OnInit {
           
         }
       });
+       */
   }
 
   volver(){

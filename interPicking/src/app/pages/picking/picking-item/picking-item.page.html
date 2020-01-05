@@ -5,7 +5,7 @@
     <ion-list>
         <ion-item>
             <ion-avatar>
-                <img [src]="item.IMGPRD" />
+                <ion-img [src]="item.IMGPRD"></ion-img>
             </ion-avatar>
 
             <ion-label> {{ item.DESCRP }}</ion-label>
@@ -47,83 +47,85 @@
     <ion-grid class="paddin padding-calc">
         <ion-row>
             <ion-col size="12" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button color="medium" expand="full" size="large">
+                <ion-button color="medium" expand="full" size="large" size="large">
                     <ion-label>Cantidad: {{ cantidadManual }} / {{ item.CANTID}} {{ item.UNIMED }}</ion-label>
                 </ion-button>
             </ion-col>
 
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(1)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full">
+                <ion-button (click)="add(1)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
                     <ion-label>1</ion-label>
                 </ion-button>
             </ion-col>
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(2)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full">
+                <ion-button (click)="add(2)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
                     <ion-label>2</ion-label>
                 </ion-button>
             </ion-col>
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(3)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full">
+                <ion-button (click)="add(3)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
                     <ion-label>3</ion-label>
                 </ion-button>
             </ion-col>
 
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(4)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full">
+                <ion-button (click)="add(4)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
                     <ion-label>4</ion-label>
                 </ion-button>
             </ion-col>
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(5)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full">
+                <ion-button (click)="add(5)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
                     <ion-label>5</ion-label>
                 </ion-button>
             </ion-col>
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(6)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full">
+                <ion-button (click)="add(6)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
                     <ion-label>6</ion-label>
                 </ion-button>
             </ion-col>
 
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(7)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full">
+                <ion-button (click)="add(7)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
                     <ion-label>7</ion-label>
                 </ion-button>
             </ion-col>
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(8)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full">
+                <ion-button (click)="add(8)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
                     <ion-label>8</ion-label>
                 </ion-button>
             </ion-col>
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(9)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full">
+                <ion-button (click)="add(9)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
                     <ion-label>9</ion-label>
                 </ion-button>
             </ion-col>
 
             <ion-col size="8" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(0)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full">
+                <ion-button (click)="add(0)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
                     <ion-label>0</ion-label>
                 </ion-button>
             </ion-col>
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="clean()" color="danger" expand="full">
+                <ion-button (click)="clean()" color="danger" expand="full" size="large">
                     <ion-icon slot="start" name="backspace"></ion-icon>
                 </ion-button>
             </ion-col>
 
-            <ion-col *ngIf="item.ESTPCK == 'A' && cantidadManual <= item.CANTID && cantidadManual > 0 && item.CANTID > item.CNTPCK" size="12" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="confirmar()" color="success" expand="full">
+            <ion-col *ngIf="item.ESTPCK == 'A' && cantidadManual <= item.CANTID && cantidadManual > 0 " size="12" class="ion-no-margin ion-no-padding ion-text-center">
+                <ion-button (click)="confirmar()" color="success" expand="full" size="large">
                     <ion-icon slot="start" name="checkmark"></ion-icon>
                     <ion-label>Confirmar</ion-label>
                 </ion-button>
             </ion-col>
 
+            <!--
             <ion-col *ngIf="item.CANTID == item.CNTPCK " size="12" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="resetCantidad()" color="danger" expand="full">
+                <ion-button (click)="resetCantidad()" color="danger" expand="full" size="large">
                     <ion-icon slot="start" name="undo"></ion-icon>
                     <ion-label>Deshacer </ion-label>
                 </ion-button>
             </ion-col>
+            -->
 
         </ion-row>
     </ion-grid>
@@ -132,6 +134,7 @@
 
 
 <ion-footer>
+    <!--
     <ion-toolbar>
 
         <ion-input [(ngModel)]="codigoBarra" (keyup.enter)="procesarCodigoBarra()"></ion-input>
@@ -147,4 +150,5 @@
         </ion-buttons>
 
     </ion-toolbar>
+    -->
 </ion-footer>

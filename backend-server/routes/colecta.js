@@ -10,15 +10,18 @@ var app = express();
 // ==========================================
 // Obtener todos los productos pendientes a colectar
 // ==========================================
-app.get('/:sitio/:deposito', (req, res, next) => {
+app.get('/:sitio/:deposito/:usuario', (req, res, next) => {
 
     var sitio = req.params.sitio;
     var deposito = req.params.deposito;
+    var usuario = req.params.usuario;
 
     var request = new mssql.Request();
     request.input('sitio', mssql.NVarChar, sitio);
     request.input('deposito', mssql.NVarChar, deposito);
-    request.query('SELECT TOP 20 P.* FROM PCK_PENDIENTE_PRODUCTO P WHERE P.SITIOS = @sitio AND P.DEPOSI = @deposito ORDER BY NUBICA, TIPPRO, ARTCOD, NROCTA ', function(err, result) {
+    request.input('usuario', mssql.NVarChar, usuario);
+    request.query('SELECT TOP 500 * FROM PCK_PENDIENTE_PRODUCTO P WHERE P.SITIOS = @sitio AND P.DEPOSI = @deposito AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario) ORDER BY NUBICA, TIPPRO, ARTCOD, NROCTA ', function(err, result) {
+
 
         if (err) {
             return res.status(500).json({
@@ -35,7 +38,6 @@ app.get('/:sitio/:deposito', (req, res, next) => {
                 errors: { message: 'No existen datos de colecta para el sitio ' + sitio + ', deposito ' + deposito }
             });
         }
-
 
         var colecta = result.recordset;
 
@@ -104,15 +106,16 @@ app.put('/', (req, res) => {
     request.input('ARTCOD', mssql.NVarChar, body.ARTCOD);
     request.input('CNTPCK', mssql.Int, body.CNTPCK);
     //request.input('ESTPCK', mssql.NVarChar, body.ESTPCK);
-    request.input('USRPCK', mssql.NVarChar, body.USRPCK);
+    //request.input('USRPCK', mssql.NVarChar, body.USRPCK);
+    request.input('USRPCK', mssql.NVarChar, 'ctrosch');
 
     sQuery = 'UPDATE FCRMVI ';
-    sQuery += 'SET USR_FCRMVI_CNTPCK = @CNTPCK , USR_FCRMVI_PCK = @USRPCK ';
-    sQuery += ' WHERE FCRMVI_MODFOR = @MODFOR ';
-    sQuery += ' AND FCRMVI_CODFOR = @CODFOR ';
-    sQuery += ' AND FCRMVI_NROFOR = @NROFOR ';
-    sQuery += ' AND FCRMVI_NROITM = @NROITM ';
-    sQuery += ' AND FCRMVI_NIVEXP = @NIVEXP ';
+    sQuery += 'SET USR_FCRMVI_CNTPCK = @CNTPCK , USR_FCRMVI_USRPCK = @USRPCK ';
+    sQuery += ' WHERE FCRMVI_MODAPL = @MODFOR ';
+    sQuery += ' AND FCRMVI_CODAPL = @CODFOR ';
+    sQuery += ' AND FCRMVI_NROAPL = @NROFOR ';
+    sQuery += ' AND FCRMVI_ITMAPL = @NROITM ';
+    sQuery += ' AND FCRMVI_EXPAPL = @NIVEXP ';
     sQuery += ' AND FCRMVI_TIPPRO = @TIPPRO ';
     sQuery += ' AND FCRMVI_ARTCOD = @ARTCOD ';
 
@@ -159,7 +162,11 @@ app.put('/confirmar', (req, res) => {
 
     sQuery = 'UPDATE FCRMVI ';
     sQuery += 'SET USR_FCRMVI_ESTPCK = \'B\'  ';
-    sQuery += ' WHERE USR_FCRMVI_USRPCK = @USRPCK AND FCRMVI_CANTID = USR_FCRMVI_CNTPCK AND FCRMVI_FECALT > \'20191201\' ';
+    sQuery += ' WHERE USR_FCRMVI_USRPCK = @USRPCK  ';
+    sQuery += ' AND FCRMVI_CANTID = USR_FCRMVI_CNTPCK';
+    sQuery += ' AND FCRMVI_FECALT > \'20191201\' ';
+    sQuery += ' AND USR_FCRMVI_ESTPCK = \'A\' ';
+    sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
 
     request.query(sQuery, function(err, result) {
 
