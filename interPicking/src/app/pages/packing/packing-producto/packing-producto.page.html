@@ -1,25 +1,25 @@
 <ion-header no-border="no-border">
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="/"></ion-back-button>
+            <ion-back-button defaultHref="/packing" [routerLink]="['/packing']"></ion-back-button>
         </ion-buttons>
 
-        <ion-title ion-text-capitalize="ion-text-capitalize">Colecta</ion-title>
+        <ion-title ion-text-capitalize="ion-text-capitalize">{{ item.NOMBRE }} </ion-title>
 
-        <ion-buttons slot="end">
-            <ion-button shape="round" (click)="cargarPendientes()">
-                <ion-icon slot="icon-only" name="refresh-circle"></ion-icon>
-            </ion-button>
-
-            <ion-button shape="round" (click)="cargarPendientes()">
-                <ion-icon slot="icon-only" name="ios-funnel"></ion-icon>
-            </ion-button>
-
-        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
 <ion-toolbar>
+
+    <ion-list *ngIf="!cargando">
+        <ion-item>
+            <ion-label>
+                <h2>{{ item.TRADES }}</h2>
+                <p class="primary">{{ item.CODFOR }} - {{ item.NROFOR }}</p>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+
     <ion-segment #segmento (ionChange)="segmentChanged($event)">
         <ion-segment-button value="pendientes">
             <ion-label *ngIf="pendientes">Pendientes ( {{ pendientes.length }} )</ion-label>
@@ -52,13 +52,11 @@
                 <p>Ubicación: {{ i.NUBICA }}</p>
 
                 <p>Código Barra: {{ i.CODBAR }}</p>
-
-                <p>Cliente: {{ i.NOMBRE }} | Formulario: {{ i.CODFOR }} - {{ i.NROFOR }} {{ i.NROITM }} </p>
             </ion-label>
 
-            <ion-chip slot="end" color="{{ i.CNTPCK == 0 ? 'danger' : i.CANTID > i.CNTPCK ? 'warning' : 'success' }}">
+            <ion-chip slot="end" color="{{ i.CNTPK2 == 0 ? 'danger' : i.CANTID > i.CNTPK2 ? 'warning' : 'success' }}">
                 <ion-label>
-                    {{ i.CNTPCK }} / {{ i.CANTID }}
+                    {{ i.CNTPK2 }} / {{ i.CANTID }}
                 </ion-label>
             </ion-chip>
         </ion-item>
@@ -82,21 +80,17 @@
                 </p>
 
                 <p>
-                    <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                    <ion-skeleton-text animated></ion-skeleton-text>
                 </p>
 
                 <p>
-                    <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
-                </p>
-
-                <p>
-                    <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                    <ion-skeleton-text animated></ion-skeleton-text>
                 </p>
             </ion-label>
 
             <ion-chip slot="end">
                 <ion-label>
-                    <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                    <ion-skeleton-text animated></ion-skeleton-text>
                 </ion-label>
             </ion-chip>
         </ion-item>
@@ -105,8 +99,7 @@
 </ion-content>
 
 <ion-footer>
-    <ion-toolbar *ngIf="segment.value === 'pendientes'">
-
+    <ion-toolbar>
         <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()"></ion-input>
 
         <ion-buttons slot="end">
@@ -118,17 +111,10 @@
                 <ion-icon slot="icon-only" name="barcode"></ion-icon>
             </ion-button>
 
-
+            <ion-button shape="round" (click)="confirmarPacking()" color="secondary">
+                <ion-icon slot="icon-only" name="send"></ion-icon>
+            </ion-button>
 
         </ion-buttons>
-    </ion-toolbar>
-
-    <ion-toolbar *ngIf="segment.value === 'completados'">
-
-        <ion-button (click)="confirmarPicking()" color="primary" expand="full" size="large">
-            <ion-icon slot="start" name="send"></ion-icon>
-            Confirmar Colecta
-        </ion-button>
-
     </ion-toolbar>
 </ion-footer>

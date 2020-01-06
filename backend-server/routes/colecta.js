@@ -20,12 +20,21 @@ app.get('/:sitio/:deposito/:usuario', (req, res, next) => {
     request.input('sitio', mssql.NVarChar, sitio);
     request.input('deposito', mssql.NVarChar, deposito);
     request.input('usuario', mssql.NVarChar, usuario);
-    request.query('SELECT TOP 500 * FROM PCK_PENDIENTE_PRODUCTO P WHERE P.SITIOS = @sitio AND P.DEPOSI = @deposito AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario) ORDER BY NUBICA, TIPPRO, ARTCOD, NROCTA ', function(err, result) {
+
+    var sQuery = 'SELECT TOP 500 * FROM PCK_PENDIENTE_PRODUCTO P ';
+    sQuery += ' WHERE P.SITIOS = @sitio ';
+    sQuery += ' AND P.DEPOSI = @deposito ';
+    sQuery += ' AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario) ';
+    sQuery += ' AND (ESTPCK = \'A\' ) ';
+    sQuery += ' ORDER BY NUBICA, TIPPRO, ARTCOD, NROCTA';
+
+    request.query(sQuery, function(err, result) {
 
 
         if (err) {
             return res.status(500).json({
                 ok: false,
+                colecta: [],
                 mensaje: 'Error obteniendo datos colecta para el sitio ' + sitio + ', deposito ' + deposito,
                 errors: err
             });
@@ -34,6 +43,7 @@ app.get('/:sitio/:deposito/:usuario', (req, res, next) => {
         if (!result.recordset || result.recordset.length === 0) {
             return res.status(400).json({
                 ok: false,
+                colecta: [],
                 mensaje: 'No existen datos de colecta para el sitio ' + sitio + ', deposito ' + deposito,
                 errors: { message: 'No existen datos de colecta para el sitio ' + sitio + ', deposito ' + deposito }
             });
@@ -62,6 +72,7 @@ app.get('/:id', (req, res, next) => {
         if (err) {
             return res.status(500).json({
                 ok: false,
+                colecta: [],
                 mensaje: 'Error obteniendo item colecta con el id ' + id,
                 errors: err
             });
@@ -70,6 +81,7 @@ app.get('/:id', (req, res, next) => {
         if (!result.recordset || result.recordset.length === 0) {
             return res.status(400).json({
                 ok: false,
+                colecta: [],
                 mensaje: 'No existe item colecta con id ' + id,
                 errors: { message: 'No existe item colecta con id ' + id }
             });
@@ -132,6 +144,7 @@ app.put('/', (req, res) => {
         if (!result) {
             return res.status(400).json({
                 ok: false,
+                colecta: [],
                 mensaje: 'Error actualizando cantidades picking',
                 errors: { message: 'Error actualizando cantidades picking' + body }
             });

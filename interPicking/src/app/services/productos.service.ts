@@ -12,7 +12,7 @@ export class ProductosService {
   public getProductos() {
 
     return this.http.get('http://www.intercap.com.ar/API/rs/dropshipping/catalogo/001/001');
-    
+
   }
 
 }

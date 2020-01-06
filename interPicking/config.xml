@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="ar.com.beansoft" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="ar.com.beansoft" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>InterPicking</name>
     <description>App para picking-packing-toma de inventario-recepcion</description>
     <author email="ctrosch@beansoft.com.ar " href="http://beansoft.com.ar/">Beansoft</author>

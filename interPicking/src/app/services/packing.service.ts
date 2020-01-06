@@ -11,6 +11,7 @@ import { Storage } from '@ionic/storage';
 export class PackingService {
 
   item: any;
+  itemProducto: any;
 
   constructor(
     private http: HttpClient,
@@ -21,9 +22,20 @@ export class PackingService {
 
   getPendientes() {
 
-    console.log('PackingService - getPendientes');
-    const url = URL_REST + '/packing' + '/000004' + '/40';
+    // console.log('PackingService - getPendientes');
+    const url = URL_REST + '/packing' + '/000004' + '/40' + '/ctrosch';
     return this.http.get<any[]>(url);
+
+  }
+
+  getProductosPendiente(item: any) {
+
+    if (!item) {
+      return;
+    }
+
+    const url = URL_REST + '/packing/items/' + item.MODFOR + '/' + item.CODFOR + '/' + item.NROFOR;
+    return this.http.get(url);
 
   }
 
@@ -49,11 +61,6 @@ export class PackingService {
 
       item.CNTPK2 = cantidad;
 
-      if (item.CNTPK2 === item.CANTID) {
-
-        item.ESTPCK = 'B';
-
-      }
       this.presentToast('Producto registrado');
 
       return true;
@@ -62,6 +69,12 @@ export class PackingService {
       return false;
     }
 
+  }
+
+  confirmarItem(item: any) {
+
+    const url = URL_REST + '/packing';
+    return this.http.put<any>(url, item);
   }
 
   guardarItem(item: any) {
@@ -78,11 +91,10 @@ export class PackingService {
     i !== -1 && arr.splice(i, 1);
   }
 
-  confirmarPacking(datos: any[]) {
+  confirmarPacking(nombreUsuario: any) {
 
-    const url = URL_REST + '/packing';
-    return this.http.put<any>(url, datos);
-
+    const url = URL_REST + '/packing/confirmar';
+    return this.http.put<any>(url, { usuario: nombreUsuario });
   }
 
   async presentToast(mensaje: string) {
@@ -91,35 +103,6 @@ export class PackingService {
       duration: 2000
     });
     toast.present();
-  }
-
-
-  async cargarStorage() {
-
-    console.log('ColectaService - cargarStorage');
-    const datos = this.storage.get('data-packing');
-
-    if (datos) {
-      return datos;
-    }
-  }
-
-  guardarStorage(datos: any[]) {
-
-    console.log('ColectaService - guardarStorage');
-    this.storage.set('data-packing', datos);
-
-  }
-
-  resetStorage(datos: any[]) {
-
-    datos.forEach(item => {
-      item.CNTPK2 = 0;
-      item.ESTPK2 = 'A';
-    });
-
-    this.guardarStorage(datos);
-    this.presentToast('Datos reiniciados');
   }
 
   resetCantidad(item: any) {

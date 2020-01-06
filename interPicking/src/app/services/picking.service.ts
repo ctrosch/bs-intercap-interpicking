@@ -93,7 +93,6 @@ export class PickingService {
     return this.http.put<any>(url, item);
   }
 
-
   async presentToast(mensaje: string) {
     const toast = await this.toastController.create({
       message: mensaje,

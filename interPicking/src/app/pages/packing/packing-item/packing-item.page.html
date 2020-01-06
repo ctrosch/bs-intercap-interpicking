@@ -1,4 +1,4 @@
-<app-header titulo="Item"></app-header>
+<app-header titulo="Item"> </app-header>
 
 <ion-content>
     <ion-list>
@@ -17,8 +17,8 @@
 
         <ion-item>
             <ion-label> Estado: </ion-label>
-            <ion-label color="{{ item.CNTPCK == 0 ? 'danger' :  item.CANTID > item.CNTPCK ? 'warning' : 'success' }}">
-                {{ item.CNTPCK == 0 ? 'No iniciado' : item.CANTID > item.CNTPCK ? 'En progreso' : 'Completado' }}
+            <ion-label color="{{ item.CNTPK2 == 0 ? 'danger' :  item.CANTID > item.CNTPK2 ? 'warning' : 'success' }}">
+                {{ item.CNTPK2 == 0 ? 'No iniciado' : item.CANTID > item.CNTPK2 ? 'En progreso' : 'Completado' }}
             </ion-label>
         </ion-item>
 
@@ -52,55 +52,55 @@
             </ion-col>
 
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(1)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
+                <ion-button (click)="add(1)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="large">
                     <ion-label>1</ion-label>
                 </ion-button>
             </ion-col>
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(2)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
+                <ion-button (click)="add(2)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="large">
                     <ion-label>2</ion-label>
                 </ion-button>
             </ion-col>
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(3)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
+                <ion-button (click)="add(3)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="large">
                     <ion-label>3</ion-label>
                 </ion-button>
             </ion-col>
 
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(4)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
+                <ion-button (click)="add(4)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="large">
                     <ion-label>4</ion-label>
                 </ion-button>
             </ion-col>
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(5)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
+                <ion-button (click)="add(5)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="large">
                     <ion-label>5</ion-label>
                 </ion-button>
             </ion-col>
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(6)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
+                <ion-button (click)="add(6)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="large">
                     <ion-label>6</ion-label>
                 </ion-button>
             </ion-col>
 
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(7)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
+                <ion-button (click)="add(7)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="large">
                     <ion-label>7</ion-label>
                 </ion-button>
             </ion-col>
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(8)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
+                <ion-button (click)="add(8)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="large">
                     <ion-label>8</ion-label>
                 </ion-button>
             </ion-col>
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(9)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
+                <ion-button (click)="add(9)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="large">
                     <ion-label>9</ion-label>
                 </ion-button>
             </ion-col>
 
             <ion-col size="8" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="add(0)" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="large">
+                <ion-button (click)="add(0)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="large">
                     <ion-label>0</ion-label>
                 </ion-button>
             </ion-col>
@@ -110,7 +110,7 @@
                 </ion-button>
             </ion-col>
 
-            <ion-col *ngIf="item.ESTPCK == 'A' && cantidadManual <= item.CANTID && cantidadManual > 0 " size="12" class="ion-no-margin ion-no-padding ion-text-center">
+            <ion-col *ngIf="item.ESTPK2 == 'A' && cantidadManual <= item.CANTID && cantidadManual > 0 " size="12" class="ion-no-margin ion-no-padding ion-text-center">
                 <ion-button (click)="confirmar()" color="success" expand="full" size="large">
                     <ion-icon slot="start" name="checkmark"></ion-icon>
                     <ion-label>Confirmar</ion-label>
@@ -118,7 +118,7 @@
             </ion-col>
 
             <!--
-            <ion-col *ngIf="item.CANTID == item.CNTPCK " size="12" class="ion-no-margin ion-no-padding ion-text-center">
+            <ion-col *ngIf="item.CANTID == item.CNTPK2 " size="12" class="ion-no-margin ion-no-padding ion-text-center">
                 <ion-button (click)="resetCantidad()" color="danger" expand="full" size="large">
                     <ion-icon slot="start" name="undo"></ion-icon>
                     <ion-label>Deshacer </ion-label>
@@ -139,10 +139,10 @@
         <ion-input [(ngModel)]="codigoBarra" (keyup.enter)="procesarCodigoBarra()"></ion-input>
 
         <ion-buttons slot="end">
-            <ion-button shape="round" (click)="procesarCodigoBarra()" [disabled]="item.ESTPCK == 'B'" color="success">
+            <ion-button shape="round" (click)="procesarCodigoBarra()" [disabled]="item.ESTPK2 == 'B'" color="success">
                 <ion-icon slot="icon-only" name="add"></ion-icon>
             </ion-button>
-            <ion-button shape="round" (click)="scanCode()" [disabled]="item.ESTPCK == 'B'" color="primary">
+            <ion-button shape="round" (click)="scanCode()" [disabled]="item.ESTPK2 == 'B'" color="primary">
                 <ion-icon slot="icon-only" name="barcode"></ion-icon>
             </ion-button>
 
