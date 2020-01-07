@@ -27,7 +27,6 @@
         "@ionic/angular": "^4.7.1",
         "@ionic/storage": "^2.2.0",
         "cordova-android": "^8.1.0",
-        "cordova-ios": "^5.1.1",
         "cordova-sqlite-storage": "^4.0.0",
         "core-js": "^2.5.4",
         "phonegap-plugin-barcodescanner": "^8.1.0",
@@ -77,11 +76,13 @@
                 "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
             },
             "cordova-plugin-ionic-keyboard": {},
-            "phonegap-plugin-barcodescanner": {},
+            "phonegap-plugin-barcodescanner": {
+                "ANDROID_SUPPORT_V4_VERSION": "27.+"
+            },
             "cordova-sqlite-storage": {}
         },
         "platforms": [
-            "ios"
+            "android"
         ]
     }
 }

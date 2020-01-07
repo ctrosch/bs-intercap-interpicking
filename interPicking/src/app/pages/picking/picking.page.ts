@@ -40,8 +40,12 @@ export class PickingPage implements OnInit {
     if (this.segment) {
       this.segment.value = 'pendientes';
     }
+  }
+
+  ionViewDidEnter() {
 
     this.cargarPendientes();
+
   }
 
   cargarPendientes( event? ) {

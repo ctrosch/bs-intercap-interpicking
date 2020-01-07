@@ -21,7 +21,7 @@ app.get('/:sitio/:deposito/:usuario', (req, res, next) => {
     request.input('deposito', mssql.NVarChar, deposito);
     request.input('usuario', mssql.NVarChar, usuario);
 
-    var sQuery = 'SELECT TOP 500 * FROM PCK_PENDIENTE_PRODUCTO P ';
+    var sQuery = 'SELECT TOP 100 * FROM PCK_PENDIENTE_PRODUCTO P ';
     sQuery += ' WHERE P.SITIOS = @sitio ';
     sQuery += ' AND P.DEPOSI = @deposito ';
     sQuery += ' AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario) ';

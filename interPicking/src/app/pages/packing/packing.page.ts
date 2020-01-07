@@ -38,7 +38,13 @@ export class PackingPage implements OnInit {
       this.segment.value = 'pendientes';
     }
 
+    // this.cargarPendientes();
+  }
+
+  ionViewDidEnter() {
+
     this.cargarPendientes();
+
   }
 
   cargarPendientes( event? ) {
