@@ -10,6 +10,7 @@ import { Storage } from '@ionic/storage';
 export class PickingService {
 
   item: any;
+  usuario: string;
 
   constructor(
     private http: HttpClient,

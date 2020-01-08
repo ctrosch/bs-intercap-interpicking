@@ -156,10 +156,10 @@ export class PickingPage implements OnInit {
 
     this.presentLoading();
 
-    this.pickingService.confirmarPicking('CTROSCH')
+    this.pickingService.confirmarPicking('ctrosch')
       .subscribe(resp => {
 
-        console.log(resp);
+        // console.log(resp);
 
         if (resp.ok) {
 
