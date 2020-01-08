@@ -30,7 +30,7 @@
     </ion-segment>
 </ion-toolbar>
 
-<ion-content>
+<ion-content fullscreen>
 
     <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
         <ion-refresher-content></ion-refresher-content>
@@ -38,30 +38,13 @@
 
     <ion-list *ngIf="!cargando">
 
-        <ion-item *ngFor="let i of (segment.value === 'pendientes'? pendientes:completados)" (click)="seleccionarItem( i )">
+        <ion-item-group *ngFor="let i of (segment.value === 'pendientes'? pendientes:completados)" (click)="seleccionarItem( i )">
 
-            <ion-avatar slot="start">
-                <ion-img [src]="i.IMGPRD"></ion-img>
-            </ion-avatar>
+            <app-item-producto [item]="i"></app-item-producto>
 
-            <ion-label>
-                <h2>{{ i.DESCRP }}</h2>
+        </ion-item-group>
 
-                <p>{{ i.TIPPRO }} - {{ i.ARTCOD }} | N° Parte: {{ i.NROPAR }}</p>
 
-                <p>Ubicación: {{ i.NUBICA }}</p>
-
-                <p>Código Barra: {{ i.CODBAR }}</p>
-
-                <p>Cliente: {{ i.NOMBRE }} | Formulario: {{ i.CODFOR }} - {{ i.NROFOR }} {{ i.NROITM }} </p>
-            </ion-label>
-
-            <ion-chip slot="end" color="{{ i.CNTPCK == 0 ? 'danger' : i.CANTID > i.CNTPCK ? 'warning' : 'success' }}">
-                <ion-label>
-                    {{ i.CNTPCK }} / {{ i.CANTID }}
-                </ion-label>
-            </ion-chip>
-        </ion-item>
     </ion-list>
 
     <ion-list *ngIf="cargando">
@@ -117,15 +100,13 @@
             <ion-button shape="round" (click)="scanCode()" color="primary">
                 <ion-icon slot="icon-only" name="barcode"></ion-icon>
             </ion-button>
-
-
-
         </ion-buttons>
+
     </ion-toolbar>
 
     <ion-toolbar *ngIf="segment.value === 'completados'">
 
-        <ion-button (click)="confirmarPicking()" color="primary" expand="full" size="large">
+        <ion-button (click)="confirmarPicking()" color="primary" expand="full">
             <ion-icon slot="start" name="send"></ion-icon>
             Confirmar Colecta
         </ion-button>

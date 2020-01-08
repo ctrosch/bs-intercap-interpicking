@@ -22,7 +22,9 @@
 <ion-toolbar>
     <ion-segment #segmento (ionChange)="segmentChanged($event)">
         <ion-segment-button value="pendientes">
-            <ion-label *ngIf="pendientes">Pendientes ( {{ pendientes.length }} )</ion-label>
+            <ion-label *ngIf="pendientes">
+                Pendientes ( {{ pendientes.length }} )
+            </ion-label>
         </ion-segment-button>
         <ion-segment-button value="completados">
             <ion-label *ngIf="completados">Completados ( {{ completados.length }} )</ion-label>
@@ -82,6 +84,7 @@
     </ion-list>
 </ion-content>
 
+<!--  
 <ion-footer>
     <ion-toolbar *ngIf="segment.value === 'pendientes'">
 
@@ -96,17 +99,16 @@
                 <ion-icon slot="icon-only" name="barcode"></ion-icon>
             </ion-button>
 
-
-
         </ion-buttons>
     </ion-toolbar>
 
     <ion-toolbar *ngIf="segment.value === 'completados'">
 
-        <ion-button (click)="confirmarPacking()" color="primary" expand="full" size="large">
+        <ion-button (click)="confirmarPacking()" color="primary" expand="full">
             <ion-icon slot="start" name="send"></ion-icon>
             Confirmar Armado
         </ion-button>
 
     </ion-toolbar>
 </ion-footer>
+-->

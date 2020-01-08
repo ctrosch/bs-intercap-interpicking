@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { ToastController, IonSegment } from '@ionic/angular';
@@ -113,7 +113,7 @@ export class PickingPage implements OnInit {
 
   procesarCodigoManual() {
 
-    console.log(this.codigoManual);
+    // console.log(this.codigoManual);
 
     this.procesarCodigoBarra(this.codigoManual);
     this.codigoManual = '';
@@ -143,6 +143,7 @@ export class PickingPage implements OnInit {
       if (itemEncontrado) {
         this.seleccionarItem(itemEncontrado);
       } else {
+        this.presentToast('No se encontró producto con el código de barra ' + codigoBarra);
         // swal({title: 'Error',text: 'El código de barra no pertenece a ningún producto pendiene de picking',icon: 'error',});
       }
 
