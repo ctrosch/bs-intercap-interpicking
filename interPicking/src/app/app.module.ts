@@ -15,12 +15,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 import { IonicStorageModule } from '@ionic/storage';
-import { FiltroPendientePipe } from './pipes/filtro.pipe';
-import { FiltroItemsPipe } from './pipes/filtro-items.pipe';
 
 
 @NgModule({
-  declarations: [AppComponent,FiltroPendientePipe, FiltroItemsPipe],
+  declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule,
     IonicModule.forRoot(),

@@ -4,6 +4,8 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { ToastController, IonSegment } from '@ionic/angular';
 import { PickingService } from '../../services/picking.service';
 import { LoadingController } from '@ionic/angular';
+import { Usuario } from '../../model/usuario';
+import { UsuarioService } from '../../services/usuario.service';
 
 
 @Component({
@@ -13,7 +15,9 @@ import { LoadingController } from '@ionic/angular';
 })
 export class PickingPage implements OnInit {
 
-  @ViewChild(IonSegment, {static: true}) segment: IonSegment;
+  @ViewChild(IonSegment, { static: true }) segment: IonSegment;
+  
+  usuario: Usuario = {};
 
   datos: any[];
   pendientes: any[];
@@ -28,6 +32,7 @@ export class PickingPage implements OnInit {
 
 
   constructor(private pickingService: PickingService,
+              private usuarioService: UsuarioService,
               private router: Router,
               private barcodeScanner: BarcodeScanner,
               public toastController: ToastController,
@@ -37,6 +42,9 @@ export class PickingPage implements OnInit {
 
   ngOnInit() {
 
+
+    this.usuario = this.usuarioService.getUsuario();
+    
     if (this.segment) {
       this.segment.value = 'pendientes';
     }
@@ -56,7 +64,7 @@ export class PickingPage implements OnInit {
       this.segment.value = 'pendientes';
     }
 
-    this.pickingService.getPendientes()
+    this.pickingService.getPendientes(this.usuario.USUARIO, this.usuario.DEPOSITO)
       .subscribe((resp: any) => {
 
         if (resp.ok) {

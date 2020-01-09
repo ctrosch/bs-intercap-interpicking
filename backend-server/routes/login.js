@@ -13,11 +13,13 @@ app.post('/', (req, res) => {
     var body = req.body;
 
     var request = new mssql.Request();
-    request.input('usuario', mssql.NVarChar, body.usuario)
-    request.query('SELECT TOP 1 * FROM USR_USRINP WHERE USR_USRINP_USRLGC = @usuario', function(err, result) {
+    request.input('usuario', mssql.NVarChar, body.usuario);
+    request.input('password', mssql.NVarChar, body.password);
+
+    request.query('SELECT TOP 1 USR_USRINP_CODIGO AS \'ID\', USR_USRINP_USRPCK AS \'USUARIO\', USR_USRINP_NOMBRE AS \'NOMBRE\',USR_USRINP_DEPPCK AS \'DEPOSITO\'  FROM USR_USRINP WHERE USR_USRINP_USRPCK = @usuario AND USR_USRINP_CLVPCK = @password', function(err, result) {
 
         if (err) {
-            return res.status(500).json({
+            return res.json({
                 ok: false,
                 mensaje: 'No se encontro usuario' + body.usuario,
                 errors: err
@@ -27,11 +29,21 @@ app.post('/', (req, res) => {
         var usuarioBD = result.recordset[0];
 
         if (!usuarioBD || usuarioBD.length === 0) {
-            return res.status(400).json({
+            return res.json({
                 ok: false,
                 mensaje: 'No se encontro usuario ' + body.usuario,
-                errors: 'El usuario ' + body.usuario + ' no existe'
+                errors: 'Usuario o contraseña Incorrecta'
             });
+        }
+
+        if (!usuarioBD.DEPOSITO) {
+
+            return res.json({
+                ok: false,
+                mensaje: 'El usuario ' + body.usuario + 'No tienen un depósito asignado',
+                errors: 'El usuario ' + body.usuario + 'No tienen un depósito asignado'
+            });
+
         }
 
         /**
@@ -45,7 +57,7 @@ app.post('/', (req, res) => {
          */
 
         // Crear un token!!!
-        usuarioBD.USR_USRINP_CLVDOM = '-';
+        //usuarioBD.USR_USRINP_CLVDOM = '-';
 
         var token = jwt.sign({ usuario: usuarioBD }, SEED, { expiresIn: 0 });
 

@@ -2,5 +2,7 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">intercap.com.ar</domain>
+        <domain includeSubdomains="true">192.225.102.20</domain>
     </domain-config>
 </network-security-config>

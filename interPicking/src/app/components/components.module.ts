@@ -6,6 +6,7 @@ import { MenuComponent } from './menu/menu.component';
 import { RouterModule } from '@angular/router';
 import { ItemProductoComponent } from './item-producto/item-producto.component';
 import { ItemProductoCantidadComponent } from './item-producto-cantidad/item-producto-cantidad.component';
+import { PipesModule } from '../pipes/pipes.module';
 
 
 
@@ -20,7 +21,8 @@ import { ItemProductoCantidadComponent } from './item-producto-cantidad/item-pro
   imports: [
     CommonModule,
     IonicModule,
-    RouterModule
+    RouterModule,
+    PipesModule
   ],
   exports: [
     HeaderComponent,

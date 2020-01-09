@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'filtroItems'
+  name: 'filtroPendientes'
 })
-export class FiltroItemsPipe implements PipeTransform {
+export class FiltroPendientesPipe implements PipeTransform {
 
   transform( arreglo: any[], tipoFiltro: string): any[] {
 
@@ -27,6 +27,5 @@ export class FiltroItemsPipe implements PipeTransform {
     });
 
   }
-
 
 }

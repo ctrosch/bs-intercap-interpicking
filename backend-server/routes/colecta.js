@@ -17,13 +17,13 @@ app.get('/:sitio/:deposito/:usuario', (req, res, next) => {
     var usuario = req.params.usuario;
 
     var request = new mssql.Request();
-    request.input('sitio', mssql.NVarChar, sitio);
+    // request.input('sitio', mssql.NVarChar, sitio);
     request.input('deposito', mssql.NVarChar, deposito);
     request.input('usuario', mssql.NVarChar, usuario);
 
     var sQuery = 'SELECT TOP 100 * FROM PCK_PENDIENTE_PRODUCTO P ';
-    sQuery += ' WHERE P.SITIOS = @sitio ';
-    sQuery += ' AND P.DEPOSI = @deposito ';
+    sQuery += ' WHERE P.DEPOSI = @deposito ';
+    // sQuery += ' AND P.SITIOS = @sitio  ';
     sQuery += ' AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario) ';
     sQuery += ' AND (ESTPCK = \'A\' ) ';
     sQuery += ' ORDER BY NUBICA, TIPPRO, ARTCOD, NROCTA';
