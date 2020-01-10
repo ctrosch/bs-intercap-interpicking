@@ -187,7 +187,7 @@ app.put('/confirmar', (req, res) => {
     sQuery += ' WHERE USR_FCRMVI_USRPCK = @USRPCK  ';
     sQuery += ' AND FCRMVI_CANTID = USR_FCRMVI_CNTPCK';
     sQuery += ' AND FCRMVI_FECALT > \'20191201\' ';
-    sQuery += ' AND USR_FCRMVI_ESTPCK = \'A\' ';
+    sQuery += ' AND USR_FCRMVI_ESTPCK = \'B\' OR  USR_FCRMVI_ESTPCK IS NULL ';
     // sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
 
     console.log(body.usuario);

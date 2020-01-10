@@ -17,14 +17,14 @@ app.get('/:usuario/:deposito', (req, res, next) => {
     var usuario = req.params.usuario;
 
     var request = new mssql.Request();
-    request.input('sitio', mssql.NVarChar, sitio);
+    //request.input('sitio', mssql.NVarChar, sitio);
     request.input('deposito', mssql.NVarChar, deposito);
     request.input('usuario', mssql.NVarChar, usuario);
 
     var sQuery = ' SELECT TOP 100 * FROM PCK_PENDIENTE_CLIENTE ';
-    sQuery += ' WHERE SITIOS = @sitio  ';
+    sQuery += ' WHERE 1=1  ';
     sQuery += ' AND DEPOSI = @deposito ';
-    // sQuery += ' AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario) ';
+    // sQuery += ' AND (USRPK2 IS NULL OR USRPK2 = \'\' OR USRPK2 = @usuario) ';
     sQuery += ' AND (ESTPK2 = \'A\' ) ';
     sQuery += ' ORDER BY TRADES, NROCTA ';
 
@@ -228,7 +228,7 @@ app.put('/confirmar', (req, res) => {
     sQuery += ' WHERE  USR_FCRMVI_USRPK2 = @USRPK2 ';
     sQuery += ' AND FCRMVI_CANTID = USR_FCRMVI_CNTPK2';
     sQuery += ' AND FCRMVI_FECALT > \'20191201\' ';
-    sQuery += ' AND USR_FCRMVI_ESTPK2 = \'A\' ';
+    sQuery += ' AND USR_FCRMVI_ESTPK2 = \'A\' OR USR_FCRMVI_ESTPK2 IS NULL ';
     // sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
 
 
