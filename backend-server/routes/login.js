@@ -16,7 +16,17 @@ app.post('/', (req, res) => {
     request.input('usuario', mssql.NVarChar, body.usuario);
     request.input('password', mssql.NVarChar, body.password);
 
-    request.query('SELECT TOP 1 USR_USRINP_CODIGO AS \'ID\', USR_USRINP_USRPCK AS \'USUARIO\', USR_USRINP_NOMBRE AS \'NOMBRE\',USR_USRINP_DEPPCK AS \'DEPOSITO\'  FROM USR_USRINP WHERE USR_USRINP_USRPCK = @usuario AND USR_USRINP_CLVPCK = @password', function(err, result) {
+    var sQuery = 'SELECT TOP 1 USR_USRINP_CODIGO AS \'ID\', ';
+    sQuery += ' USR_USRINP_USRPCK AS \'USUARIO\', ';
+    sQuery += ' USR_USRINP_NOMBRE AS \'NOMBRE\', ';
+    sQuery += ' USR_USRINP_DEPPCK AS \'DEPOSITO\', ';
+    sQuery += ' STTDEH_DESCRP     AS \'DESDEP\' ';
+    sQuery += ' FROM USR_USRINP, STTDEH WHERE USR_USRINP_USRPCK = @usuario ';
+    sQuery += ' AND USR_USRINP_CLVPCK = @password';
+    sQuery += ' AND STTDEH_DEPOSI = USR_USRINP_DEPPCK ';
+
+
+    request.query(sQuery, function(err, result) {
 
         if (err) {
             return res.json({

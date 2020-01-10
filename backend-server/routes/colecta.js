@@ -10,11 +10,18 @@ var app = express();
 // ==========================================
 // Obtener todos los productos pendientes a colectar
 // ==========================================
-app.get('/:sitio/:deposito/:usuario', (req, res, next) => {
+app.get('/:usuario/:deposito', (req, res, next) => {
 
     var sitio = req.params.sitio;
     var deposito = req.params.deposito;
     var usuario = req.params.usuario;
+
+    var sOrden = ' NUBICA, TIPPRO, ARTCOD, NROCTA';
+
+    // VER COMO CAMBIAR ESTO
+    if (deposito === '40') {
+        sOrden = ' TIPPRO, ARTCOD, NROCTA, NUBICA';
+    }
 
     var request = new mssql.Request();
     // request.input('sitio', mssql.NVarChar, sitio);
@@ -26,7 +33,7 @@ app.get('/:sitio/:deposito/:usuario', (req, res, next) => {
     // sQuery += ' AND P.SITIOS = @sitio  ';
     sQuery += ' AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario) ';
     sQuery += ' AND (ESTPCK = \'A\' ) ';
-    sQuery += ' ORDER BY NUBICA, TIPPRO, ARTCOD, NROCTA';
+    sQuery += ' ORDER BY ' + sOrden;
 
     request.query(sQuery, function(err, result) {
 
@@ -35,17 +42,17 @@ app.get('/:sitio/:deposito/:usuario', (req, res, next) => {
             return res.status(500).json({
                 ok: false,
                 colecta: [],
-                mensaje: 'Error obteniendo datos colecta para el sitio ' + sitio + ', deposito ' + deposito,
+                mensaje: 'Error obteniendo datos colecta para el deposito ' + deposito,
                 errors: err
             });
         }
 
         if (!result.recordset || result.recordset.length === 0) {
-            return res.status(400).json({
+            return res.status(200).json({
                 ok: false,
                 colecta: [],
-                mensaje: 'No existen datos de colecta para el sitio ' + sitio + ', deposito ' + deposito,
-                errors: { message: 'No existen datos de colecta para el sitio ' + sitio + ', deposito ' + deposito }
+                mensaje: 'No existen datos de colecta para el sitio deposito ' + deposito,
+                errors: { message: 'No existen datos de colecta para el deposito ' + deposito }
             });
         }
 
@@ -88,7 +95,7 @@ app.get('/:id', (req, res, next) => {
         }
 
 
-        var colecta = result.recordset;
+        var colecta = result.recordset[0];
 
         res.status(200).json({
             ok: true,
@@ -119,7 +126,9 @@ app.put('/', (req, res) => {
     request.input('CNTPCK', mssql.Int, body.CNTPCK);
     //request.input('ESTPCK', mssql.NVarChar, body.ESTPCK);
     //request.input('USRPCK', mssql.NVarChar, body.USRPCK);
-    request.input('USRPCK', mssql.NVarChar, 'ctrosch');
+    request.input('USRPCK', mssql.NVarChar, body.USUARIO);
+
+    console.log(body.USUARIO);
 
     sQuery = 'UPDATE FCRMVI ';
     sQuery += 'SET USR_FCRMVI_CNTPCK = @CNTPCK , USR_FCRMVI_USRPCK = @USRPCK ';
@@ -179,7 +188,10 @@ app.put('/confirmar', (req, res) => {
     sQuery += ' AND FCRMVI_CANTID = USR_FCRMVI_CNTPCK';
     sQuery += ' AND FCRMVI_FECALT > \'20191201\' ';
     sQuery += ' AND USR_FCRMVI_ESTPCK = \'A\' ';
-    sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
+    // sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
+
+    console.log(body.usuario);
+    console.log(sQuery);
 
     request.query(sQuery, function(err, result) {
 

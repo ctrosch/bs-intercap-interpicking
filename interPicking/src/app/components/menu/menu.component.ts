@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../services/usuario.service';
 import { Usuario } from '../../model/usuario';
+import { resolve } from 'url';
 
 @Component({
   selector: 'app-menu',
@@ -15,9 +16,9 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {
 
-    this.usuario = this.usuarioService.getUsuario();
-    console.log(this.usuario);
-
+    this.usuarioService.cargarToken().then( () => {
+        this.usuario = this.usuarioService.usuario;
+    });
   }
 
   logout() {

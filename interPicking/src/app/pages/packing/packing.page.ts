@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { ToastController, IonSegment, LoadingController } from '@ionic/angular';
+import { ToastController, IonSegment, LoadingController, NavController } from '@ionic/angular';
 import { PackingService } from '../../services/packing.service';
+import { Usuario } from '../../model/usuario';
+import { UsuarioService } from '../../services/usuario.service';
+import { UiServiceService } from '../../services/ui-service.service';
 
 @Component({
   selector: 'app-packing',
@@ -12,6 +15,8 @@ import { PackingService } from '../../services/packing.service';
 export class PackingPage implements OnInit {
 
   @ViewChild(IonSegment, {static: true}) segment: IonSegment;
+
+  usuario: Usuario = {};
 
   datos: any[];
   pendientes: any[];
@@ -25,14 +30,19 @@ export class PackingPage implements OnInit {
   circuito: string;
 
   constructor(private packingService: PackingService,
+              private usuarioService: UsuarioService,
+              private uiService: UiServiceService,
               private router: Router,
               private barcodeScanner: BarcodeScanner,
               public toastController: ToastController,
-              public loadingController: LoadingController) {
+              public loadingController: LoadingController,
+              private navCtrl: NavController) {
 
   }
 
   ngOnInit() {
+
+    this.usuario = this.usuarioService.getUsuario();
 
     if (this.segment) {
       this.segment.value = 'pendientes';
@@ -55,7 +65,7 @@ export class PackingPage implements OnInit {
       this.segment.value = 'pendientes';
     }
 
-    this.packingService.getPendientes()
+    this.packingService.getPendientes(this.usuario.USUARIO, this.usuario.DEPOSITO)
       .subscribe((resp: any) => {
 
         if (resp.ok) {
@@ -66,12 +76,13 @@ export class PackingPage implements OnInit {
           if (event) {
             event.target.complete();
           }
-
-          this.cargando = false;
-
         } else {
-          console.log('No hay pendientes de packing en estos momentos');
+          this.uiService.alertaInformativa('No hay pendientes de picking en estos momentos');
+          this.navCtrl.navigateRoot('/home', { animated: true });
+         
         }
+
+        this.cargando = false;
 
       });
 
@@ -99,7 +110,7 @@ export class PackingPage implements OnInit {
 
     this.presentLoading();
 
-    this.packingService.confirmarPacking('ctrosch')
+    this.packingService.confirmarPacking(this.usuario.USUARIO)
       .subscribe(resp => {
 
         console.log(resp);

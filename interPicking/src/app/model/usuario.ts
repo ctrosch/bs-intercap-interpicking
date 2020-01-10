@@ -4,6 +4,7 @@ export interface Usuario {
   USUARIO?: string;
   NOMBRE?: string;
   DEPOSITO?: string;
+  DESDEP?: string;
   PASSWORD?: string;
   IMAGEN?: string;
 }

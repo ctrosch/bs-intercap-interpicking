@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
+import { UsuarioService } from '../../services/usuario.service';
+import { Usuario } from '../../model/usuario';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +9,8 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+
+  usuario: Usuario = {};
 
   componentes: Componente[] = [
     {
@@ -39,10 +43,18 @@ export class HomePage implements OnInit {
     }
   ];
 
-  constructor(private menuController: MenuController) { }
+  constructor(private menuController: MenuController,
+              private usuarioService: UsuarioService) { }
 
   ngOnInit() {
-  }
+
+    this.usuarioService.cargarToken().then( () => {
+      this.usuario = this.usuarioService.usuario;
+      console.log(this.usuario);
+  });
+
+
+    }
 
   toggleMenu() {
 

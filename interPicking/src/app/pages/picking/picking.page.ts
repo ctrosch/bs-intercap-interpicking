@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { ToastController, IonSegment } from '@ionic/angular';
+import { ToastController, IonSegment, NavController } from '@ionic/angular';
 import { PickingService } from '../../services/picking.service';
 import { LoadingController } from '@ionic/angular';
 import { Usuario } from '../../model/usuario';
 import { UsuarioService } from '../../services/usuario.service';
+import { UiServiceService } from '../../services/ui-service.service';
 
 
 @Component({
@@ -33,10 +34,12 @@ export class PickingPage implements OnInit {
 
   constructor(private pickingService: PickingService,
               private usuarioService: UsuarioService,
+              private uiService: UiServiceService,
               private router: Router,
               private barcodeScanner: BarcodeScanner,
               public toastController: ToastController,
-              public loadingController: LoadingController) {
+              public loadingController: LoadingController,
+              private navCtrl: NavController) {
 
   }
 
@@ -76,11 +79,12 @@ export class PickingPage implements OnInit {
             event.target.complete();
           }
 
-          this.cargando = false;
-
         } else {
-          console.log('No hay pendientes de picking en estos momentos');
+          this.uiService.alertaInformativa('No hay pendientes de picking en estos momentos');
+          this.navCtrl.navigateRoot('/home', { animated: true });
         }
+
+        this.cargando = false;
 
       });
 
@@ -164,7 +168,7 @@ export class PickingPage implements OnInit {
 
     this.presentLoading();
 
-    this.pickingService.confirmarPicking('ctrosch')
+    this.pickingService.confirmarPicking(this.usuario.USUARIO)
       .subscribe(resp => {
 
         // console.log(resp);

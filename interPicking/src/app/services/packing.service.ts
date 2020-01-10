@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
 import { URL_REST } from '../config/config';
 import { Storage } from '@ionic/storage';
+import { UiServiceService } from './ui-service.service';
 
 
 @Injectable({
@@ -15,15 +16,14 @@ export class PackingService {
 
   constructor(
     private http: HttpClient,
-    private storage: Storage,
-    public toastController: ToastController) {
+    private uiService: UiServiceService) {
 
   }
 
-  getPendientes() {
+  getPendientes(usuario: string, deposito: string) {
 
     // console.log('PackingService - getPendientes');
-    const url = URL_REST + '/packing' + '/000004' + '/40' + '/ctrosch';
+    const url = URL_REST + '/packing' + '/' + usuario + '/' + deposito;
     return this.http.get<any[]>(url);
 
   }
@@ -53,7 +53,7 @@ export class PackingService {
   confirmarCantidad(item: any, cantidad: number) {
 
     if (item === undefined) {
-      this.presentToast('No se encontró producto');
+      this.uiService.alertaInformativa('No se encontró producto');
       return;
     }
 
@@ -61,11 +61,11 @@ export class PackingService {
 
       item.CNTPK2 = cantidad;
 
-      this.presentToast('Producto registrado');
+      this.uiService.presentToast('Producto registrado');
 
       return true;
     } else {
-      this.presentToast('El valor para cantidad no puede ser mayor a lo solicitado');
+      this.uiService.presentToast('El valor para cantidad no puede ser mayor a lo solicitado');
       return false;
     }
 
@@ -95,14 +95,6 @@ export class PackingService {
 
     const url = URL_REST + '/packing/confirmar';
     return this.http.put<any>(url, { usuario: nombreUsuario });
-  }
-
-  async presentToast(mensaje: string) {
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 2000
-    });
-    toast.present();
   }
 
   resetCantidad(item: any) {

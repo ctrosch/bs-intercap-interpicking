@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PackingService } from '../../../services/packing.service';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { ToastController } from '@ionic/angular';
+import { Usuario } from '../../../model/usuario';
+import { UsuarioService } from '../../../services/usuario.service';
 
 @Component({
   selector: 'app-packing-item',
@@ -11,23 +13,26 @@ import { ToastController } from '@ionic/angular';
 })
 export class PackingItemPage implements OnInit {
 
+  usuario: Usuario = {};
+
   item: any;
   codigoBarra: string;
   cantidadManual = 0;
 
   constructor(private route: ActivatedRoute,
-              private router: Router,
-              private packingService: PackingService,
-              private barcodeScanner: BarcodeScanner,
-              public toastController: ToastController) {
+    private router: Router,
+    private packingService: PackingService,
+    private barcodeScanner: BarcodeScanner,
+    private usuarioService: UsuarioService) {
 
-     // console.log('ItemColecta - constructor ');
+    // console.log('ItemColecta - constructor ');
   }
 
   ngOnInit() {
 
     // console.log('ItemColecta - ngOnInit');
     this.item = this.packingService.itemProducto;
+    this.usuario = this.usuarioService.getUsuario();
 
     if (this.item) {
       this.cantidadManual = this.item.CNTPK2;
@@ -35,14 +40,6 @@ export class PackingItemPage implements OnInit {
 
     // console.log(this.item);
 
-  }
-
-  async presentToast(mensaje: string) {
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 2000
-    });
-    toast.present();
   }
 
   add(key: number) {
@@ -70,7 +67,7 @@ export class PackingItemPage implements OnInit {
       return;
     }
 
-    this.cantidadManual = Number(String(this.cantidadManual).substring(0, String(this.cantidadManual).length - 1 ));
+    this.cantidadManual = Number(String(this.cantidadManual).substring(0, String(this.cantidadManual).length - 1));
 
   }
 
@@ -80,17 +77,18 @@ export class PackingItemPage implements OnInit {
 
     if (resultado) {
 
-      // if (this.item.ESTPCK === 'B') {
-        this.packingService.confirmarItem(this.item)
-          .subscribe(resp => {
-            if (resp.ok) {
+      this.item.USUARIO = this.usuario.USUARIO;
 
-              this.router.navigateByUrl('packing-producto/' + this.item.ID);
+      this.packingService.confirmarItem(this.item)
+        .subscribe(resp => {
+          if (resp.ok) {
 
-            } else {
-              // swal({title: 'Error',text: 'Problemas para confirmar picking',icon: 'error',});
-            }
-          });
+            this.router.navigateByUrl('packing-producto/' + this.item.ID);
+
+          } else {
+            // swal({title: 'Error',text: 'Problemas para confirmar picking',icon: 'error',});
+          }
+        });
       // }
     }
   }

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { ToastController } from '@ionic/angular';
+import { ToastController, NavController } from '@ionic/angular';
 import { PickingService } from '../../../services/picking.service';
+import { UiServiceService } from '../../../services/ui-service.service';
+import { Usuario } from '../../../model/usuario';
+import { UsuarioService } from '../../../services/usuario.service';
 
 
 @Component({
@@ -12,23 +15,47 @@ import { PickingService } from '../../../services/picking.service';
 })
 export class PickingItemPage implements OnInit {
 
+  usuario: Usuario = {};
+
   item: any;
   codigoBarra: string;
   cantidadManual = 0;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private pickingService: PickingService,
-              private barcodeScanner: BarcodeScanner,
-              public toastController: ToastController) {
+  cargando = false;
 
-     // console.log('ItemColecta - constructor ');
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private pickingService: PickingService,
+    private barcodeScanner: BarcodeScanner,
+    private uiService: UiServiceService,
+    private navCtrl: NavController,
+    private usuarioService: UsuarioService
+  ) {
+
+    // console.log('ItemColecta - constructor ');
   }
 
   ngOnInit() {
 
-    // console.log('ItemColecta - ngOnInit');
+    //this.cargando = true;
+
     this.item = this.pickingService.item;
+    this.usuario = this.usuarioService.getUsuario();
+
+    /** 
+    this.pickingService.getItemPendiente().subscribe(resp => {
+
+        if ( resp.ok ) {
+          this.item = resp.colecta;
+        } else {
+          this.uiService.alertaInformativa('El item seleccionado ya no se encuentra disponible');
+          this.navCtrl.navigateRoot('/home', { animated: true });
+        }
+
+        this.cargando = false;
+
+    } );
+    */
 
     if (this.item) {
       this.cantidadManual = this.item.CNTPCK;
@@ -36,14 +63,6 @@ export class PickingItemPage implements OnInit {
 
     // console.log(this.item);
 
-  }
-
-  async presentToast(mensaje: string) {
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 2000
-    });
-    toast.present();
   }
 
   add(key: number) {
@@ -71,7 +90,7 @@ export class PickingItemPage implements OnInit {
       return;
     }
 
-    this.cantidadManual = Number(String(this.cantidadManual).substring(0, String(this.cantidadManual).length - 1 ));
+    this.cantidadManual = Number(String(this.cantidadManual).substring(0, String(this.cantidadManual).length - 1));
 
   }
 
@@ -81,17 +100,18 @@ export class PickingItemPage implements OnInit {
 
     if (resultado) {
 
-      // if (this.item.ESTPCK === 'B') {
-        this.pickingService.confirmarItem(this.item)
-          .subscribe(resp => {
-            if (resp.ok) {
+      this.item.USUARIO = this.usuario.USUARIO;
 
-                this.router.navigateByUrl('picking');
+      this.pickingService.confirmarItem(this.item)
+        .subscribe(resp => {
+          if (resp.ok) {
 
-            } else {
-              // swal({title: 'Error',text: 'Problemas para confirmar picking',icon: 'error',});
-            }
-          });
+            this.router.navigateByUrl('picking');
+
+          } else {
+            // swal({title: 'Error',text: 'Problemas para confirmar picking',icon: 'error',});
+          }
+        });
       // }
     }
   }

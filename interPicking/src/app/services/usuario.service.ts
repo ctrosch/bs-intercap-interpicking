@@ -11,7 +11,7 @@ import { URL_REST } from '../config/config';
 export class UsuarioService {
 
   token: string = null;
- private usuario: Usuario = {};
+  usuario: Usuario = {};
 
   constructor( private http: HttpClient,
                private storage: Storage,
@@ -22,13 +22,13 @@ export class UsuarioService {
 
     const data = { usuario, password };
 
-    console.log(data);
+    // console.log(data);
 
     return new Promise( resolve => {
 
       this.http.post(`${ URL_REST }/login`, data )
         .subscribe( async resp => {
-          console.log(resp);
+          // console.log(resp);
 
           if ( resp['ok'] ) {
             await this.guardarToken(resp['token']);
@@ -102,6 +102,7 @@ export class UsuarioService {
   async cargarToken() {
 
     this.token = await this.storage.get('token') || null;
+    this.usuario = await this.storage.get('usuario') || null;
 
   }
 
@@ -115,15 +116,12 @@ export class UsuarioService {
 
   }
 
-  async cargarCargar() {
+  async cargarUsuario() {
 
-    this.token = await this.storage.get('usuario') || null;
+    this.usuario = await this.storage.get('usuario') || null;
 
   }
   
-
-
-
   async validaToken(): Promise<boolean> {
 
     await this.cargarToken();

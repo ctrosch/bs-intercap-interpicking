@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ToastController } from '@ionic/angular';
 import { URL_REST } from '../config/config';
-import { Storage } from '@ionic/storage';
+import { UiServiceService } from './ui-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,16 +12,15 @@ export class PickingService {
   usuario: string;
 
   constructor(
-    private http: HttpClient,
-    private storage: Storage,
-    public toastController: ToastController) {
+    private http: HttpClient,    
+    private uiService: UiServiceService) {
 
   }
 
   getPendientes(usuario: string, deposito: string) {
 
     // console.log('PackingService - getPendientes');
-    const url = URL_REST + '/colecta' + '/000004' + '/' + deposito + '/' + usuario;
+    const url = URL_REST + '/colecta' + '/' + usuario + '/' + deposito;
 
     // const url = URL_REST + '/colecta' + '/'+ deposito + '/'+usuario;
 
@@ -30,21 +28,25 @@ export class PickingService {
 
   }
 
-  getItemPendiente(id: string) {
+  getItemPendiente() {
 
-    if (id.length <= 0) {
+    if(!this.item){
       return;
     }
 
-    const url = URL_REST + '/colecta/' + id;
-    return this.http.get(url);
+    if (this.item.id.length <= 0) {
+      return;
+    }
+
+    const url = URL_REST + '/colecta/' + this.item.id;
+    return this.http.get<any>(url);
 
   }
 
   confirmarCantidad(item: any, cantidad: number) {
 
     if (item === undefined) {
-      this.presentToast('No se encontró producto');
+      this.uiService.alertaInformativa('No se encontró producto');
       return false;
     }
 
@@ -52,18 +54,11 @@ export class PickingService {
 
       item.CNTPCK = cantidad;
 
-      /**
-      if (item.CNTPCK === item.CANTID) {
-
-        item.ESTPCK = 'B';
-
-      }
-       */
-      this.presentToast('Producto registrado');
+      this.uiService.presentToast('Producto registrado');
       return true;
 
     } else {
-      this.presentToast('El valor para cantidad no puede ser mayor a lo solicitado');
+      this.uiService.presentToast('El valor para cantidad no puede ser mayor a lo solicitado');
       return false;
     }
   }
@@ -93,44 +88,10 @@ export class PickingService {
 
     //console.log('Confirmar item' + item.ID);
 
+    console.log(item);
+
     const url = URL_REST + '/colecta';
     return this.http.put<any>(url, item);
-  }
-
-  async presentToast(mensaje: string) {
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 2000
-    });
-    toast.present();
-  }
-
-
-  async cargarStorage() {
-
-    //console.log('PackingService - cargarStorage');
-    //const datos = this.storage.get('data-colecta');
-
-    //if (datos) {
-    //  return datos;
-    //}
-  }
-
-  guardarStorage(datos: any[]) {
-
-    //console.log('PackingService - guardarStorage');
-    //this.storage.set('data-colecta', datos);
-  }
-
-  resetStorage(datos: any[]) {
-
-    datos.forEach(item => {
-      item.CNTPCK = 0;
-      item.ESTPCK = 'A';
-    });
-
-    this.guardarStorage(datos);
-    this.presentToast('Datos reiniciados');
   }
 
   resetCantidad(item: any) {

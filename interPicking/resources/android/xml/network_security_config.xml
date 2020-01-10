@@ -4,5 +4,6 @@
         <domain includeSubdomains="true">localhost</domain>
         <domain includeSubdomains="true">intercap.com.ar</domain>
         <domain includeSubdomains="true">192.225.102.20</domain>
+        <domain includeSubdomains="true">bp000323.ferozo.com</domain>
     </domain-config>
 </network-security-config>

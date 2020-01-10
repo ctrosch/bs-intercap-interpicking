@@ -10,7 +10,7 @@ var app = express();
 // ==========================================
 // Obtener todos los clientes con despachos pendientes
 // ==========================================
-app.get('/:sitio/:deposito/:usuario', (req, res, next) => {
+app.get('/:usuario/:deposito', (req, res, next) => {
 
     var sitio = req.params.sitio;
     var deposito = req.params.deposito;
@@ -40,11 +40,11 @@ app.get('/:sitio/:deposito/:usuario', (req, res, next) => {
         }
 
         if (!result.recordset || result.recordset.length === 0) {
-            return res.status(400).json({
+            return res.status(200).json({
                 ok: false,
                 packing: [],
-                mensaje: 'No existen datos de paciking para el sitio ' + sitio + ', deposito ' + deposito,
-                errors: { message: 'No existen datos de packing para el sitio ' + sitio + ', deposito ' + deposito }
+                mensaje: 'No existen datos de paciking para el deposito ' + deposito,
+                errors: { message: 'No existen datos de packing para el deposito ' + deposito }
             });
         }
 
@@ -79,7 +79,7 @@ app.get('/:id', (req, res, next) => {
         }
 
         if (!result.recordset || result.recordset.length === 0) {
-            return res.status(400).json({
+            return res.status(200).json({
                 ok: false,
                 packing: [],
                 mensaje: 'No existe item packing con id ' + id,
@@ -170,7 +170,7 @@ app.put('/', (req, res) => {
     request.input('CNTPCK', mssql.Int, body.CNTPCK);
     //request.input('ESTPCK', mssql.NVarChar, body.ESTPCK);
     //request.input('USRPCK', mssql.NVarChar, body.USRPCK);
-    request.input('USRPCK', mssql.NVarChar, 'ctrosch');
+    request.input('USRPCK', mssql.NVarChar, body.USUARIO);
 
     sQuery = 'UPDATE FCRMVI ';
     sQuery += 'SET USR_FCRMVI_CNTPK2 = @CNTPCK , USR_FCRMVI_USRPK2 = @USRPCK ';
@@ -229,7 +229,11 @@ app.put('/confirmar', (req, res) => {
     sQuery += ' AND FCRMVI_CANTID = USR_FCRMVI_CNTPK2';
     sQuery += ' AND FCRMVI_FECALT > \'20191201\' ';
     sQuery += ' AND USR_FCRMVI_ESTPK2 = \'A\' ';
-    sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
+    // sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
+
+
+    console.log(body.USUARIO);
+    console.log(sQuery);
 
     request.query(sQuery, function(err, result) {
 
