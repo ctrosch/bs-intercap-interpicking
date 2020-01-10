@@ -7,6 +7,8 @@ import { LoadingController } from '@ionic/angular';
 import { Usuario } from '../../model/usuario';
 import { UsuarioService } from '../../services/usuario.service';
 import { UiServiceService } from '../../services/ui-service.service';
+import { FiltroService } from '../../services/filtro.service';
+import { Filtro } from '../../model/filtro';
 
 
 @Component({
@@ -20,9 +22,11 @@ export class PickingPage implements OnInit {
   
   usuario: Usuario = {};
 
+  pendiente = true;
+  filtro: Filtro;
+
   datos: any[];
-  pendientes: any[];
-  completados: any[];
+  clientes: any[];
 
   codigoManual: string;
   porcentaje = 0;
@@ -35,19 +39,19 @@ export class PickingPage implements OnInit {
   constructor(private pickingService: PickingService,
               private usuarioService: UsuarioService,
               private uiService: UiServiceService,
-              private router: Router,
+              private filtroService: FiltroService,
               private barcodeScanner: BarcodeScanner,
-              public toastController: ToastController,
               public loadingController: LoadingController,
+              private router: Router,
               private navCtrl: NavController) {
+
+    this.filtro = this.filtroService.inicializarFiltro();
+    this.usuario = this.usuarioService.getUsuario();
 
   }
 
   ngOnInit() {
 
-
-    this.usuario = this.usuarioService.getUsuario();
-    
     if (this.segment) {
       this.segment.value = 'pendientes';
     }
@@ -80,6 +84,7 @@ export class PickingPage implements OnInit {
           }
 
         } else {
+          
           this.uiService.alertaInformativa('No hay pendientes de picking en estos momentos');
           this.navCtrl.navigateRoot('/home', { animated: true });
         }
@@ -92,8 +97,7 @@ export class PickingPage implements OnInit {
 
   filtrarItems() {
 
-    this.pendientes = this.datos.filter(item => item.CNTPCK < item.CANTID);
-    this.completados = this.datos.filter(item => item.CNTPCK === item.CANTID);
+    
 
   }
 
@@ -113,19 +117,16 @@ export class PickingPage implements OnInit {
 
     this.barcodeScanner.scan().then(barcodeData => {
 
-      console.log('Barcode data', barcodeData);
+      
       this.procesarCodigoBarra(barcodeData.text);
 
     }).catch(err => {
-
-      // console.log('Error', err);
+      
       // swal({title: 'Error',text: 'Error leyendo código de barra',icon: 'error',});
     });
   }
 
   procesarCodigoManual() {
-
-    // console.log(this.codigoManual);
 
     this.procesarCodigoBarra(this.codigoManual);
     this.codigoManual = '';
@@ -155,12 +156,12 @@ export class PickingPage implements OnInit {
       if (itemEncontrado) {
         this.seleccionarItem(itemEncontrado);
       } else {
-        this.presentToast('No se encontró producto con el código de barra ' + codigoBarra);
+        this.uiService.alertaInformativa('No se encontró producto con el código de barra ' + codigoBarra);
         // swal({title: 'Error',text: 'El código de barra no pertenece a ningún producto pendiene de picking',icon: 'error',});
       }
 
     } else {
-      this.presentToast('Código de barra vacío');
+      this.uiService.presentToast('Código de barra vacío');
     }
   }
 
@@ -170,8 +171,6 @@ export class PickingPage implements OnInit {
 
     this.pickingService.confirmarPicking(this.usuario.USUARIO)
       .subscribe(resp => {
-
-        // console.log(resp);
 
         if (resp.ok) {
 
@@ -185,14 +184,6 @@ export class PickingPage implements OnInit {
       });
   }
 
-  async presentToast(mensaje: string) {
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 2000
-    });
-    toast.present();
-  }
-
   async presentLoading() {
     this.procesando = await this.loadingController.create({
       message: 'Procesando información'
@@ -202,6 +193,7 @@ export class PickingPage implements OnInit {
 
   segmentChanged(event) {
 
+    this.pendiente = (this.segment.value === 'pendientes');
     this.filtrarItems();
 
   }

@@ -5,15 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PickingPage } from './picking.page';
+import { FiltroPage } from './filtro.page';
 import { ComponentsModule } from '../../components/components.module';
-import { pipe } from 'rxjs';
-import { PipesModule } from '../../pipes/pipes.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: PickingPage
+    component: FiltroPage
   }
 ];
 
@@ -22,10 +20,9 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes),
     ComponentsModule,
-    PipesModule
+    RouterModule.forChild(routes)
   ],
-  declarations: [PickingPage]
+  declarations: [FiltroPage]
 })
-export class PickingPageModule {}
+export class FiltroPageModule {}

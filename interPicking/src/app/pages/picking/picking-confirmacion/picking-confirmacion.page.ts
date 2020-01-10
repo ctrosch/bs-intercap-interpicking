@@ -17,12 +17,6 @@ export class PickingConfirmacionPage implements OnInit {
 
   ngOnInit() {
 
-    this.pickingService.cargarStorage().then(datos => {
-
-      // this.datos = datos;
-      console.log(this.datos);
-    });
-
   }
 
   confirmarColecta() {

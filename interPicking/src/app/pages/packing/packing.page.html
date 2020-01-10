@@ -1,23 +1,4 @@
-<ion-header no-border="no-border">
-    <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-back-button defaultHref="/"></ion-back-button>
-        </ion-buttons>
-
-        <ion-title ion-text-capitalize="ion-text-capitalize">Armado</ion-title>
-
-        <ion-buttons slot="end">
-            <ion-button shape="round" (click)="cargarPendientes()">
-                <ion-icon slot="icon-only" name="refresh-circle"></ion-icon>
-            </ion-button>
-
-            <ion-button shape="round" (click)="cargarPendientes()">
-                <ion-icon slot="icon-only" name="ios-funnel"></ion-icon>
-            </ion-button>
-
-        </ion-buttons>
-    </ion-toolbar>
-</ion-header>
+<app-header titulo="Armado" [cargando]="cargando"></app-header>
 
 <ion-toolbar>
     <ion-segment #segmento (ionChange)="segmentChanged($event)">

@@ -21,7 +21,7 @@ app.get('/:usuario/:deposito', (req, res, next) => {
     request.input('deposito', mssql.NVarChar, deposito);
     request.input('usuario', mssql.NVarChar, usuario);
 
-    var sQuery = ' SELECT TOP 100 * FROM PCK_PENDIENTE_CLIENTE ';
+    var sQuery = ' SELECT TOP 1000 * FROM PCK_PENDIENTE_CLIENTE ';
     sQuery += ' WHERE 1=1  ';
     sQuery += ' AND DEPOSI = @deposito ';
     // sQuery += ' AND (USRPK2 IS NULL OR USRPK2 = \'\' OR USRPK2 = @usuario) ';
@@ -173,7 +173,7 @@ app.put('/', (req, res) => {
     request.input('USRPCK', mssql.NVarChar, body.USUARIO);
 
     sQuery = 'UPDATE FCRMVI ';
-    sQuery += 'SET USR_FCRMVI_CNTPK2 = @CNTPCK , USR_FCRMVI_USRPK2 = @USRPCK ';
+    sQuery += 'SET USR_FCRMVI_CNTPK2 = @CNTPCK , USR_FCRMVI_USRPK2 = @USRPCK,  , USR_FCRMVI_ESTPK2 = \'A\' ';
     sQuery += ' WHERE FCRMVI_MODAPL = @MODFOR ';
     sQuery += ' AND FCRMVI_CODAPL = @CODFOR ';
     sQuery += ' AND FCRMVI_NROAPL = @NROFOR ';
@@ -227,8 +227,7 @@ app.put('/confirmar', (req, res) => {
     sQuery += 'SET USR_FCRMVI_ESTPK2 = \'B\'  ';
     sQuery += ' WHERE  USR_FCRMVI_USRPK2 = @USRPK2 ';
     sQuery += ' AND FCRMVI_CANTID = USR_FCRMVI_CNTPK2';
-    sQuery += ' AND FCRMVI_FECALT > \'20191201\' ';
-    sQuery += ' AND USR_FCRMVI_ESTPK2 = \'A\' OR USR_FCRMVI_ESTPK2 IS NULL ';
+    sQuery += ' AND USR_FCRMVI_ESTPK2 = \'A\'  ';
     // sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
 
 

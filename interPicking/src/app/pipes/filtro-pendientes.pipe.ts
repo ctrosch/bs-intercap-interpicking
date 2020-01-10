@@ -1,31 +1,25 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Filtro } from '../model/filtro';
 
 @Pipe({
   name: 'filtroPendientes'
 })
 export class FiltroPendientesPipe implements PipeTransform {
 
-  transform( arreglo: any[], tipoFiltro: string): any[] {
+  transform(arreglo: any[], pendientes: boolean, filtro: Filtro): any[] {
 
-    if ( tipoFiltro === '' ) {
+    if (!arreglo || !filtro) {
       return arreglo;
     }
 
-    tipoFiltro = tipoFiltro.toUpperCase();
+    console.log(filtro);
 
+    return arreglo.filter(item => {
 
-    return arreglo.filter( item => {
-      
-      if(tipoFiltro === 'P'){
-        return item.CNTPCK < item.CANTID;
-      }
-
-      if(tipoFiltro === 'C'){
-        return item.CANTID === item.CNTPCK;
-      }
+      return (((pendientes && item.CNTPCK < item.CANTID)
+        || (!pendientes && item.CNTPCK === item.CANTID))
+        && (filtro.CIRCOM && item['CIRCOM'].toLowerCase().includes(filtro.CIRCOM)));
 
     });
-
   }
-
 }

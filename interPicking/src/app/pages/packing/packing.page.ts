@@ -6,6 +6,8 @@ import { PackingService } from '../../services/packing.service';
 import { Usuario } from '../../model/usuario';
 import { UsuarioService } from '../../services/usuario.service';
 import { UiServiceService } from '../../services/ui-service.service';
+import { FiltroService } from '../../services/filtro.service';
+import { Filtro } from '../../model/filtro';
 
 @Component({
   selector: 'app-packing',
@@ -17,6 +19,7 @@ export class PackingPage implements OnInit {
   @ViewChild(IonSegment, {static: true}) segment: IonSegment;
 
   usuario: Usuario = {};
+  filtro: Filtro[] = [];
 
   datos: any[];
   pendientes: any[];
@@ -31,10 +34,10 @@ export class PackingPage implements OnInit {
 
   constructor(private packingService: PackingService,
               private usuarioService: UsuarioService,
+              private filtroService: FiltroService,
               private uiService: UiServiceService,
               private router: Router,
               private barcodeScanner: BarcodeScanner,
-              public toastController: ToastController,
               public loadingController: LoadingController,
               private navCtrl: NavController) {
 
@@ -42,6 +45,7 @@ export class PackingPage implements OnInit {
 
   ngOnInit() {
 
+    this.filtro = this.filtroService.inicializarFiltro();
     this.usuario = this.usuarioService.getUsuario();
 
     if (this.segment) {
@@ -128,14 +132,6 @@ export class PackingPage implements OnInit {
       });
   }
 
-  async presentToast(mensaje: string) {
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 2000
-    });
-    toast.present();
-  }
-
   async presentLoading() {
     this.procesando = await this.loadingController.create({
       message: 'Procesando información'
@@ -167,7 +163,7 @@ export class PackingPage implements OnInit {
       });
 
     } else {
-      this.presentToast('Código de barra vacío');
+      this.uiService.presentToast('Código de barra vacío');
     }
   }
 
@@ -181,7 +177,7 @@ export class PackingPage implements OnInit {
     }).catch(err => {
 
       console.log('Error', err);
-      this.presentToast('Error leyendo código de barra');
+      this.uiService.presentToast('Error leyendo código de barra');
     });
   }
 

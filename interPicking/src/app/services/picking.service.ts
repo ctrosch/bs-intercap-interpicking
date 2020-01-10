@@ -22,8 +22,6 @@ export class PickingService {
     // console.log('PackingService - getPendientes');
     const url = URL_REST + '/colecta' + '/' + usuario + '/' + deposito;
 
-    // const url = URL_REST + '/colecta' + '/'+ deposito + '/'+usuario;
-
     return this.http.get<any[]>(url);
 
   }

@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 import { IonicStorageModule } from '@ionic/storage';
+import { PipesModule } from './pipes/pipes.module';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { IonicStorageModule } from '@ionic/storage';
     IonicStorageModule.forRoot(),
     AppRoutingModule,
     ComponentsModule,
-    HttpClientModule],
+    HttpClientModule,
+    PipesModule],
   providers: [
     StatusBar,
     SplashScreen,
