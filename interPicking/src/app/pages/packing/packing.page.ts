@@ -24,7 +24,6 @@ export class PackingPage implements OnInit {
   filtro: Filtro;
 
   datos: any[];
-  
   codigoManual: string;
   porcentaje = 0;
   cargando = false;
