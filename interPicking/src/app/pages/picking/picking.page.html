@@ -21,8 +21,6 @@
 
     <ion-list *ngIf="!cargando">
 
-        <!--<ion-item-group *ngFor="let i of (segment.value === 'pendientes'? pendientes:completados)" (click)="seleccionarItem( i )">-->
-
         <ion-item-group *ngFor="let i of datos | filtroPendientes: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
 
             <app-item-producto [item]="i"></app-item-producto>

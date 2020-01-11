@@ -6,6 +6,17 @@
 
         <ion-title ion-text-capitalize="ion-text-capitalize">{{ item.NOMBRE }} </ion-title>
 
+        <ion-buttons slot="end">
+
+            <ion-button shape="round" [routerLink]="['/filtro']">
+                <ion-icon slot="icon-only" name="ios-funnel"></ion-icon>
+            </ion-button>
+
+            <!-- Circles -->
+            <ion-spinner *ngIf="cargando" name="crescent" color="success"></ion-spinner>
+
+        </ion-buttons>
+
     </ion-toolbar>
 </ion-header>
 
@@ -21,13 +32,14 @@
     </ion-list>
 
     <ion-segment #segmento (ionChange)="segmentChanged($event)">
-        <ion-segment-button value="pendientes">
-            <ion-label *ngIf="pendientes">Pendientes ( {{ pendientes.length }} )</ion-label>
+        <ion-segment-button value="pendientes" size="small">
+            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtroPendientes: true : filtroService.filtro).length }} )</ion-label>
         </ion-segment-button>
         <ion-segment-button value="completados">
-            <ion-label *ngIf="completados">Completados ( {{ completados.length }} )</ion-label>
+            <ion-label *ngIf="datos">Completados ( {{ (datos | filtroPendientes: false : filtroService.filtro).length }} )</ion-label>
         </ion-segment-button>
     </ion-segment>
+
 </ion-toolbar>
 
 <ion-content>
@@ -37,43 +49,13 @@
     </ion-refresher>
 
     <ion-list *ngIf="!cargando">
-        <ion-item-group *ngFor="let i of (segment.value === 'pendientes'? pendientes:completados)" (click)="seleccionarItem( i )">
+
+        <ion-item-group *ngFor="let i of datos | filtroPendientes: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
+
             <app-item-producto [item]="i"></app-item-producto>
+
         </ion-item-group>
-    </ion-list>
 
-    <ion-list *ngIf="cargando">
-
-        <ion-item *ngFor="let i of [1,1,1,1,1,1,1,1,1,1]">
-
-            <ion-avatar slot="start">
-                <ion-skeleton-text animated></ion-skeleton-text>
-            </ion-avatar>
-
-            <ion-label>
-                <h2>
-                    <ion-skeleton-text animated></ion-skeleton-text>
-                </h2>
-
-                <p>
-                    <ion-skeleton-text animated></ion-skeleton-text>
-                </p>
-
-                <p>
-                    <ion-skeleton-text animated></ion-skeleton-text>
-                </p>
-
-                <p>
-                    <ion-skeleton-text animated></ion-skeleton-text>
-                </p>
-            </ion-label>
-
-            <ion-chip slot="end">
-                <ion-label>
-                    <ion-skeleton-text animated></ion-skeleton-text>
-                </ion-label>
-            </ion-chip>
-        </ion-item>
     </ion-list>
 
 </ion-content>

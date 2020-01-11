@@ -1,11 +1,12 @@
 <app-header titulo="Filtros"></app-header>
 
-<ion-content>
+<ion-content padding>
 
     <ion-list>
+
         <ion-item>
 
-            <ion-label>Circuito </ion-label>
+            <ion-label>Canal de venta </ion-label>
 
             <ion-select placeholder="" [(ngModel)]="filtroService.filtro.CIRCOM">
                 <ion-select-option value="0250">Mayorista</ion-select-option>
@@ -13,7 +14,13 @@
             </ion-select>
 
         </ion-item>
+
     </ion-list>
+
+    <ion-button (click)="guardarFiltro()" color="primary" expand="full">
+        <ion-icon slot="start" name="save"></ion-icon>
+        Guardar Filtros
+    </ion-button>
 
 </ion-content>
 
@@ -22,10 +29,7 @@
 
     <ion-toolbar>
 
-        <ion-button (click)="guardarFiltro()" color="primary" expand="full">
-            <ion-icon slot="start" name="save"></ion-icon>
-            Guardar Filtros
-        </ion-button>
+
 
     </ion-toolbar>
 </ion-footer>

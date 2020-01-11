@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { ToastController, IonSegment, LoadingController, NavController } from '@ionic/angular';
+import { IonSegment, LoadingController, NavController } from '@ionic/angular';
 import { PackingService } from '../../services/packing.service';
 import { Usuario } from '../../model/usuario';
 import { UsuarioService } from '../../services/usuario.service';
@@ -19,12 +19,12 @@ export class PackingPage implements OnInit {
   @ViewChild(IonSegment, {static: true}) segment: IonSegment;
 
   usuario: Usuario = {};
-  filtro: Filtro[] = [];
+
+  pendiente = true;
+  filtro: Filtro;
 
   datos: any[];
-  pendientes: any[];
-  completados: any[];
-
+  
   codigoManual: string;
   porcentaje = 0;
   cargando = false;
@@ -75,7 +75,8 @@ export class PackingPage implements OnInit {
         if (resp.ok) {
 
           this.datos = resp.packing;
-          this.filtrarItems();
+
+          console.log(this.datos);
 
           if (event) {
             event.target.complete();
@@ -83,19 +84,12 @@ export class PackingPage implements OnInit {
         } else {
           this.uiService.alertaInformativa('No hay pendientes de picking en estos momentos');
           this.navCtrl.navigateRoot('/home', { animated: true });
-         
+
         }
 
         this.cargando = false;
 
       });
-
-  }
-
-  filtrarItems() {
-
-    this.pendientes = this.datos.filter(item => item.CNTPK2 < item.CANTID);
-    this.completados = this.datos.filter(item => item.CNTPK2 === item.CANTID);
 
   }
 
@@ -132,6 +126,7 @@ export class PackingPage implements OnInit {
       });
   }
 
+
   async presentLoading() {
     this.procesando = await this.loadingController.create({
       message: 'Procesando información'
@@ -141,10 +136,9 @@ export class PackingPage implements OnInit {
 
   segmentChanged(event) {
 
-    this.filtrarItems();
+    this.pendiente = (this.segment.value === 'pendientes');
 
   }
-
 
   procesarCodigoBarra(codigoBarra: string) {
 

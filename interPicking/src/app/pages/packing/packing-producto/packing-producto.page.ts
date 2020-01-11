@@ -3,6 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PackingService } from '../../../services/packing.service';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { ToastController, IonSegment } from '@ionic/angular';
+import { Filtro } from '../../../model/filtro';
+import { FiltroService } from '../../../services/filtro.service';
+import { Usuario } from '../../../model/usuario';
+import { UsuarioService } from '../../../services/usuario.service';
 
 @Component({
   selector: 'app-packing-producto',
@@ -11,21 +15,31 @@ import { ToastController, IonSegment } from '@ionic/angular';
 })
 export class PackingProductoPage implements OnInit {
 
-  @ViewChild(IonSegment, {static: true}) segment: IonSegment;
+  @ViewChild(IonSegment, { static: true }) segment: IonSegment;
 
-  item: any;
+  usuario: Usuario = {};
+
+  pendiente = true;
+  filtro: Filtro;
+
   datos: any[];
-  pendientes: any[];
-  completados: any[];
+  item: any;
 
   cargando = false;
   procesando: any;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
+              private filtroService: FiltroService,
               private packingService: PackingService,
               private barcodeScanner: BarcodeScanner,
-              public toastController: ToastController) { }
+              private usuarioService: UsuarioService,
+              public toastController: ToastController) {
+
+    this.filtro = this.filtroService.inicializarFiltro();
+    this.usuario = this.usuarioService.getUsuario();
+
+  }
 
   ngOnInit() {
 
@@ -34,7 +48,7 @@ export class PackingProductoPage implements OnInit {
     this.cargarPendientes();
   }
 
-  cargarPendientes( event? ) {
+  cargarPendientes(event?) {
 
     this.cargando = true;
 
@@ -46,7 +60,6 @@ export class PackingProductoPage implements OnInit {
       return;
     }
 
-    console.log(this.item);
 
     this.packingService.getProductosPendiente(this.item)
       .subscribe((resp: any) => {
@@ -54,23 +67,17 @@ export class PackingProductoPage implements OnInit {
         if (resp.ok) {
 
           this.datos = resp.packing;
-          this.filtrarItems();
 
           if (event) {
             event.target.complete();
           }
-          this.cargando = false;
+
 
         } else {
           console.log('No hay productos pendientes de packing en estos momentos');
         }
+        this.cargando = false;
       });
-  }
-
-  filtrarItems() {
-
-    this.pendientes = this.datos.filter(item => item.CNTPK2 < item.CANTID);
-    this.completados = this.datos.filter(item => item.CNTPK2 === item.CANTID);
 
   }
 
@@ -87,8 +94,9 @@ export class PackingProductoPage implements OnInit {
 
   segmentChanged(event) {
 
-    this.filtrarItems();
+    this.pendiente = (this.segment.value === 'pendientes');
 
   }
+
 
 }

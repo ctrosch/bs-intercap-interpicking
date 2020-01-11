@@ -172,8 +172,8 @@ app.put('/', (req, res) => {
     //request.input('USRPCK', mssql.NVarChar, body.USRPCK);
     request.input('USRPCK', mssql.NVarChar, body.USUARIO);
 
-    sQuery = 'UPDATE FCRMVI ';
-    sQuery += 'SET USR_FCRMVI_CNTPK2 = @CNTPCK , USR_FCRMVI_USRPK2 = @USRPCK,  , USR_FCRMVI_ESTPK2 = \'A\' ';
+    sQuery = ' UPDATE FCRMVI ';
+    sQuery += ' SET USR_FCRMVI_CNTPK2 = @CNTPCK , USR_FCRMVI_USRPK2 = @USRPCK, USR_FCRMVI_ESTPK2 = \'A\' ';
     sQuery += ' WHERE FCRMVI_MODAPL = @MODFOR ';
     sQuery += ' AND FCRMVI_CODAPL = @CODFOR ';
     sQuery += ' AND FCRMVI_NROAPL = @NROFOR ';

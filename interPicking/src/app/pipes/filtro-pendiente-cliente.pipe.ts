@@ -2,9 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Filtro } from '../model/filtro';
 
 @Pipe({
-  name: 'filtroPendientes'
+  name: 'filtroPendienteCliente'
 })
-export class FiltroPendientesPipe implements PipeTransform {
+export class FiltroPendienteClientePipe implements PipeTransform {
 
   transform(arreglo: any[], pendientes: boolean, filtro: Filtro): any[] {
 
@@ -16,10 +16,11 @@ export class FiltroPendientesPipe implements PipeTransform {
 
     return arreglo.filter(item => {
 
-      return (((pendientes && item.CNTPCK < item.CANTID)
-        || (!pendientes && item.CNTPCK === item.CANTID))
+      return (((pendientes && item.CNTPK2 < item.CANTID)
+        || (!pendientes && item.CNTPK2 === item.CANTID))
         && (filtro.CIRCOM && item['CIRCOM'].toLowerCase().includes(filtro.CIRCOM)));
 
     });
   }
+
 }

@@ -84,10 +84,6 @@ export class PickingService {
 
   confirmarItem(item: any) {
 
-    //console.log('Confirmar item' + item.ID);
-
-    console.log(item);
-
     const url = URL_REST + '/colecta';
     return this.http.put<any>(url, item);
   }

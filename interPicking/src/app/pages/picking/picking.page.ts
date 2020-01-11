@@ -77,8 +77,7 @@ export class PickingPage implements OnInit {
         if (resp.ok) {
 
           this.datos = resp.colecta;
-          this.filtrarItems();
-
+          
           if (event) {
             event.target.complete();
           }
@@ -92,12 +91,6 @@ export class PickingPage implements OnInit {
         this.cargando = false;
 
       });
-
-  }
-
-  filtrarItems() {
-
-    
 
   }
 
@@ -116,7 +109,6 @@ export class PickingPage implements OnInit {
   scanCode() {
 
     this.barcodeScanner.scan().then(barcodeData => {
-
       
       this.procesarCodigoBarra(barcodeData.text);
 
@@ -194,7 +186,6 @@ export class PickingPage implements OnInit {
   segmentChanged(event) {
 
     this.pendiente = (this.segment.value === 'pendientes');
-    this.filtrarItems();
 
   }
 
