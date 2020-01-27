@@ -13,7 +13,7 @@ export class FiltroPage implements OnInit {
   filtro: Filtro;
   circuito = '';
 
-  constructor(private filtroService: FiltroService,
+  constructor(public filtroService: FiltroService,
               private navCtrl: NavController) {
 
     this.filtro = this.filtroService.filtro;

@@ -33,7 +33,7 @@ export class PackingPage implements OnInit {
 
   constructor(private packingService: PackingService,
               private usuarioService: UsuarioService,
-              private filtroService: FiltroService,
+              public filtroService: FiltroService,
               private uiService: UiServiceService,
               private router: Router,
               private barcodeScanner: BarcodeScanner,

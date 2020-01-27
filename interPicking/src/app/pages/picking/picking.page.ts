@@ -39,7 +39,7 @@ export class PickingPage implements OnInit {
   constructor(private pickingService: PickingService,
               private usuarioService: UsuarioService,
               private uiService: UiServiceService,
-              private filtroService: FiltroService,
+              public filtroService: FiltroService,
               private barcodeScanner: BarcodeScanner,
               public loadingController: LoadingController,
               private router: Router,
