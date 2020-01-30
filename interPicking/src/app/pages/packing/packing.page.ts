@@ -81,7 +81,7 @@ export class PackingPage implements OnInit {
             event.target.complete();
           }
         } else {
-          this.uiService.alertaInformativa('No hay pendientes de picking en estos momentos');
+          this.uiService.alertaInformativa('No hay pendientes de armado en estos momentos');
           this.navCtrl.navigateRoot('/home', { animated: true });
 
         }

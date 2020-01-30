@@ -11,7 +11,8 @@ export class FiltroService {
   filtro: Filtro = {};
 
   private filtroTemplate: Filtro = {
-    CIRCOM: '0260'
+    CIRCOM: '',
+    NOMBRE: ''
   };
 
   constructor(private storage: Storage) {
@@ -45,4 +46,17 @@ export class FiltroService {
     }
 
   }
+
+  /*
+  * Limpiamos todos los filtros excepto el del circuito que siempre queda estático.
+  */
+  limpiarFiltro() {
+
+    this.filtro.NOMBRE = null;
+    this.filtro.TRADES = null;
+    this.filtro.NUBICA = null;
+
+  }
+
+
 }

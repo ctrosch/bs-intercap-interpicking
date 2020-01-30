@@ -1,6 +1,6 @@
 <app-header titulo="Filtros"></app-header>
 
-<ion-content padding>
+<ion-content class="ion-padding">
 
     <ion-list>
 
@@ -9,8 +9,31 @@
             <ion-label>Canal de venta </ion-label>
 
             <ion-select placeholder="" [(ngModel)]="filtroService.filtro.CIRCOM">
+                <ion-select-option value="">Todos</ion-select-option>
                 <ion-select-option value="0250">Mayorista</ion-select-option>
                 <ion-select-option value="0260">Dropshipping</ion-select-option>
+            </ion-select>
+
+        </ion-item>
+
+        <ion-item>
+
+            <ion-label>Transportes</ion-label>
+
+            <ion-select placeholder="" [(ngModel)]="filtroService.filtro.TRADES">
+                <ion-select-option value="">Todos</ion-select-option>
+                <ion-select-option *ngFor="let i of transportes" [value]="i">{{ i }}</ion-select-option>
+            </ion-select>
+
+        </ion-item>
+
+        <ion-item>
+
+            <ion-label>Clientes</ion-label>
+
+            <ion-select placeholder="" [(ngModel)]="filtroService.filtro.NOMBRE">
+                <ion-select-option value="">Todos</ion-select-option>
+                <ion-select-option *ngFor="let i of clientes" [value]="i">{{ i }}</ion-select-option>
             </ion-select>
 
         </ion-item>

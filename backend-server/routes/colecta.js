@@ -128,7 +128,7 @@ app.put('/', (req, res) => {
     //request.input('USRPCK', mssql.NVarChar, body.USRPCK);
     request.input('USRPCK', mssql.NVarChar, body.USUARIO);
 
-    console.log(body.USUARIO);
+    // console.log(body.USUARIO);
 
     sQuery = 'UPDATE FCRMVI ';
     sQuery += 'SET USR_FCRMVI_CNTPCK = @CNTPCK , USR_FCRMVI_USRPCK = @USRPCK , USR_FCRMVI_ESTPCK = \'A\' ';
@@ -190,8 +190,8 @@ app.put('/confirmar', (req, res) => {
     sQuery += ' AND USR_FCRMVI_ESTPCK = \'A\' ';
     // sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
 
-    console.log(body.usuario);
-    console.log(sQuery);
+    // console.log(body.usuario);
+    // console.log(sQuery);
 
     request.query(sQuery, function(err, result) {
 

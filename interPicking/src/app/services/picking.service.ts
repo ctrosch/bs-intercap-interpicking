@@ -8,6 +8,7 @@ import { UiServiceService } from './ui-service.service';
 })
 export class PickingService {
 
+  datos: any[];
   item: any;
   usuario: string;
 

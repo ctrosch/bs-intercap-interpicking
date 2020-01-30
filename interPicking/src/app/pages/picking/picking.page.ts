@@ -77,6 +77,7 @@ export class PickingPage implements OnInit {
         if (resp.ok) {
 
           this.datos = resp.colecta;
+          this.pickingService.datos = this.datos;
           
           if (event) {
             event.target.complete();
@@ -84,7 +85,7 @@ export class PickingPage implements OnInit {
 
         } else {
           
-          this.uiService.alertaInformativa('No hay pendientes de picking en estos momentos');
+          this.uiService.alertaInformativa('No hay pendientes de colecta en estos momentos');
           this.navCtrl.navigateRoot('/home', { animated: true });
         }
 
@@ -166,8 +167,11 @@ export class PickingPage implements OnInit {
 
         if (resp.ok) {
 
+          this.filtroService.limpiarFiltro();
+
           this.cargarPendientes();
           this.procesando.dismiss();
+          
 
           // swal("Picking confirmado","Los productos fueron confirmados correctamente","success").then(value => {});
         } else {

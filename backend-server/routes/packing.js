@@ -24,7 +24,7 @@ app.get('/:usuario/:deposito', (req, res, next) => {
     var sQuery = ' SELECT TOP 1000 * FROM PCK_PENDIENTE_CLIENTE ';
     sQuery += ' WHERE 1=1  ';
     sQuery += ' AND DEPOSI = @deposito ';
-    // sQuery += ' AND (USRPK2 IS NULL OR USRPK2 = \'\' OR USRPK2 = @usuario) ';
+    //sQuery += ' AND (USRPK2 IS NULL OR USRPK2 = \'\' OR USRPK2 = @usuario) ';
     sQuery += ' AND (ESTPK2 = \'A\' ) ';
     sQuery += ' ORDER BY TRADES, NROCTA ';
 
@@ -34,7 +34,7 @@ app.get('/:usuario/:deposito', (req, res, next) => {
             return res.status(500).json({
                 ok: false,
                 packing: [],
-                mensaje: 'Error obteniendo datos packing para el sitio ' + sitio + ', deposito ' + deposito,
+                mensaje: 'Error obteniendo datos packing para el deposito ' + deposito,
                 errors: err
             });
         }
@@ -43,11 +43,10 @@ app.get('/:usuario/:deposito', (req, res, next) => {
             return res.status(200).json({
                 ok: false,
                 packing: [],
-                mensaje: 'No existen datos de paciking para el deposito ' + deposito,
+                mensaje: 'No existen datos de packing para el deposito ' + deposito,
                 errors: { message: 'No existen datos de packing para el deposito ' + deposito }
             });
         }
-
 
         var packing = result.recordset;
 
@@ -231,8 +230,8 @@ app.put('/confirmar', (req, res) => {
     // sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
 
 
-    console.log(body.USUARIO);
-    console.log(sQuery);
+    // console.log(body.USUARIO);
+    // console.log(sQuery);
 
     request.query(sQuery, function(err, result) {
 
