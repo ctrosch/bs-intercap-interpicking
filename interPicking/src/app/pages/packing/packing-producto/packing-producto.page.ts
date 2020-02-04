@@ -36,7 +36,7 @@ export class PackingProductoPage implements OnInit {
               private usuarioService: UsuarioService,
               public toastController: ToastController) {
 
-    this.filtro = this.filtroService.inicializarFiltro();
+    this.filtro = this.filtroService.inicializarFiltro('filtro-packing');
     this.usuario = this.usuarioService.getUsuario();
 
   }
@@ -90,6 +90,7 @@ export class PackingProductoPage implements OnInit {
 
     this.packingService.itemProducto = i;
     this.router.navigateByUrl('packing-item/' + i.ID);
+    
   }
 
   segmentChanged(event) {

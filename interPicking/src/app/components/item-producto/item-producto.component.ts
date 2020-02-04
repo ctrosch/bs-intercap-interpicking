@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ItemProductoComponent implements OnInit {
 
   @Input() item: any;
+  @Input() tipo: string;
 
   constructor() { }
 

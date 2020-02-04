@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,10 +9,30 @@ import { Component, OnInit, Input } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   @Input() titulo: string;
-  @Input() cargando: boolean;
+  @Input() cargando?: boolean;
+  @Input() filtro?: string;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
+  
+
+  verFiltro() {    
+
+    if (!this.filtro) {
+      
+      return;
+    }
+
+    if (this.filtro === 'picking') {
+        this.router.navigateByUrl('filtro-picking');  
+    }
+
+    if (this.filtro === 'packing') {
+      this.router.navigateByUrl('filtro-packing');  
+    }
+
+    
+  }
 
 }

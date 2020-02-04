@@ -44,7 +44,7 @@ export class PackingPage implements OnInit {
 
   ngOnInit() {
 
-    this.filtro = this.filtroService.inicializarFiltro();
+    this.filtro = this.filtroService.inicializarFiltro('filtro-picking');
     this.usuario = this.usuarioService.getUsuario();
 
     if (this.segment) {
@@ -74,8 +74,7 @@ export class PackingPage implements OnInit {
         if (resp.ok) {
 
           this.datos = resp.packing;
-
-          console.log(this.datos);
+          this.packingService.datos = this.datos;
 
           if (event) {
             event.target.complete();

@@ -7,11 +7,6 @@
         <ion-title ion-text-capitalize="ion-text-capitalize">{{ item.NOMBRE }} </ion-title>
 
         <ion-buttons slot="end">
-
-            <ion-button shape="round" [routerLink]="['/filtro']">
-                <ion-icon slot="icon-only" name="ios-funnel"></ion-icon>
-            </ion-button>
-
             <!-- Circles -->
             <ion-spinner *ngIf="cargando" name="crescent" color="success"></ion-spinner>
 
@@ -33,10 +28,10 @@
 
     <ion-segment #segmento (ionChange)="segmentChanged($event)">
         <ion-segment-button value="pendientes" size="small">
-            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtroPendientes: true : filtroService.filtro).length }} )</ion-label>
+            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtroPackingCliente: true : filtroService.filtro).length }} )</ion-label>
         </ion-segment-button>
         <ion-segment-button value="completados">
-            <ion-label *ngIf="datos">Completados ( {{ (datos | filtroPendientes: false : filtroService.filtro).length }} )</ion-label>
+            <ion-label *ngIf="datos">Completados ( {{ (datos | filtroPackingCliente: false : filtroService.filtro).length }} )</ion-label>
         </ion-segment-button>
     </ion-segment>
 
@@ -50,9 +45,9 @@
 
     <ion-list *ngIf="!cargando">
 
-        <ion-item-group *ngFor="let i of datos | filtroPendientes: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
+        <ion-item-group *ngFor="let i of datos | filtroPackingCliente: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
 
-            <app-item-producto [item]="i"></app-item-producto>
+            <app-item-producto [item]="i" tipo="packing"></app-item-producto>
 
         </ion-item-group>
 

@@ -11,6 +11,7 @@ import { UiServiceService } from './ui-service.service';
 })
 export class PackingService {
 
+  datos: any[];
   item: any;
   itemProducto: any;
 

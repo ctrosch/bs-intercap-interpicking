@@ -15,14 +15,14 @@ export class HomePage implements OnInit {
   componentes: Componente[] = [
     {
       icon: 'codebar',
-      name: 'Colecta',
+      name: 'Picking',
       imagen: '/assets/img/colecta.png',
       redirectTo: '/picking',
       detalle: 'Realizar colecta general para todos los despachos pendientes'
     },
     {
       icon: 'appstore',
-      name: 'Armado',
+      name: 'Packing',
       imagen: '/assets/img/armado.png',
       redirectTo: '/packing',
       detalle: 'Realizar armado despacho por clientes'

@@ -1,12 +1,12 @@
-<app-header titulo="Armado" [cargando]="cargando"></app-header>
+<app-header titulo="Packing" [cargando]="cargando" filtro="packing"></app-header>
 
 <ion-toolbar>
     <ion-segment #segmento (ionChange)="segmentChanged($event)">
         <ion-segment-button value="pendientes" size="small">
-            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtroPendienteCliente: true : filtroService.filtro).length }} )</ion-label>
+            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtroPackingCliente: true : filtroService.filtro).length }} )</ion-label>
         </ion-segment-button>
         <ion-segment-button value="completados">
-            <ion-label *ngIf="datos">Completados ( {{ (datos | filtroPendienteCliente: false : filtroService.filtro).length }} )</ion-label>
+            <ion-label *ngIf="datos">Completados ( {{ (datos | filtroPackingCliente: false : filtroService.filtro).length }} )</ion-label>
         </ion-segment-button>
     </ion-segment>
 </ion-toolbar>
@@ -19,7 +19,7 @@
 
     <ion-list *ngIf="!cargando">
 
-        <ion-item *ngFor="let i of datos | filtroPendienteCliente: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
+        <ion-item *ngFor="let i of datos | filtroPackingCliente: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
 
             <ion-label>
                 <h2>{{ i.NOMBRE }}</h2>
@@ -45,7 +45,7 @@
 
         <ion-button (click)="confirmarPacking()" color="primary" expand="full">
             <ion-icon slot="start" name="send"></ion-icon>
-            Confirmar Armado
+            Confirmar Packing
         </ion-button>
 
     </ion-toolbar>

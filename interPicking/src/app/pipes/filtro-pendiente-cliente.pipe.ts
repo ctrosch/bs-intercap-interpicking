@@ -18,7 +18,7 @@ export class FiltroPendienteClientePipe implements PipeTransform {
 
       return (((pendientes && item.CNTPK2 < item.CANTID)
         || (!pendientes && item.CNTPK2 === item.CANTID))
-        && (filtro.CIRCOM && item['CIRCOM'].toLowerCase().includes(filtro.CIRCOM)));
+        && (!filtro.CIRCOM || filtro.CIRCOM && item['CIRCOM'].includes(filtro.CIRCOM) || filtro.CIRCOM.length === 0));
 
     });
   }

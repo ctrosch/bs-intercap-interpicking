@@ -10,7 +10,7 @@
 
         <ion-buttons slot="end">
 
-            <ion-button shape="round" [routerLink]="['/filtro']">
+            <ion-button *ngIf="filtro" (click)="verFiltro()">
                 <ion-icon slot="icon-only" name="ios-funnel"></ion-icon>
             </ion-button>
 

@@ -44,17 +44,17 @@ export class PickingPage implements OnInit {
               public loadingController: LoadingController,
               private router: Router,
               private navCtrl: NavController) {
-
-    this.filtro = this.filtroService.inicializarFiltro();
-    this.usuario = this.usuarioService.getUsuario();
-
   }
 
   ngOnInit() {
 
+    this.filtro = this.filtroService.inicializarFiltro('filtro-picking');
+    this.usuario = this.usuarioService.getUsuario();
+
     if (this.segment) {
       this.segment.value = 'pendientes';
     }
+
   }
 
   ionViewDidEnter() {

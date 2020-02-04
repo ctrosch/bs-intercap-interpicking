@@ -7,35 +7,38 @@ import { Storage } from '@ionic/storage';
   providedIn: 'root'
 })
 export class FiltroService {
-
+  
+  nombre = 'filtro';
   filtro: Filtro = {};
 
   private filtroTemplate: Filtro = {
     CIRCOM: '',
-    NOMBRE: ''
+    NOMBRE: null,
+    TRADES: null,
+    TIPDES: null
   };
 
   constructor(private storage: Storage) {
 
   }
 
-  inicializarFiltro() {
+  inicializarFiltro(nombre: string) {
 
+    this.nombre = nombre;
     this.cargarFiltro();
-
     return this.filtro;
 
   }
 
   async guardarFiltro() {
 
-    await this.storage.set('filtro', this.filtro);
+    await this.storage.set(this.nombre, this.filtro);
 
   }
 
   async cargarFiltro() {
 
-    this.filtro = await this.storage.get('filtro') || null;
+    this.filtro = await this.storage.get(this.nombre) || null;
 
     if (!this.filtro) {
 
@@ -54,6 +57,7 @@ export class FiltroService {
 
     this.filtro.NOMBRE = null;
     this.filtro.TRADES = null;
+    this.filtro.TIPDES = null;
     this.filtro.NUBICA = null;
 
   }

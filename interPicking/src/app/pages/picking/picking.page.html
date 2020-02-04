@@ -1,13 +1,13 @@
-<app-header titulo="Colecta" [cargando]="cargando"></app-header>
+<app-header titulo="Picking" [cargando]="cargando" filtro="picking"></app-header>
 
 <ion-toolbar>
 
     <ion-segment #segmento (ionChange)="segmentChanged($event)">
         <ion-segment-button value="pendientes" size="small">
-            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtroPendientes: true : filtroService.filtro).length }} )</ion-label>
+            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtroPicking: true : filtroService.filtro).length }} )</ion-label>
         </ion-segment-button>
         <ion-segment-button value="completados">
-            <ion-label *ngIf="datos">Completados ( {{ (datos | filtroPendientes: false : filtroService.filtro).length }} )</ion-label>
+            <ion-label *ngIf="datos">Completados ( {{ (datos | filtroPicking: false : filtroService.filtro).length }} )</ion-label>
         </ion-segment-button>
     </ion-segment>
 
@@ -21,9 +21,9 @@
 
     <ion-list *ngIf="!cargando">
 
-        <ion-item-group *ngFor="let i of datos | filtroPendientes: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
+        <ion-item-group *ngFor="let i of datos | filtroPicking: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
 
-            <app-item-producto [item]="i"></app-item-producto>
+            <app-item-producto [item]="i" tipo="picking"></app-item-producto>
 
         </ion-item-group>
 
@@ -52,7 +52,7 @@
 
         <ion-button (click)="confirmarPicking()" color="primary" expand="full">
             <ion-icon slot="start" name="send"></ion-icon>
-            Confirmar Colecta
+            Confirmar Picking
         </ion-button>
 
     </ion-toolbar>

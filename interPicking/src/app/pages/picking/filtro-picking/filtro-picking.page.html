@@ -1,0 +1,80 @@
+<app-header titulo="Filtros Picking"></app-header>
+
+<ion-content class="ion-padding">
+
+    <ion-list>
+
+        <ion-item>
+
+            <ion-label>Canal de venta </ion-label>
+
+            <ion-select placeholder="" [(ngModel)]="filtroService.filtro.CIRCOM">
+                <ion-select-option value="">TODOS</ion-select-option>
+                <ion-select-option value="0250">MAYORISTA</ion-select-option>
+                <ion-select-option value="0260">DROPSHIPPING</ion-select-option>
+            </ion-select>
+
+        </ion-item>
+
+        <ion-item>
+
+            <ion-label>Transportes</ion-label>
+
+            <ion-select interface="action-sheet " placeholder="" cancel-text="CANCELAR" [(ngModel)]="filtroService.filtro.TRADES">
+                <ion-select-option value="">TODOS</ion-select-option>
+                <ion-select-option *ngFor="let i of transportes" [value]="i">{{ i }}</ion-select-option>
+            </ion-select>
+
+        </ion-item>
+
+        <ion-item>
+
+            <ion-label>Clientes</ion-label>
+
+            <ion-select interface="action-sheet " placeholder="" cancel-text="CANCELAR" [(ngModel)]="filtroService.filtro.NOMBRE">
+                <ion-select-option value="">TODOS</ion-select-option>
+                <ion-select-option *ngFor="let i of clientes " [value]="i ">{{ i }}</ion-select-option>
+            </ion-select>
+
+        </ion-item>
+
+        <ion-item>
+
+            <ion-label>Tipo de productos</ion-label>
+
+            <ion-select interface="action-sheet " placeholder="" cancel-text="CANCELAR" [(ngModel)]="filtroService.filtro.TIPDES ">
+                <ion-select-option value="">TODOS</ion-select-option>
+                <ion-select-option *ngFor="let i of tipoProductos" [value]="i">{{ i }}</ion-select-option>
+            </ion-select>
+
+        </ion-item>
+
+
+    </ion-list>
+
+
+
+    <ion-button (click)="guardarFiltro()" color="primary" fill="solid">
+        <ion-icon slot="start" name="save"></ion-icon>
+        Guardar
+    </ion-button>
+
+    <ion-button (click)="limpiarFiltro()" color="danger" fill="solid">
+        <ion-icon slot="start" name="trash"></ion-icon>
+        Limpiar
+    </ion-button>
+
+
+
+
+</ion-content>
+
+
+<ion-footer>
+
+    <ion-toolbar>
+
+
+
+    </ion-toolbar>
+</ion-footer>

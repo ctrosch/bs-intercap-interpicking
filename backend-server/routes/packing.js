@@ -24,7 +24,7 @@ app.get('/:usuario/:deposito', (req, res, next) => {
     var sQuery = ' SELECT TOP 1000 * FROM PCK_PENDIENTE_CLIENTE ';
     sQuery += ' WHERE 1=1  ';
     sQuery += ' AND DEPOSI = @deposito ';
-    //sQuery += ' AND (USRPK2 IS NULL OR USRPK2 = \'\' OR USRPK2 = @usuario) ';
+    sQuery += ' AND (USRPK2 IS NULL OR USRPK2 = \'\' OR USRPK2 = @usuario) ';
     sQuery += ' AND (ESTPK2 = \'A\' ) ';
     sQuery += ' ORDER BY TRADES, NROCTA ';
 
@@ -166,13 +166,13 @@ app.put('/', (req, res) => {
     request.input('NIVEXP', mssql.NVarChar, body.NIVEXP);
     request.input('TIPPRO', mssql.NVarChar, body.TIPPRO);
     request.input('ARTCOD', mssql.NVarChar, body.ARTCOD);
-    request.input('CNTPCK', mssql.Int, body.CNTPCK);
+    request.input('CNTPK2', mssql.Int, body.CNTPK2);
     //request.input('ESTPCK', mssql.NVarChar, body.ESTPCK);
     //request.input('USRPCK', mssql.NVarChar, body.USRPCK);
-    request.input('USRPCK', mssql.NVarChar, body.USUARIO);
+    request.input('USRPK2', mssql.NVarChar, body.USUARIO);
 
     sQuery = ' UPDATE FCRMVI ';
-    sQuery += ' SET USR_FCRMVI_CNTPK2 = @CNTPCK , USR_FCRMVI_USRPK2 = @USRPCK, USR_FCRMVI_ESTPK2 = \'A\' ';
+    sQuery += ' SET USR_FCRMVI_CNTPK2 = @CNTPK2 , USR_FCRMVI_USRPK2 = @USRPK2, USR_FCRMVI_ESTPK2 = \'A\' ';
     sQuery += ' WHERE FCRMVI_MODAPL = @MODFOR ';
     sQuery += ' AND FCRMVI_CODAPL = @CODFOR ';
     sQuery += ' AND FCRMVI_NROAPL = @NROFOR ';

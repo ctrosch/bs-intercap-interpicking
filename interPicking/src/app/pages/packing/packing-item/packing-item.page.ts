@@ -20,10 +20,10 @@ export class PackingItemPage implements OnInit {
   cantidadManual = 0;
 
   constructor(private route: ActivatedRoute,
-    private router: Router,
-    private packingService: PackingService,
-    private barcodeScanner: BarcodeScanner,
-    private usuarioService: UsuarioService) {
+              private router: Router,
+              private packingService: PackingService,
+              private barcodeScanner: BarcodeScanner,
+              private usuarioService: UsuarioService) {
 
     // console.log('ItemColecta - constructor ');
   }
