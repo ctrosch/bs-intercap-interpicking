@@ -26,15 +26,16 @@
 
         </ion-item>
 
+        <ion-item>
+            <ion-label color="success">Picking {{ cantidadManual }} {{ item.UNIMED}}</ion-label>
+            <ion-label color="primary">Pedido {{ item.CANTID}} {{ item.UNIMED }}</ion-label>
+        </ion-item>
+
+
     </ion-list>
 
     <ion-grid class="paddin padding-calc">
         <ion-row>
-            <ion-col size="12" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button color="medium" expand="full" size="default">
-                    <ion-label>Cantidad: {{ cantidadManual }} / {{ item.CANTID}} {{ item.UNIMED }}</ion-label>
-                </ion-button>
-            </ion-col>
 
             <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
                 <ion-button (click)="add(1)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="default">
@@ -101,15 +102,6 @@
                     <ion-label>Confirmar</ion-label>
                 </ion-button>
             </ion-col>
-
-            <!--
-            <ion-col *ngIf="item.CANTID == item.CNTPK2 " size="12" class="ion-no-margin ion-no-padding ion-text-center">
-                <ion-button (click)="resetCantidad()" color="danger" expand="full" size="default">
-                    <ion-icon slot="start" name="undo"></ion-icon>
-                    <ion-label>Deshacer </ion-label>
-                </ion-button>
-            </ion-col>
-            -->
 
         </ion-row>
     </ion-grid>

@@ -22,8 +22,7 @@ const routes: Routes = [
     loadChildren: './pages/picking/picking.module#PickingPageModule',
     canLoad:[UsuarioGuard]
   },
-  { path: 'picking-item/:id', loadChildren: './pages/picking/picking-item/picking-item.module#PickingItemPageModule' },
-  { path: 'picking-confirmacion', loadChildren: './pages/picking/picking-confirmacion/picking-confirmacion.module#PickingConfirmacionPageModule' },
+  { path: 'picking-item/:id', loadChildren: './pages/picking/picking-item/picking-item.module#PickingItemPageModule' },  
   {
     path: 'packing',
     loadChildren: './pages/packing/packing.module#PackingPageModule',
@@ -39,7 +38,8 @@ const routes: Routes = [
   },
   { path: 'configuracion', loadChildren: './pages/configuracion/configuracion.module#ConfiguracionPageModule' },
   { path: 'usuario', loadChildren: './pages/usuario/usuario.module#UsuarioPageModule' },   { path: 'packing-item', loadChildren: './pages/packing/packing-item/packing-item.module#PackingItemPageModule' },
-  { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },  { path: 'filtro', loadChildren: './pages/filtro/filtro.module#FiltroPageModule' },
+  { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
+  { path: 'filtro', loadChildren: './pages/filtro/filtro.module#FiltroPageModule' },
   { path: 'filtro-picking', loadChildren: './pages/picking/filtro-picking/filtro-picking.module#FiltroPickingPageModule' },
   { path: 'filtro-packing', loadChildren: './pages/packing/filtro-packing/filtro-packing.module#FiltroPackingPageModule' }
 

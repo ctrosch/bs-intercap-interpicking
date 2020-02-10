@@ -106,7 +106,7 @@ app.get('/:id', (req, res, next) => {
 
 
 // ==========================================
-// Actualizar cantidades picking
+// Actualizar cantidades picking y faltante
 // ==========================================
 app.put('/', (req, res) => {
 
@@ -124,6 +124,7 @@ app.put('/', (req, res) => {
     request.input('TIPPRO', mssql.NVarChar, body.TIPPRO);
     request.input('ARTCOD', mssql.NVarChar, body.ARTCOD);
     request.input('CNTPCK', mssql.Int, body.CNTPCK);
+    request.input('CNTFST', mssql.Int, body.CNTFST);
     //request.input('ESTPCK', mssql.NVarChar, body.ESTPCK);
     //request.input('USRPCK', mssql.NVarChar, body.USRPCK);
     request.input('USRPCK', mssql.NVarChar, body.USUARIO);
@@ -131,7 +132,7 @@ app.put('/', (req, res) => {
     // console.log(body.USUARIO);
 
     sQuery = 'UPDATE FCRMVI ';
-    sQuery += 'SET USR_FCRMVI_CNTPCK = @CNTPCK , USR_FCRMVI_USRPCK = @USRPCK , USR_FCRMVI_ESTPCK = \'A\' ';
+    sQuery += 'SET USR_FCRMVI_CNTPCK = @CNTPCK , USR_FCRMVI_CNTFST = @CNTFST, USR_FCRMVI_USRPCK = @USRPCK , USR_FCRMVI_ESTPCK = \'A\' ';
     sQuery += ' WHERE FCRMVI_MODAPL = @MODFOR ';
     sQuery += ' AND FCRMVI_CODAPL = @CODFOR ';
     sQuery += ' AND FCRMVI_NROAPL = @NROFOR ';
@@ -185,7 +186,7 @@ app.put('/confirmar', (req, res) => {
     sQuery = 'UPDATE FCRMVI ';
     sQuery += 'SET USR_FCRMVI_ESTPCK = \'B\'  ';
     sQuery += ' WHERE USR_FCRMVI_USRPCK = @USRPCK  ';
-    sQuery += ' AND FCRMVI_CANTID = USR_FCRMVI_CNTPCK';
+    sQuery += ' AND FCRMVI_CANTID = USR_FCRMVI_CNTPCK + USR_FCRMVI_CNTFST ';
     sQuery += ' AND FCRMVI_FECALT > \'20191201\' ';
     sQuery += ' AND USR_FCRMVI_ESTPCK = \'A\' ';
     // sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';

@@ -56,11 +56,11 @@
 </ion-content>
 
 <ion-footer>
-    <!--
     <ion-toolbar>
-        <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()"></ion-input>
-
         <ion-buttons slot="end">
+
+            <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()"></ion-input>
+
             <ion-button shape="round" (click)="procesarCodigoManual()" color="success">
                 <ion-icon slot="icon-only" name="add"> </ion-icon>
             </ion-button>
@@ -69,11 +69,6 @@
                 <ion-icon slot="icon-only" name="barcode"></ion-icon>
             </ion-button>
 
-            <ion-button shape="round" (click)="confirmarPacking()" color="secondary">
-                <ion-icon slot="icon-only" name="send"></ion-icon>
-            </ion-button>
-
         </ion-buttons>
     </ion-toolbar>
-    -->
 </ion-footer>

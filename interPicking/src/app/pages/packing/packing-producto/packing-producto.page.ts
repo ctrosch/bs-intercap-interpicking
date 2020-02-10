@@ -7,6 +7,7 @@ import { Filtro } from '../../../model/filtro';
 import { FiltroService } from '../../../services/filtro.service';
 import { Usuario } from '../../../model/usuario';
 import { UsuarioService } from '../../../services/usuario.service';
+import { UiServiceService } from '../../../services/ui-service.service';
 
 @Component({
   selector: 'app-packing-producto',
@@ -25,12 +26,14 @@ export class PackingProductoPage implements OnInit {
   datos: any[];
   item: any;
 
+  codigoManual: string;
   cargando = false;
   procesando: any;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
               public filtroService: FiltroService,
+              private uiService: UiServiceService,
               private packingService: PackingService,
               private barcodeScanner: BarcodeScanner,
               private usuarioService: UsuarioService,
@@ -90,13 +93,64 @@ export class PackingProductoPage implements OnInit {
 
     this.packingService.itemProducto = i;
     this.router.navigateByUrl('packing-item/' + i.ID);
-    
+
   }
 
   segmentChanged(event) {
 
     this.pendiente = (this.segment.value === 'pendientes');
 
+  }
+
+  procesarCodigoManual() {
+
+    this.procesarCodigoBarra(this.codigoManual);
+    this.codigoManual = '';
+
+  }
+
+  procesarCodigoBarra(codigoBarra: string) {
+
+    if (codigoBarra !== undefined) {
+
+      let itemEncontrado: any;
+
+      this.datos.find(item => {
+
+        if (item.CNTPK2 < item.CANTID) {
+
+          item.CODBAR.split('|').find(i => {
+
+            if (i === codigoBarra ) {
+              itemEncontrado = item;
+            }
+          });
+        }
+
+      });
+
+      if (itemEncontrado) {
+        this.seleccionarItem(itemEncontrado);
+      } else {
+        this.uiService.alertaInformativa('No se encontró producto con el código de barra ' + codigoBarra);
+        // swal({title: 'Error',text: 'El código de barra no pertenece a ningún producto pendiene de picking',icon: 'error',});
+      }
+
+    } else {
+      this.uiService.presentToast('Código de barra vacío');
+    }
+  }
+
+  scanCode() {
+
+    this.barcodeScanner.scan().then(barcodeData => {
+      
+      this.procesarCodigoBarra(barcodeData.text);
+
+    }).catch(err => {
+      
+      // swal({title: 'Error',text: 'Error leyendo código de barra',icon: 'error',});
+    });
   }
 
 

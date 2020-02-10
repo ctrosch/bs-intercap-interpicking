@@ -42,16 +42,17 @@ export class PickingService {
 
   }
 
-  confirmarCantidad(item: any, cantidad: number) {
+  confirmarCantidad(item: any, cantidad: number, faltante: number) {
 
     if (item === undefined) {
       this.uiService.alertaInformativa('No se encontró producto');
       return false;
     }
 
-    if (cantidad <= item.CANTID) {
+    if (cantidad + faltante <= item.CANTID) {
 
       item.CNTPCK = cantidad;
+      item.CNTFST = faltante;
 
       this.uiService.presentToast('Producto registrado');
       return true;

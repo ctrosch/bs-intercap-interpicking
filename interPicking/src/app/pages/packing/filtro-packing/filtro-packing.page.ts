@@ -13,6 +13,7 @@ export class FiltroPackingPage implements OnInit {
 
   filtro: Filtro;
   circuito = '';
+  sitios: string[];
   clientes: string[];
   transportes: string[];
   tipoProducto = '';
@@ -24,6 +25,7 @@ export class FiltroPackingPage implements OnInit {
     this.filtro = this.filtroService.inicializarFiltro('filtro-packing');
     this.prepararDatosClientes();
     this.prepararDatosTransporte();
+    this.prepararDatosSitios();
 
   }
 
@@ -55,6 +57,7 @@ export class FiltroPackingPage implements OnInit {
 
         if (!map.has(item.NOMBRE)
           && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.SITDES || this.filtro.SITDES && item['SITDES'].includes(this.filtro.SITDES) || this.filtro.SITDES.length === 0)
           && (!this.filtro.TRADES || this.filtro.TRADES && item['TRADES'].includes(this.filtro.TRADES) || this.filtro.TRADES.length === 0)) {
 
           map.set(item.NOMBRE, true);    // set any value to Map
@@ -81,6 +84,7 @@ export class FiltroPackingPage implements OnInit {
   
           if (!map.has(item.TRADES)
             && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+            && (!this.filtro.SITDES || this.filtro.SITDES && item['SITDES'].includes(this.filtro.SITDES) || this.filtro.SITDES.length === 0)
             && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)) {
   
             map.set(item.TRADES, true);    // set any value to Map
@@ -91,6 +95,33 @@ export class FiltroPackingPage implements OnInit {
         this.transportes.sort();
   
       }
+  }
+
+  prepararDatosSitios() {
+
+    this.sitios = [];
+    const map = new Map();
+
+    if (this.packingService.datos) {
+
+      this.packingService.datos.forEach(item => {
+
+        // console.log(item.NOMBRE);
+
+        if (!map.has(item.SITDES)
+          && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)
+          && (!this.filtro.TRADES || this.filtro.TRADES && item['TRADES'].includes(this.filtro.TRADES) || this.filtro.TRADES.length === 0)
+          && (!this.filtro.TIPDES || this.filtro.TIPDES && item['TIPDES'].includes(this.filtro.TIPDES) || this.filtro.TIPDES.length === 0)) {
+
+          map.set(item.SITDES, true);    // set any value to Map
+          this.sitios.push(item.SITDES);
+        }
+      });
+
+      this.sitios.sort();
+
+    }
   }
 
 }

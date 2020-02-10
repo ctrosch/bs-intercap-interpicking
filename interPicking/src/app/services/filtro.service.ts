@@ -15,7 +15,8 @@ export class FiltroService {
     CIRCOM: '',
     NOMBRE: null,
     TRADES: null,
-    TIPDES: null
+    TIPDES: null,
+    SITDES: null
   };
 
   constructor(private storage: Storage) {
@@ -59,6 +60,7 @@ export class FiltroService {
     this.filtro.TRADES = null;
     this.filtro.TIPDES = null;
     this.filtro.NUBICA = null;
+    this.filtro.SITDES = null;
 
   }
 

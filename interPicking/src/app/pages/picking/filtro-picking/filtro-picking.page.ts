@@ -14,13 +14,14 @@ export class FiltroPickingPage implements OnInit {
   filtro: Filtro;
   circuito = '';
   clientes: string[];
+  sitios: string[];
   transportes: string[];
   tipoProductos: string[];
   tipoProducto = '';
 
   constructor(public filtroService: FiltroService,
-              public pickingService: PickingService,
-              private navCtrl: NavController) {
+    public pickingService: PickingService,
+    private navCtrl: NavController) {
 
     this.filtro = this.filtroService.inicializarFiltro('filtro-picking');
     this.prepararFiltros();
@@ -32,10 +33,11 @@ export class FiltroPickingPage implements OnInit {
   }
 
   prepararFiltros() {
-    
+
     this.prepararDatosClientes();
     this.prepararDatosTransporte();
     this.prepararDatosTipoProducto();
+    this.prepararDatosSitios();
   }
 
   guardarFiltro() {
@@ -60,6 +62,7 @@ export class FiltroPickingPage implements OnInit {
 
         if (!map.has(item.NOMBRE)
           && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.SITDES || this.filtro.SITDES && item['SITDES'].includes(this.filtro.SITDES) || this.filtro.SITDES.length === 0)
           && (!this.filtro.TRADES || this.filtro.TRADES && item['TRADES'].includes(this.filtro.TRADES) || this.filtro.TRADES.length === 0)
           && (!this.filtro.TIPDES || this.filtro.TIPDES && item['TIPDES'].includes(this.filtro.TIPDES) || this.filtro.TIPDES.length === 0)) {
 
@@ -74,57 +77,87 @@ export class FiltroPickingPage implements OnInit {
 
   }
 
-    prepararDatosTransporte() {
+  prepararDatosTransporte() {
 
-      this.transportes = [];
-      const map = new Map();
-  
-      if (this.pickingService.datos) {
-  
-        this.pickingService.datos.forEach(item => {
-  
-          // console.log(item.NOMBRE);
-  
-          if (!map.has(item.TRADES)
-            && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
-            && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)
-            && (!this.filtro.TIPDES || this.filtro.TIPDES && item['TIPDES'].includes(this.filtro.TIPDES) || this.filtro.TIPDES.length === 0)) {
-  
-            map.set(item.TRADES, true);    // set any value to Map
-            this.transportes.push(item.TRADES);
-          }
-        });
-  
-        this.transportes.sort();
-  
-      }
+    this.transportes = [];
+    const map = new Map();
+
+    if (this.pickingService.datos) {
+
+      this.pickingService.datos.forEach(item => {
+
+        // console.log(item.NOMBRE);
+
+        if (!map.has(item.TRADES)
+          && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.SITDES || this.filtro.SITDES && item['SITDES'].includes(this.filtro.SITDES) || this.filtro.SITDES.length === 0)
+          && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)
+          && (!this.filtro.TIPDES || this.filtro.TIPDES && item['TIPDES'].includes(this.filtro.TIPDES) || this.filtro.TIPDES.length === 0)) {
+
+          map.set(item.TRADES, true);    // set any value to Map
+          this.transportes.push(item.TRADES);
+        }
+      });
+
+      this.transportes.sort();
+
     }
-  
-  
-    prepararDatosTipoProducto() {
+  }
 
-      this.tipoProductos = [];
-      const map = new Map();
-  
-      if (this.pickingService.datos) {
-  
-        this.pickingService.datos.forEach(item => {
-  
-          // console.log(item.NOMBRE);
-  
-          if (!map.has(item.TIPDES)
-            && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
-            && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)
-            && (!this.filtro.TRADES || this.filtro.TRADES && item['TRADES'].includes(this.filtro.TRADES) || this.filtro.TRADES.length === 0)) {
-  
-            map.set(item.TIPDES, true);    // set any value to Map
-            this.tipoProductos.push(item.TIPDES);
-          }
-        });
-  
-        this.transportes.sort();
-  
-      }
+
+  prepararDatosTipoProducto() {
+
+    this.tipoProductos = [];
+    const map = new Map();
+
+    if (this.pickingService.datos) {
+
+      this.pickingService.datos.forEach(item => {
+
+        // console.log(item.NOMBRE);
+
+        if (!map.has(item.TIPDES)
+          && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.SITDES || this.filtro.SITDES && item['SITDES'].includes(this.filtro.SITDES) || this.filtro.SITDES.length === 0)
+          && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)
+          && (!this.filtro.TRADES || this.filtro.TRADES && item['TRADES'].includes(this.filtro.TRADES) || this.filtro.TRADES.length === 0)) {
+
+          map.set(item.TIPDES, true);    // set any value to Map
+          this.tipoProductos.push(item.TIPDES);
+        }
+      });
+
+      this.tipoProductos.sort();
+
+    }
+  }
+
+
+  prepararDatosSitios() {
+
+    this.sitios = [];
+    const map = new Map();
+
+    if (this.pickingService.datos) {
+
+      this.pickingService.datos.forEach(item => {
+
+        // console.log(item.NOMBRE);
+
+        if (!map.has(item.SITDES)
+          && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)
+          && (!this.filtro.TRADES || this.filtro.TRADES && item['TRADES'].includes(this.filtro.TRADES) || this.filtro.TRADES.length === 0)
+          && (!this.filtro.TIPDES || this.filtro.TIPDES && item['TIPDES'].includes(this.filtro.TIPDES) || this.filtro.TIPDES.length === 0)) {
+
+          map.set(item.SITDES, true);    // set any value to Map
+          this.sitios.push(item.SITDES);
+        }
+      });
+
+      this.sitios.sort();
+
+    }
   }
 
 }

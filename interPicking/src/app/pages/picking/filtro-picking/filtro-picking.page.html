@@ -18,6 +18,17 @@
 
         <ion-item>
 
+            <ion-label>Sitio</ion-label>
+
+            <ion-select interface="action-sheet " placeholder="" cancel-text="CANCELAR" [(ngModel)]="filtroService.filtro.SITDES">
+                <ion-select-option value="">TODOS</ion-select-option>
+                <ion-select-option *ngFor="let i of sitios" [value]="i">{{ i }}</ion-select-option>
+            </ion-select>
+
+        </ion-item>
+
+        <ion-item>
+
             <ion-label>Transportes</ion-label>
 
             <ion-select interface="action-sheet " placeholder="" cancel-text="CANCELAR" [(ngModel)]="filtroService.filtro.TRADES">

@@ -35,7 +35,7 @@
     </ion-label>
 
     <ion-note *ngIf="tipo === 'picking'" slot="end" color="{{ item.CNTPCK == 0 ? 'danger' : item.CANTID > item.CNTPCK ? 'warning' : 'success' }}">
-        {{ item.CNTPCK }} / {{ item.CANTID }}
+        {{ item.CNTPCK }} / {{ item.CNTFST }} / {{ item.CANTID }}
     </ion-note>
 
     <ion-note *ngIf="tipo === 'packing'" slot="end" color="{{ item.CNTPK2== 0 ? 'danger' : item.CANTID > item.CNTPK2 ? 'warning' : 'success' }}">

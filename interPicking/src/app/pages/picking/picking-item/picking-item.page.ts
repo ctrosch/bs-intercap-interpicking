@@ -20,6 +20,7 @@ export class PickingItemPage implements OnInit {
   item: any;
   codigoBarra: string;
   cantidadManual = 0;
+  cantidadFaltante = 0;
 
   cargando = false;
 
@@ -59,72 +60,104 @@ export class PickingItemPage implements OnInit {
 
     if (this.item) {
       this.cantidadManual = this.item.CNTPCK;
+      this.cantidadFaltante = this.item.CNTFST;
     }
 
     // console.log(this.item);
 
   }
 
-  add(key: number) {
+  add(key: number, tipoCantidad: string) {
 
-    if (key === 0 && this.cantidadManual === 0) {
-      return;
+    if (tipoCantidad === 'P') {
+
+      if (key === 0 && this.cantidadManual === 0) {
+        return;
+      }
+
+      this.cantidadManual = this.cantidadManual * 10 + key;
+
+      if (this.cantidadManual > this.item.cantidad + this.cantidadFaltante) {
+        this.cantidadManual = 0;
+      }
     }
 
-    this.cantidadManual = this.cantidadManual * 10 + key;
+    if (tipoCantidad === 'F') {
 
-    if (this.cantidadManual > this.item.cantidad) {
-      this.cantidadManual = 0;
+      if (key === 0 && this.cantidadFaltante === 0) {
+        return;
+      }
+
+      this.cantidadFaltante = this.cantidadFaltante * 10 + key;
+
+      if (this.cantidadFaltante > this.item.cantidad + this.cantidadManual) {
+        this.cantidadFaltante = 0;
+      }
+    }
+  }
+
+  clean(tipoCantidad: string) {
+
+    if (tipoCantidad === 'P') {
+
+      if (this.cantidadManual === 0) {
+        return;
+      }
+
+      if (this.cantidadManual < 10) {
+        this.cantidadManual = 0;
+        return;
+      }
+
+      this.cantidadManual = Number(String(this.cantidadManual).substring(0, String(this.cantidadManual).length - 1));
+    }
+
+    if (tipoCantidad === 'F') {
+
+      if (this.cantidadFaltante === 0) {
+        return;
+      }
+
+      if (this.cantidadFaltante < 10) {
+        this.cantidadFaltante = 0;
+        return;
+      }
+      this.cantidadFaltante = Number(String(this.cantidadFaltante).substring(0, String(this.cantidadFaltante).length - 1));
     }
 
   }
 
-  clean() {
+confirmar() {
 
-    if (this.cantidadManual === 0) {
-      return;
-    }
+  const resultado: boolean = this.pickingService.confirmarCantidad(this.item, Number(this.cantidadManual), Number(this.cantidadFaltante));
 
-    if (this.cantidadManual < 10) {
-      this.cantidadManual = 0;
-      return;
-    }
+  if (resultado) {
 
-    this.cantidadManual = Number(String(this.cantidadManual).substring(0, String(this.cantidadManual).length - 1));
+    this.item.USUARIO = this.usuario.USUARIO;
 
+    this.pickingService.confirmarItem(this.item)
+      .subscribe(resp => {
+        if (resp.ok) {
+
+          this.router.navigateByUrl('picking');
+
+        } else {
+          // swal({title: 'Error',text: 'Problemas para confirmar picking',icon: 'error',});
+        }
+      });
+    // }
   }
+}
 
-  confirmar() {
+resetCantidad() {
 
-    const resultado: boolean = this.pickingService.confirmarCantidad(this.item, Number(this.cantidadManual));
+  this.pickingService.resetCantidad(this.item);
+  this.cantidadManual = this.item.CNTPCK;
+}
 
-    if (resultado) {
+sendInfo() {
 
-      this.item.USUARIO = this.usuario.USUARIO;
-
-      this.pickingService.confirmarItem(this.item)
-        .subscribe(resp => {
-          if (resp.ok) {
-
-            this.router.navigateByUrl('picking');
-
-          } else {
-            // swal({title: 'Error',text: 'Problemas para confirmar picking',icon: 'error',});
-          }
-        });
-      // }
-    }
-  }
-
-  resetCantidad() {
-
-    this.pickingService.resetCantidad(this.item);
-    this.cantidadManual = this.item.CNTPCK;
-  }
-
-  sendInfo() {
-
-  }
+}
 
 
 }
