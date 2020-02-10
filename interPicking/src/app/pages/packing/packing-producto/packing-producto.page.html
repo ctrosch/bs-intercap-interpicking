@@ -59,7 +59,7 @@
     <ion-toolbar>
         <ion-buttons slot="end">
 
-            <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()"></ion-input>
+            <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()" autofocus="true"></ion-input>
 
             <ion-button shape="round" (click)="procesarCodigoManual()" color="success">
                 <ion-icon slot="icon-only" name="add"> </ion-icon>

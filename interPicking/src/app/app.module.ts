@@ -16,11 +16,12 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 import { IonicStorageModule } from '@ionic/storage';
 import { PipesModule } from './pipes/pipes.module';
+import { AutofocusDirective } from './directives/autofocus.directive';
 
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AutofocusDirective],
   entryComponents: [],
   imports: [BrowserModule,
     IonicModule.forRoot(),
