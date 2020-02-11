@@ -76,7 +76,7 @@ export class ItemProductoCantidadComponent implements OnInit {
 
   confirmar() {
 
-    const resultado: boolean = this.pickingService.confirmarCantidad(this.item, Number(this.cantidadManual));
+    const resultado: boolean = this.pickingService.confirmarCantidad(this.item, Number(this.cantidadManual) , 0);
 
     if (resultado) {
 
