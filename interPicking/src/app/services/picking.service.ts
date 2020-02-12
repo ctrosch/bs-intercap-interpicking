@@ -93,6 +93,7 @@ export class PickingService {
   resetCantidad(item: any) {
 
     item.CNTPCK = 0;
+    item.CNTFST = 0;
     item.ESTPCK = 'A';
   }
 

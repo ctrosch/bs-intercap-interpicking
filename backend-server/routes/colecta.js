@@ -28,12 +28,15 @@ app.get('/:usuario/:deposito', (req, res, next) => {
     request.input('deposito', mssql.NVarChar, deposito);
     request.input('usuario', mssql.NVarChar, usuario);
 
-    var sQuery = 'SELECT TOP 1000 * FROM PCK_PENDIENTE_PRODUCTO P ';
+    var sQuery = 'SELECT TOP 800 P.* FROM PCK_PENDIENTE_PRODUCTO P ';
     sQuery += ' WHERE P.DEPOSI = @deposito ';
-    // sQuery += ' AND P.SITIOS = @sitio  ';
     sQuery += ' AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario) ';
     sQuery += ' AND (ESTPCK = \'A\' ) ';
     sQuery += ' ORDER BY ' + sOrden;
+
+    //console.log(request);
+    //console.log(req.params);
+    //console.log(sQuery);
 
     request.query(sQuery, function(err, result) {
 
