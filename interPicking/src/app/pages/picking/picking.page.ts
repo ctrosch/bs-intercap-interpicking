@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { ToastController, IonSegment, NavController } from '@ionic/angular';
+import { IonSegment, NavController } from '@ionic/angular';
 import { PickingService } from '../../services/picking.service';
 import { LoadingController } from '@ionic/angular';
 import { Usuario } from '../../model/usuario';
@@ -44,6 +44,7 @@ export class PickingPage implements OnInit {
               public loadingController: LoadingController,
               private router: Router,
               private navCtrl: NavController) {
+
   }
 
   ngOnInit() {
@@ -134,7 +135,7 @@ export class PickingPage implements OnInit {
 
       this.datos.find(item => {
 
-        if (item.CNTPCK < item.CANTID) {
+        if (item.CNTPCK + item.CNTFST < item.CANTID) {
 
           item.CODBAR.split('|').find(i => {
 
