@@ -128,21 +128,27 @@ app.put('/', (req, res) => {
     request.input('ARTCOD', mssql.NVarChar, body.ARTCOD);
     request.input('CNTPCK', mssql.Int, body.CNTPCK);
     request.input('CNTFST', mssql.Int, body.CNTFST);
+    request.input('NUBICA', mssql.NVarChar, body.NUBICA);
+    request.input('NFECHA', mssql.NVarChar, body.NFECHA);
+    request.input('NDESPA', mssql.NVarChar, body.NDESPA);
     //request.input('ESTPCK', mssql.NVarChar, body.ESTPCK);
     //request.input('USRPCK', mssql.NVarChar, body.USRPCK);
     request.input('USRPCK', mssql.NVarChar, body.USUARIO);
 
     // console.log(body.USUARIO);
 
-    sQuery = 'UPDATE FCRMVI ';
-    sQuery += 'SET USR_FCRMVI_CNTPCK = @CNTPCK , USR_FCRMVI_CNTFST = @CNTFST, USR_FCRMVI_USRPCK = @USRPCK , USR_FCRMVI_ESTPCK = \'A\' ';
-    sQuery += ' WHERE FCRMVI_MODAPL = @MODFOR ';
-    sQuery += ' AND FCRMVI_CODAPL = @CODFOR ';
-    sQuery += ' AND FCRMVI_NROAPL = @NROFOR ';
-    sQuery += ' AND FCRMVI_ITMAPL = @NROITM ';
-    sQuery += ' AND FCRMVI_EXPAPL = @NIVEXP ';
-    sQuery += ' AND FCRMVI_TIPPRO = @TIPPRO ';
-    sQuery += ' AND FCRMVI_ARTCOD = @ARTCOD ';
+    sQuery = 'UPDATE FCRMVP ';
+    sQuery += 'SET USR_FCRMVP_CNTPCK = @CNTPCK , USR_FCRMVP_CNTFST = @CNTFST, USR_FCRMVP_USRPCK = @USRPCK , USR_FCRMVP_ESTPCK = \'A\' ';
+    sQuery += ' WHERE FCRMVP_MODAPL = @MODFOR ';
+    sQuery += ' AND FCRMVP_CODAPL = @CODFOR ';
+    sQuery += ' AND FCRMVP_NROAPL = @NROFOR ';
+    sQuery += ' AND FCRMVP_ITMAPL = @NROITM ';
+    sQuery += ' AND FCRMVP_EXPAPL = @NIVEXP ';
+    sQuery += ' AND FCRMVP_TIPPRO = @TIPPRO ';
+    sQuery += ' AND FCRMVP_ARTCOD = @ARTCOD ';
+    sQuery += ' AND FCRMVP_NUBICA = @NUBICA ';
+    sQuery += ' AND FCRMVP_NFECHA = @NFECHA ';
+    sQuery += ' AND FCRMVP_NDESPA = @NDESPA ';
 
     request.query(sQuery, function(err, result) {
 
@@ -186,12 +192,12 @@ app.put('/confirmar', (req, res) => {
 
     request.input('USRPCK', mssql.NVarChar, body.usuario);
 
-    sQuery = 'UPDATE FCRMVI ';
-    sQuery += 'SET USR_FCRMVI_ESTPCK = \'B\'  ';
-    sQuery += ' WHERE USR_FCRMVI_USRPCK = @USRPCK  ';
-    sQuery += ' AND FCRMVI_CANTID = USR_FCRMVI_CNTPCK + USR_FCRMVI_CNTFST ';
-    sQuery += ' AND FCRMVI_FECALT > \'20191201\' ';
-    sQuery += ' AND USR_FCRMVI_ESTPCK = \'A\' ';
+    sQuery = 'UPDATE FCRMVP ';
+    sQuery += 'SET USR_FCRMVP_ESTPCK = \'B\'  ';
+    sQuery += ' WHERE USR_FCRMVP_USRPCK = @USRPCK  ';
+    sQuery += ' AND FCRMVP_CANTID = USR_FCRMVP_CNTPCK + USR_FCRMVP_CNTFST ';
+    sQuery += ' AND FCRMVP_FECALT > \'20200101\' ';
+    sQuery += ' AND USR_FCRMVP_ESTPCK = \'A\' ';
     // sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
 
     // console.log(body.usuario);

@@ -167,26 +167,32 @@ app.put('/', (req, res) => {
     request.input('TIPPRO', mssql.NVarChar, body.TIPPRO);
     request.input('ARTCOD', mssql.NVarChar, body.ARTCOD);
     request.input('CNTPK2', mssql.Int, body.CNTPK2);
+    request.input('NUBICA', mssql.NVarChar, body.NUBICA);
+    request.input('NFECHA', mssql.NVarChar, body.NFECHA);
+    request.input('NDESPA', mssql.NVarChar, body.NDESPA);
     //request.input('ESTPCK', mssql.NVarChar, body.ESTPCK);
     //request.input('USRPCK', mssql.NVarChar, body.USRPCK);
     request.input('USRPK2', mssql.NVarChar, body.USUARIO);
 
-    sQuery = ' UPDATE FCRMVI ';
-    sQuery += ' SET USR_FCRMVI_CNTPK2 = @CNTPK2 , USR_FCRMVI_USRPK2 = @USRPK2, USR_FCRMVI_ESTPK2 = \'A\' ';
-    sQuery += ' WHERE FCRMVI_MODAPL = @MODFOR ';
-    sQuery += ' AND FCRMVI_CODAPL = @CODFOR ';
-    sQuery += ' AND FCRMVI_NROAPL = @NROFOR ';
-    sQuery += ' AND FCRMVI_ITMAPL = @NROITM ';
-    sQuery += ' AND FCRMVI_EXPAPL = @NIVEXP ';
-    sQuery += ' AND FCRMVI_TIPPRO = @TIPPRO ';
-    sQuery += ' AND FCRMVI_ARTCOD = @ARTCOD ';
+    sQuery = ' UPDATE FCRMVP ';
+    sQuery += ' SET USR_FCRMVP_CNTPK2 = @CNTPK2 , USR_FCRMVP_USRPK2 = @USRPK2, USR_FCRMVP_ESTPK2 = \'A\' ';
+    sQuery += ' WHERE FCRMVP_MODAPL = @MODFOR ';
+    sQuery += ' AND FCRMVP_CODAPL = @CODFOR ';
+    sQuery += ' AND FCRMVP_NROAPL = @NROFOR ';
+    sQuery += ' AND FCRMVP_ITMAPL = @NROITM ';
+    sQuery += ' AND FCRMVP_EXPAPL = @NIVEXP ';
+    sQuery += ' AND FCRMVP_TIPPRO = @TIPPRO ';
+    sQuery += ' AND FCRMVP_ARTCOD = @ARTCOD ';
+    sQuery += ' AND FCRMVP_NUBICA = @NUBICA ';
+    sQuery += ' AND FCRMVP_NFECHA = @NFECHA ';
+    sQuery += ' AND FCRMVP_NDESPA = @NDESPA ';
 
     request.query(sQuery, function(err, result) {
 
         if (err) {
             return res.status(500).json({
                 ok: false,
-                mensaje: 'Error actualizando cantidades picking',
+                mensaje: 'Error actualizando cantidades packing',
                 errors: err
             });
         }
@@ -194,8 +200,8 @@ app.put('/', (req, res) => {
         if (!result) {
             return res.status(400).json({
                 ok: false,
-                mensaje: 'Error actualizando cantidades picking',
-                errors: { message: 'Error actualizando cantidades picking' + body }
+                mensaje: 'Error actualizando cantidades packing',
+                errors: { message: 'Error actualizando cantidades packing' + body }
             });
         }
 
@@ -222,11 +228,11 @@ app.put('/confirmar', (req, res) => {
 
     request.input('USRPK2', mssql.NVarChar, body.usuario);
 
-    sQuery = 'UPDATE FCRMVI ';
-    sQuery += 'SET USR_FCRMVI_ESTPK2 = \'B\'  ';
-    sQuery += ' WHERE  USR_FCRMVI_USRPK2 = @USRPK2 ';
-    sQuery += ' AND FCRMVI_CANTID = USR_FCRMVI_CNTPK2';
-    sQuery += ' AND USR_FCRMVI_ESTPK2 = \'A\'  ';
+    sQuery = 'UPDATE FCRMVP ';
+    sQuery += 'SET USR_FCRMVP_ESTPK2 = \'B\'  ';
+    sQuery += ' WHERE  USR_FCRMVP_USRPK2 = @USRPK2 ';
+    sQuery += ' AND FCRMVP_CANTID = USR_FCRMVP_CNTPK2';
+    sQuery += ' AND USR_FCRMVP_ESTPK2 = \'A\'  ';
     // sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
 
 
