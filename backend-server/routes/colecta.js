@@ -150,6 +150,8 @@ app.put('/', (req, res) => {
     sQuery += ' AND FCRMVP_NFECHA = @NFECHA ';
     sQuery += ' AND FCRMVP_NDESPA = @NDESPA ';
 
+
+
     request.query(sQuery, function(err, result) {
 
         if (err) {
