@@ -18,6 +18,9 @@ import { IonicStorageModule } from '@ionic/storage';
 import { PipesModule } from './pipes/pipes.module';
 import { AutofocusDirective } from './directives/autofocus.directive';
 
+import { AppUpdate } from '@ionic-native/app-update/ngx';
+import { AppVersion } from '@ionic-native/app-version/ngx';
+
 
 
 @NgModule({
@@ -34,6 +37,8 @@ import { AutofocusDirective } from './directives/autofocus.directive';
     StatusBar,
     SplashScreen,
     BarcodeScanner,
+    AppUpdate,
+    AppVersion,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
