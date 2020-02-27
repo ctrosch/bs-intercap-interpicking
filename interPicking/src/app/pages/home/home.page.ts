@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { UsuarioService } from '../../services/usuario.service';
 import { Usuario } from '../../model/usuario';
+import { AppUpdate } from '@ionic-native/app-update/ngx';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +12,7 @@ import { Usuario } from '../../model/usuario';
 export class HomePage implements OnInit {
 
   usuario: Usuario = {};
+  version: string;
 
   componentes: Componente[] = [
     {
@@ -51,7 +53,14 @@ export class HomePage implements OnInit {
   ];
 
   constructor(private menuController: MenuController,
-              private usuarioService: UsuarioService) { }
+              private usuarioService: UsuarioService,
+              private appUpdate: AppUpdate) {
+    
+      const updateUrl = 'http://beansoft.com.ar/app/update.xml';
+      this.appUpdate.checkAppUpdate(updateUrl).then(() => { console.log('Actualización disponible ') });    
+    
+
+  }
 
   ngOnInit() {
 

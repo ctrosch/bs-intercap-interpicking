@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../services/usuario.service';
 import { Usuario } from '../../model/usuario';
 import { resolve } from 'url';
+import { AppVersion } from '@ionic-native/app-version/ngx';
 
 @Component({
   selector: 'app-menu',
@@ -11,8 +12,18 @@ import { resolve } from 'url';
 export class MenuComponent implements OnInit {
 
   usuario: Usuario = {};
+  version: string;
 
-  constructor(private usuarioService: UsuarioService) { }
+  constructor(private usuarioService: UsuarioService,private appVersion: AppVersion) { 
+
+    this.appVersion.getVersionNumber().then(value => {
+      this.version = value;
+    }).catch(err => {
+      
+    });
+
+
+  }
 
   ngOnInit() {
 
