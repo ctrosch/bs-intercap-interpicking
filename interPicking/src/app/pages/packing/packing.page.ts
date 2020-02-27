@@ -142,11 +142,13 @@ export class PackingPage implements OnInit {
 
     if (codigoBarra !== undefined) {
 
+      codigoBarra = codigoBarra.trim();
+
       this.datos.find(item => {
 
         item.CODBAR.split('|').find(i => {
 
-          if (i === codigoBarra) {
+          if (i.trim() === codigoBarra) {
             this.seleccionarItem(item);
           }
 

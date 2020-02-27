@@ -131,6 +131,8 @@ export class PickingPage implements OnInit {
 
     if (codigoBarra !== undefined) {
 
+      codigoBarra = codigoBarra.trim();
+
       let itemEncontrado: any;
 
       this.datos.find(item => {
@@ -139,7 +141,7 @@ export class PickingPage implements OnInit {
 
           item.CODBAR.split('|').find(i => {
 
-            if (i === codigoBarra ) {
+            if (i.trim() === codigoBarra ) {
               itemEncontrado = item;
             }
           });

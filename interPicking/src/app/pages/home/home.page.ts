@@ -29,10 +29,10 @@ export class HomePage implements OnInit {
     },
     {
       icon: 'beaker',
-      name: 'Recepción',
+      name: 'Reposición',
       imagen: '/assets/img/recepcion.png',
-      redirectTo: '/recepcion',
-      detalle: 'Recibir mercadería que envían los proveedores'
+      redirectTo: '/reposicion',
+      detalle: 'Enviar mercadería que envían otras sucursales'
     },
     {
       icon: 'radio-button-on',
@@ -40,7 +40,14 @@ export class HomePage implements OnInit {
       imagen: '/assets/img/inventario.png',
       redirectTo: '/toma-inventario',
       detalle: 'Realizar toma de inventario'
-    }
+    },
+    {
+      icon: 'beaker',
+      name: 'Recepción',
+      imagen: '/assets/img/recepcion.png',
+      redirectTo: '/recepcion',
+      detalle: 'Recibir mercadería de proveedores'
+    },
   ];
 
   constructor(private menuController: MenuController,
