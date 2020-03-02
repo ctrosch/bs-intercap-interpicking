@@ -40,8 +40,25 @@ const routes: Routes = [
   { path: 'usuario', loadChildren: './pages/usuario/usuario.module#UsuarioPageModule' },   { path: 'packing-item', loadChildren: './pages/packing/packing-item/packing-item.module#PackingItemPageModule' },
   { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
   { path: 'filtro', loadChildren: './pages/filtro/filtro.module#FiltroPageModule' },
-  { path: 'filtro-picking', loadChildren: './pages/picking/filtro-picking/filtro-picking.module#FiltroPickingPageModule' },
-  { path: 'filtro-packing', loadChildren: './pages/packing/filtro-packing/filtro-packing.module#FiltroPackingPageModule' }
+  { path: 'filtro-picking', 
+    loadChildren: './pages/picking/filtro-picking/filtro-picking.module#FiltroPickingPageModule',
+    canLoad:[UsuarioGuard] },
+  { path: 'filtro-packing', 
+    loadChildren: './pages/packing/filtro-packing/filtro-packing.module#FiltroPackingPageModule',
+    canLoad:[UsuarioGuard] },
+  { path: 'reposicion', 
+    loadChildren: './pages/reposicion/reposicion.module#ReposicionPageModule',
+    canLoad:[UsuarioGuard] },
+  { path: 'filtro-reposicion', 
+    loadChildren: './pages/reposicion/filtro-reposicion/filtro-reposicion.module#FiltroReposicionPageModule',
+    canLoad:[UsuarioGuard] },
+  { path: 'reposicion-item/:id', 
+    loadChildren: './pages/reposicion/reposicion-item/reposicion-item.module#ReposicionItemPageModule',
+    canLoad:[UsuarioGuard] },
+  { path: 'reposicion-producto/:id', 
+    loadChildren: './pages/reposicion/reposicion-producto/reposicion-producto.module#ReposicionProductoPageModule',
+    canLoad:[UsuarioGuard] }
+
 
 
 

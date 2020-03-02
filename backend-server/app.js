@@ -26,6 +26,7 @@ app.use(function(req, res, next) {
 var appRoutes = require('./routes/app');
 var colectaRoutes = require('./routes/colecta');
 var packingRoutes = require('./routes/packing');
+var reposicionRoutes = require('./routes/reposicion');
 var usuarioRoutes = require('./routes/usuario');
 var loginRoutes = require('./routes/login');
 
@@ -51,6 +52,7 @@ var connection = mssql.connect(config, function(err, res) {
 // Rutas
 app.use('/colecta', colectaRoutes);
 app.use('/packing', packingRoutes);
+app.use('/reposicion', reposicionRoutes);
 app.use('/usuario', usuarioRoutes);
 app.use('/login', loginRoutes);
 app.use('/', appRoutes);

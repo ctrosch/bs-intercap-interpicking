@@ -1,0 +1,49 @@
+<app-header titulo="Reposición" [cargando]="cargando" filtro="reposicion"></app-header>
+
+<ion-toolbar>
+    <ion-segment #segmento (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="pendientes" size="small">
+            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtroPendienteSitio: true : filtroService.filtro).length }} )</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="completados">
+            <ion-label *ngIf="datos">Completados ( {{ (datos | filtroPendienteSitio: false : filtroService.filtro).length }} )</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+</ion-toolbar>
+
+<ion-content>
+
+    <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list *ngIf="!cargando">
+
+        <ion-item *ngFor="let i of datos | filtroPendienteSitio: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
+
+            <ion-label>
+                <h2>{{ i.SITDES_DESCRP }}</h2>
+                <p>{{ i.CODFOR }} - {{ i.NROFOR }} - {{ i.FCHMOV | date: 'dd/MM/yy' }} </p>
+
+            </ion-label>
+
+            <ion-chip slot="end" color="{{ i.CNTPCK == 0 ? 'danger' :  i.CANTID > i.CNTPCK ? 'warning' : 'success' }}">
+                <ion-label>
+                    {{ i.CNTPCK }} / {{ i.CNTFST }} / {{ i.CANTID }}
+                </ion-label>
+            </ion-chip>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+
+    <ion-toolbar *ngIf="segment.value === 'completados'">
+
+        <ion-button (click)="confirmarReposicion()" color="primary" expand="full">
+            <ion-icon slot="start" name="send"></ion-icon>
+            Confirmar Reposición
+        </ion-button>
+
+    </ion-toolbar>
+</ion-footer>

@@ -2,19 +2,19 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { IonSegment, LoadingController, NavController } from '@ionic/angular';
-import { PackingService } from '../../services/packing.service';
 import { Usuario } from '../../model/usuario';
 import { UsuarioService } from '../../services/usuario.service';
 import { UiServiceService } from '../../services/ui-service.service';
 import { FiltroService } from '../../services/filtro.service';
 import { Filtro } from '../../model/filtro';
+import { ReposicionService } from '../../services/reposicion.service';
 
 @Component({
-  selector: 'app-packing',
-  templateUrl: './packing.page.html',
-  styleUrls: ['./packing.page.scss'],
+  selector: 'app-reposicion',
+  templateUrl: './reposicion.page.html',
+  styleUrls: ['./reposicion.page.scss'],
 })
-export class PackingPage implements OnInit {
+export class ReposicionPage implements OnInit {
 
   @ViewChild(IonSegment, {static: true}) segment: IonSegment;
 
@@ -31,7 +31,7 @@ export class PackingPage implements OnInit {
 
   circuito: string;
 
-  constructor(private packingService: PackingService,
+  constructor(private reposicionService: ReposicionService,
               private usuarioService: UsuarioService,
               public filtroService: FiltroService,
               private uiService: UiServiceService,
@@ -44,7 +44,7 @@ export class PackingPage implements OnInit {
 
   ngOnInit() {
 
-    this.filtro = this.filtroService.inicializarFiltro('filtro-picking');
+    this.filtro = this.filtroService.inicializarFiltro('filtro-reposicion');
     this.usuario = this.usuarioService.getUsuario();
 
     if (this.segment) {
@@ -68,19 +68,19 @@ export class PackingPage implements OnInit {
       this.segment.value = 'pendientes';
     }
 
-    this.packingService.getPendientes(this.usuario.USUARIO, this.usuario.DEPOSITO)
+    this.reposicionService.getPendientes(this.usuario.USUARIO, this.usuario.DEPOSITO)
       .subscribe((resp: any) => {
 
         if (resp.ok) {
 
           this.datos = resp.packing;
-          this.packingService.datos = this.datos;
+          this.reposicionService.datos = this.datos;
 
           if (event) {
             event.target.complete();
           }
         } else {
-          this.uiService.alertaInformativa('No hay pendientes de packing en estos momentos');
+          this.uiService.alertaInformativa('No hay pendientes de reposición en estos momentos');
           this.navCtrl.navigateRoot('/home', { animated: true });
 
         }
@@ -98,15 +98,15 @@ export class PackingPage implements OnInit {
 
   seleccionarItem(i: any) {
 
-    this.packingService.item = i;
-    this.router.navigateByUrl('packing-producto/' + i.ID);
+    this.reposicionService.item = i;
+    this.router.navigateByUrl('reposicion-producto/' + i.MODFOR + i.CODFOR + i.NROFOR);
   }
 
-  confirmarPacking() {
+  confirmarReposicion() {
 
     this.presentLoading();
 
-    this.packingService.confirmarPacking(this.usuario.USUARIO)
+    this.reposicionService.confirmarReposicion(this.usuario.USUARIO)
       .subscribe(resp => {
 
         console.log(resp);
@@ -140,21 +140,38 @@ export class PackingPage implements OnInit {
 
   procesarCodigoBarra(codigoBarra: string) {
 
-    if (codigoBarra !== undefined && codigoBarra.length > 0) {
-
+    if (codigoBarra === undefined) {
+      this.uiService.presentToast('Código de barra vacío');
+      return;
+    } else {
+      codigoBarra = codigoBarra.replace('\n', '');
       codigoBarra = codigoBarra.trim();
+    }
+
+    if (codigoBarra.length > 0) {
+
+      let itemEncontrado: any;
 
       this.datos.find(item => {
 
-        item.CODBAR.split('|').find(i => {
+        if (item.CNTPCK + item.CNTFST < item.CANTID) {
 
-          if (i.trim() === codigoBarra) {
-            this.seleccionarItem(item);
-          }
+          item.CODBAR.split('|').find(i => {
 
-        });
+            if (i.trim() === codigoBarra) {
+              itemEncontrado = item;
+              return;
+            }
+          });
+        }
 
       });
+
+      if (itemEncontrado) {
+        this.seleccionarItem(itemEncontrado);
+      } else {
+        this.uiService.alertaInformativa('No se encontró producto con el código de barra ' + codigoBarra);
+      }
 
     } else {
       this.uiService.presentToast('Código de barra vacío');

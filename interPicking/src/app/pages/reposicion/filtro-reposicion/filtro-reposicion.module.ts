@@ -5,14 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PickingPage } from './picking.page';
-import { ComponentsModule } from '../../components/components.module';
-import { PipesModule } from '../../pipes/pipes.module';
+import { FiltroReposicionPage } from './filtro-reposicion.page';
+import { ComponentsModule } from '../../../components/components.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: PickingPage
+    component: FiltroReposicionPage
   }
 ];
 
@@ -21,10 +20,9 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes),
     ComponentsModule,
-    PipesModule
+    RouterModule.forChild(routes)
   ],
-  declarations: [PickingPage]
+  declarations: [FiltroReposicionPage]
 })
-export class PickingPageModule {}
+export class FiltroReposicionPageModule {}

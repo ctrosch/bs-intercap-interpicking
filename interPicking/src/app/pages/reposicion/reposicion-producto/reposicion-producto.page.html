@@ -1,0 +1,74 @@
+<ion-header no-border="no-border">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/reposicion" [routerLink]="['/reposicion']"></ion-back-button>
+        </ion-buttons>
+
+        <ion-title ion-text-capitalize="ion-text-capitalize">{{ item.SITDES_DESCRP }} </ion-title>
+
+        <ion-buttons slot="end">
+            <!-- Circles -->
+            <ion-spinner *ngIf="cargando" name="crescent" color="success"></ion-spinner>
+
+        </ion-buttons>
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-toolbar>
+
+    <ion-list *ngIf="!cargando">
+        <ion-item>
+            <ion-label>
+                <h2>{{ item.SITDES_DESCRP }}</h2>
+                <p class="primary">{{ item.CODFOR }} - {{ item.NROFOR }}</p>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+
+    <ion-segment #segmento (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="pendientes" size="small">
+            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtroPendienteSitio: true : filtroService.filtro).length }} )</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="completados">
+            <ion-label *ngIf="datos">Completados ( {{ (datos | filtroPendienteSitio: false : filtroService.filtro).length }} )</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+
+</ion-toolbar>
+
+<ion-content>
+
+    <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list *ngIf="!cargando">
+
+        <ion-item-group *ngFor="let i of datos | filtroPendienteSitio: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
+
+            <app-item-producto [item]="i" tipo="packing"></app-item-producto>
+
+        </ion-item-group>
+
+    </ion-list>
+
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-buttons slot="end">
+
+            <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()" autofocus="true"></ion-input>
+
+            <ion-button shape="round" (click)="procesarCodigoManual()" color="success">
+                <ion-icon slot="icon-only" name="add"> </ion-icon>
+            </ion-button>
+
+            <ion-button shape="round" (click)="scanCode()" color="primary">
+                <ion-icon slot="icon-only" name="barcode"></ion-icon>
+            </ion-button>
+
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

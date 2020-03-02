@@ -19,7 +19,7 @@ import { Filtro } from '../../model/filtro';
 export class PickingPage implements OnInit {
 
   @ViewChild(IonSegment, { static: true }) segment: IonSegment;
-  
+
   usuario: Usuario = {};
 
   pendiente = true;
@@ -37,13 +37,13 @@ export class PickingPage implements OnInit {
 
 
   constructor(private pickingService: PickingService,
-              private usuarioService: UsuarioService,
-              private uiService: UiServiceService,
-              public filtroService: FiltroService,
-              private barcodeScanner: BarcodeScanner,
-              public loadingController: LoadingController,
-              private router: Router,
-              private navCtrl: NavController) {
+    private usuarioService: UsuarioService,
+    private uiService: UiServiceService,
+    public filtroService: FiltroService,
+    private barcodeScanner: BarcodeScanner,
+    public loadingController: LoadingController,
+    private router: Router,
+    private navCtrl: NavController) {
 
   }
 
@@ -64,7 +64,7 @@ export class PickingPage implements OnInit {
 
   }
 
-  cargarPendientes( event? ) {
+  cargarPendientes(event?) {
 
     this.cargando = true;
 
@@ -79,13 +79,13 @@ export class PickingPage implements OnInit {
 
           this.datos = resp.colecta;
           this.pickingService.datos = this.datos;
-          
+
           if (event) {
             event.target.complete();
           }
 
         } else {
-          
+
           this.uiService.alertaInformativa('No hay pendientes de colecta en estos momentos');
           this.navCtrl.navigateRoot('/home', { animated: true });
         }
@@ -111,11 +111,11 @@ export class PickingPage implements OnInit {
   scanCode() {
 
     this.barcodeScanner.scan().then(barcodeData => {
-      
+
       this.procesarCodigoBarra(barcodeData.text);
 
     }).catch(err => {
-      
+
       // swal({title: 'Error',text: 'Error leyendo código de barra',icon: 'error',});
     });
   }
@@ -129,9 +129,19 @@ export class PickingPage implements OnInit {
 
   procesarCodigoBarra(codigoBarra: string) {
 
-    if (codigoBarra !== undefined) {
+    console.log("Codigo de barra leido: " + codigoBarra);
 
+    if (codigoBarra === undefined) {
+      this.uiService.presentToast('Código de barra vacío');
+      return;
+    } else {
+      codigoBarra = codigoBarra.replace('\n', '');
       codigoBarra = codigoBarra.trim();
+    }
+
+    if (codigoBarra.length > 0) {
+
+      console.log('Codigo de barra limpio: ' + codigoBarra);
 
       let itemEncontrado: any;
 
@@ -139,10 +149,15 @@ export class PickingPage implements OnInit {
 
         if (item.CNTPCK + item.CNTFST < item.CANTID) {
 
+          console.log('Codigo de barra item: ' + item.CODBAR);
+
           item.CODBAR.split('|').find(i => {
 
-            if (i.trim() === codigoBarra ) {
+            console.log('Codigo de barra disponible: ' + i);
+
+            if (i.trim() === codigoBarra) {
               itemEncontrado = item;
+              return;
             }
           });
         }
@@ -174,7 +189,7 @@ export class PickingPage implements OnInit {
 
           this.cargarPendientes();
           this.procesando.dismiss();
-          
+
 
           // swal("Picking confirmado","Los productos fueron confirmados correctamente","success").then(value => {});
         } else {

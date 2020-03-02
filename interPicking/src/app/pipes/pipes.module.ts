@@ -8,12 +8,27 @@ import { FiltroPickingPipe } from './filtro-picking.pipe';
 import { FiltroPackingClientePipe } from './filtro-packing-cliente.pipe';
 import { FiltroPackingProductoPipe } from './filtro-packing-producto.pipe';
 import { CapitalizePipe } from './capitalize.pipe';
+import { FiltroPendienteSitioPipe } from './filtro-pendiente-sitio.pipe';
 
 
 
 @NgModule({
-  declarations: [DomSanitizerPipe, FiltroPendientesPipe, FiltroPendienteClientePipe, FiltroPickingPipe, FiltroPackingClientePipe, FiltroPackingProductoPipe, CapitalizePipe],
+  declarations: [
+    DomSanitizerPipe,
+    FiltroPendientesPipe,
+    FiltroPendienteClientePipe,
+    FiltroPickingPipe,
+    FiltroPackingClientePipe, 
+    FiltroPackingProductoPipe, 
+    CapitalizePipe, 
+    FiltroPendienteSitioPipe],
   imports: [CommonModule],
-  exports:[DomSanitizerPipe, FiltroPendientesPipe, FiltroPendienteClientePipe,FiltroPickingPipe,FiltroPackingClientePipe,FiltroPackingProductoPipe]
+  exports: [DomSanitizerPipe, 
+    FiltroPendientesPipe, 
+    FiltroPendienteClientePipe,
+    FiltroPickingPipe, 
+    FiltroPackingClientePipe,
+    FiltroPackingProductoPipe,
+    FiltroPendienteSitioPipe]
 })
 export class PipesModule { }
