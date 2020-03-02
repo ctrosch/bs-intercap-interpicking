@@ -4,10 +4,10 @@
 
     <ion-segment #segmento (ionChange)="segmentChanged($event)">
         <ion-segment-button value="pendientes" size="small">
-            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtroPicking: true : filtroService.filtro).length }} )</ion-label>
+            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtro: true : filtroService.filtro).length }} )</ion-label>
         </ion-segment-button>
         <ion-segment-button value="completados">
-            <ion-label *ngIf="datos">Completados ( {{ (datos | filtroPicking: false : filtroService.filtro).length }} )</ion-label>
+            <ion-label *ngIf="datos">Completados ( {{ (datos | filtro: false : filtroService.filtro).length }} )</ion-label>
         </ion-segment-button>
     </ion-segment>
 
@@ -21,7 +21,7 @@
 
     <ion-list *ngIf="!cargando">
 
-        <ion-item-group *ngFor="let i of datos | filtroPicking: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
+        <ion-item-group *ngFor="let i of datos | filtro: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
 
             <app-item-producto [item]="i" tipo="picking"></app-item-producto>
 

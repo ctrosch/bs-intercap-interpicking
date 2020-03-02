@@ -4,7 +4,7 @@
             <ion-back-button defaultHref="/reposicion" [routerLink]="['/reposicion']"></ion-back-button>
         </ion-buttons>
 
-        <ion-title ion-text-capitalize="ion-text-capitalize">{{ item.SITDES_DESCRP }} </ion-title>
+        <ion-title ion-text-capitalize="ion-text-capitalize">{{ item.SITDES_DESCRP }} | {{ item.CODFOR }} - {{ item.NROFOR }} </ion-title>
 
         <ion-buttons slot="end">
             <!-- Circles -->
@@ -17,21 +17,12 @@
 
 <ion-toolbar>
 
-    <ion-list *ngIf="!cargando">
-        <ion-item>
-            <ion-label>
-                <h2>{{ item.SITDES_DESCRP }}</h2>
-                <p class="primary">{{ item.CODFOR }} - {{ item.NROFOR }}</p>
-            </ion-label>
-        </ion-item>
-    </ion-list>
-
     <ion-segment #segmento (ionChange)="segmentChanged($event)">
         <ion-segment-button value="pendientes" size="small">
-            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtroPendienteSitio: true : filtroService.filtro).length }} )</ion-label>
+            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtro: true : filtroService.filtro).length }} )</ion-label>
         </ion-segment-button>
         <ion-segment-button value="completados">
-            <ion-label *ngIf="datos">Completados ( {{ (datos | filtroPendienteSitio: false : filtroService.filtro).length }} )</ion-label>
+            <ion-label *ngIf="datos">Completados ( {{ (datos | filtro: false : filtroService.filtro).length }} )</ion-label>
         </ion-segment-button>
     </ion-segment>
 
@@ -45,9 +36,9 @@
 
     <ion-list *ngIf="!cargando">
 
-        <ion-item-group *ngFor="let i of datos | filtroPendienteSitio: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
+        <ion-item-group *ngFor="let i of datos | filtro: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
 
-            <app-item-producto [item]="i" tipo="packing"></app-item-producto>
+            <app-item-producto [item]="i" tipo="reposicion"></app-item-producto>
 
         </ion-item-group>
 

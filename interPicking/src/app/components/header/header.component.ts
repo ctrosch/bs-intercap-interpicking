@@ -32,6 +32,18 @@ export class HeaderComponent implements OnInit {
       this.router.navigateByUrl('filtro-packing');  
     }
 
+    if (this.filtro === 'reposicion') {
+      this.router.navigateByUrl('filtro-reposicion');  
+    }
+
+    if (this.filtro === 'recepcion') {
+      this.router.navigateByUrl('filtro-recepcion');  
+    }
+
+    if (this.filtro === 'toma-inventario') {
+      this.router.navigateByUrl('toma-inventario');  
+    }
+
     
   }
 

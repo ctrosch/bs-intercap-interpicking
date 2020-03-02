@@ -69,7 +69,7 @@ export class ReposicionProductoPage implements OnInit {
 
         if (resp.ok) {
 
-          this.datos = resp.reposicion;
+          this.datos = resp.datos;
 
           if (event) {
             event.target.complete();

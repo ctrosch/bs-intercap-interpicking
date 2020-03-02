@@ -16,8 +16,6 @@ import { ReposicionService } from '../../services/reposicion.service';
 })
 export class ReposicionPage implements OnInit {
 
-  @ViewChild(IonSegment, {static: true}) segment: IonSegment;
-
   usuario: Usuario = {};
 
   pendiente = true;
@@ -46,12 +44,7 @@ export class ReposicionPage implements OnInit {
 
     this.filtro = this.filtroService.inicializarFiltro('filtro-reposicion');
     this.usuario = this.usuarioService.getUsuario();
-
-    if (this.segment) {
-      this.segment.value = 'pendientes';
-    }
-
-    // this.cargarPendientes();
+    
   }
 
   ionViewDidEnter() {
@@ -63,10 +56,6 @@ export class ReposicionPage implements OnInit {
   cargarPendientes( event? ) {
 
     this.cargando = true;
-
-    if (this.segment) {
-      this.segment.value = 'pendientes';
-    }
 
     this.reposicionService.getPendientes(this.usuario.USUARIO, this.usuario.DEPOSITO)
       .subscribe((resp: any) => {
@@ -130,12 +119,6 @@ export class ReposicionPage implements OnInit {
       message: 'Procesando información'
     });
     return this.procesando.present();
-  }
-
-  segmentChanged(event) {
-
-    this.pendiente = (this.segment.value === 'pendientes');
-
   }
 
   procesarCodigoBarra(codigoBarra: string) {

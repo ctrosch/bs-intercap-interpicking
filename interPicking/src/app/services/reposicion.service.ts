@@ -34,7 +34,7 @@ export class ReposicionService {
       return;
     }
 
-    const url = URL_REST + '/reposicion/items/' + item.MODFOR + '/' + item.CODFOR + '/' + item.NROFOR;
+    const url = URL_REST + '/reposicion/items/' + item.MODFOR.trim() + '/' + item.CODFOR.trim() + '/' + item.NROFOR;
     return this.http.get(url);
 
   }
@@ -50,25 +50,25 @@ export class ReposicionService {
 
   }
 
-  confirmarCantidad(item: any, cantidad: number) {
+  confirmarCantidad(item: any, cantidad: number, faltante: number) {
 
     if (item === undefined) {
       this.uiService.alertaInformativa('No se encontró producto');
-      return;
+      return false;
     }
 
-    if (cantidad <= item.CANTID) {
+    if (cantidad + faltante <= item.CANTID) {
 
       item.CNTPCK = cantidad;
+      item.CNTFST = faltante;
 
       this.uiService.presentToast('Producto registrado');
-
       return true;
+
     } else {
       this.uiService.presentToast('El valor para cantidad no puede ser mayor a lo solicitado');
       return false;
     }
-
   }
 
   confirmarItem(item: any) {

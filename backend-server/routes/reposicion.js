@@ -141,11 +141,11 @@ app.get('/items/:modfor/:codfor/:nrofor', (req, res, next) => {
         }
 
 
-        var packing = result.recordset;
+        var datos = result.recordset;
 
         res.status(200).json({
             ok: true,
-            packing: packing
+            datos: datos
         });
     });
 });
@@ -170,15 +170,19 @@ app.put('/', (req, res) => {
     request.input('TIPPRO', mssql.NVarChar, body.TIPPRO);
     request.input('ARTCOD', mssql.NVarChar, body.ARTCOD);
     request.input('CNTPCK', mssql.Int, body.CNTPCK);
+    request.input('CNTFST', mssql.Int, body.CNTFST);
     request.input('NUBICA', mssql.NVarChar, body.NUBICA);
     request.input('NFECHA', mssql.NVarChar, body.NFECHA);
     request.input('NDESPA', mssql.NVarChar, body.NDESPA);
     //request.input('ESTPCK', mssql.NVarChar, body.ESTPCK);
     //request.input('USRPCK', mssql.NVarChar, body.USRPCK);
-    request.input('USRPK2', mssql.NVarChar, body.USUARIO);
+    request.input('USRPCK', mssql.NVarChar, body.USUARIO);
 
     sQuery = ' UPDATE CORMVI ';
-    sQuery += ' SET USR_CORMVI_CNTPCK = @CNTPCK , USR_CORMVI_USRPCK = @USRPCK, USR_CORMVI_ESTPCK = \'A\' ';
+    sQuery += 'SET USR_CORMVI_CNTPCK = @CNTPCK, ';
+    sQuery += ' USR_CORMVI_CNTFST = @CNTFST, ';
+    sQuery += ' USR_CORMVI_USRPCK = @USRPCK , ';
+    sQuery += ' USR_CORMVI_ESTPCK = \'A\' ';
     sQuery += ' WHERE CORMVI_MODAPL = @MODFOR ';
     sQuery += ' AND CORMVI_CODAPL = @CODFOR ';
     sQuery += ' AND CORMVI_NROAPL = @NROFOR ';
@@ -186,9 +190,9 @@ app.put('/', (req, res) => {
     sQuery += ' AND CORMVI_EXPAPL = @NIVEXP ';
     sQuery += ' AND CORMVI_TIPPRO = @TIPPRO ';
     sQuery += ' AND CORMVI_ARTCOD = @ARTCOD ';
-    sQuery += ' AND CORMVI_NUBICA = @NUBICA ';
-    sQuery += ' AND CORMVI_NFECHA = @NFECHA ';
-    sQuery += ' AND CORMVI_NDESPA = @NDESPA ';
+    //sQuery += ' AND CORMVI_NUBICA = @NUBICA ';
+    //sQuery += ' AND CORMVI_NFECHA = @NFECHA ';
+    //sQuery += ' AND CORMVI_NDESPA = @NDESPA ';
 
     request.query(sQuery, function(err, result) {
 
@@ -234,8 +238,9 @@ app.put('/confirmar', (req, res) => {
     sQuery = 'UPDATE CORMVI ';
     sQuery += 'SET USR_CORMVI_ESTPCK = \'B\'  ';
     sQuery += ' WHERE  USR_CORMVI_USRPCK = @USRPCK ';
-    sQuery += ' AND CORMVI_CANTID = USR_CORMVI_CNTPCK';
+    sQuery += ' AND CORMVI_CANTID = USR_CORMVI_CNTPCK + USR_CORMVI_CNTFST ';
     sQuery += ' AND USR_CORMVI_ESTPCK = \'A\'  ';
+    sQuery += ' AND CORMVI_FECALT > \'20200101\' ';
     // sQuery += ' AND (CONVERT(Numeric, dbo.CORMVI.CORMVI_NIVEXP) < 10)  ';
 
 
