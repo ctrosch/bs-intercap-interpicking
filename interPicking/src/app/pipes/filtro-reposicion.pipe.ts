@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Filtro } from '../model/filtro';
 
 @Pipe({
   name: 'filtroReposicion'
