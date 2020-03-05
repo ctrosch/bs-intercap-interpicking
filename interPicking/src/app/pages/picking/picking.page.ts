@@ -18,7 +18,7 @@ import { Filtro } from '../../model/filtro';
 })
 export class PickingPage implements OnInit {
 
-  @ViewChild(IonSegment, { static: true }) segment: IonSegment;
+  //@ViewChild(IonSegment, { static: true }) segment: IonSegment;
 
   usuario: Usuario = {};
 
@@ -52,9 +52,9 @@ export class PickingPage implements OnInit {
     this.filtro = this.filtroService.inicializarFiltro('filtro-picking');
     this.usuario = this.usuarioService.getUsuario();
 
-    if (this.segment) {
-      this.segment.value = 'pendientes';
-    }
+    //if (this.segment) {
+    //  this.segment.value = 'pendientes';
+    //}
 
   }
 
@@ -68,9 +68,9 @@ export class PickingPage implements OnInit {
 
     this.cargando = true;
 
-    if (this.segment) {
-      this.segment.value = 'pendientes';
-    }
+    //if (this.segment) {
+    //  this.segment.value = 'pendientes';
+    //}
 
     this.pickingService.getPendientes(this.usuario.USUARIO, this.usuario.DEPOSITO)
       .subscribe((resp: any) => {
@@ -207,7 +207,7 @@ export class PickingPage implements OnInit {
 
   segmentChanged(event) {
 
-    this.pendiente = (this.segment.value === 'pendientes');
+    // this.pendiente = (this.segment.value === 'pendientes');
 
   }
 

@@ -26,7 +26,7 @@ app.get('/:usuario/:deposito', (req, res, next) => {
     sQuery += ' FROM REP_PENDIENTE_PRODUCTO  ';
     sQuery += ' WHERE 1=1  ';
     sQuery += ' AND DEPOSI = @deposito ';
-    sQuery += ' AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario) ';
+    sQuery += ' AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario OR (CNTPCK+CNTFST = 0 AND USRPCK <> \'\')) ';
     sQuery += ' AND (ESTPCK = \'A\' ) ';
     sQuery += ' GROUP BY MODFOR, CODFOR, NROFOR, FCHMOV, SITIOS, SITDES, CIRCOM, DEPOSI, NROCTA, NOMBRE, SITDES_DESCRP ';
     sQuery += ' ORDER BY SITDES, NROCTA ';

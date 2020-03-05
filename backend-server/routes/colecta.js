@@ -30,7 +30,7 @@ app.get('/:usuario/:deposito', (req, res, next) => {
 
     var sQuery = 'SELECT TOP 800 P.* FROM PCK_PENDIENTE_PRODUCTO P ';
     sQuery += ' WHERE P.DEPOSI = @deposito ';
-    sQuery += ' AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario) ';
+    sQuery += ' AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario OR (CNTPCK+CNTFST = 0 AND USRPCK <> \'\')) ';
     sQuery += ' AND (ESTPCK = \'A\' ) ';
     sQuery += ' ORDER BY ' + sOrden;
 
