@@ -47,6 +47,8 @@ export class PackingProductoPage implements OnInit {
 
   ngOnInit() {
 
+    console.log('************************* CARGA PENDIENTE *********************************************');
+
     // console.log('ItemColecta - ngOnInit');
     this.item = this.packingService.item;
     this.cargarPendientes();

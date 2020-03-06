@@ -176,7 +176,8 @@ app.put('/', (req, res) => {
     request.input('USRPK2', mssql.NVarChar, body.USUARIO);
 
     sQuery = ' UPDATE FCRMVP ';
-    sQuery += ' SET USR_FCRMVP_CNTPK2 = @CNTPK2 , USR_FCRMVP_USRPK2 = @USRPK2, USR_FCRMVP_ESTPK2 = \'A\' ';
+    sQuery += ' SET USR_FCRMVP_CNTPK2 = CASE WHEN FCRMVP_CODFOR = FCRMVP_CODAPL  THEN @CNTPK2 ELSE 0 END , USR_FCRMVP_USRPK2 = @USRPK2, USR_FCRMVP_ESTPK2 = \'A\' ';
+    sQuery += ' ,USR_FCRMVP_HORPK2 = GETDATE() ';
     sQuery += ' WHERE FCRMVP_MODAPL = @MODFOR ';
     sQuery += ' AND FCRMVP_CODAPL = @CODFOR ';
     sQuery += ' AND FCRMVP_NROAPL = @NROFOR ';
@@ -187,7 +188,7 @@ app.put('/', (req, res) => {
     sQuery += ' AND FCRMVP_NUBICA = @NUBICA ';
     sQuery += ' AND FCRMVP_NFECHA = @NFECHA ';
     sQuery += ' AND FCRMVP_NDESPA = @NDESPA ';
-    sQuery += ' AND FCRMVP_CODFOR = FCRMVP_CODAPL ';
+    //sQuery += ' AND FCRMVP_CODFOR = FCRMVP_CODAPL ';
 
     request.query(sQuery, function(err, result) {
 
@@ -217,36 +218,26 @@ app.put('/', (req, res) => {
 });
 
 // ==========================================
-// Actualizar estado picking según usuario
+// Actualizar estado packing según usuario
 // ==========================================
 app.put('/confirmar', (req, res) => {
 
+    // var items = JSON.parse(req.body.datos);
     var body = req.body;
-    var resultado = '';
-    var error = '';
     var request = new mssql.Request();
 
-    var sQuery = '';
 
-    request.input('USRPK2', mssql.NVarChar, body.usuario);
-
-    sQuery = 'UPDATE FCRMVP ';
-    sQuery += 'SET USR_FCRMVP_ESTPK2 = \'B\'  ';
-    sQuery += ' WHERE  USR_FCRMVP_USRPK2 = @USRPK2 ';
-    sQuery += ' AND FCRMVP_CANTID = USR_FCRMVP_CNTPK2 + USR_FCRMVP_CNTFST ';
-    sQuery += ' AND USR_FCRMVP_ESTPK2 = \'A\'  ';
-    // sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
+    request.input('@usuario', mssql.NVarChar, body.usuario);
+    //EXECUTE
+    request.query('EXEC CONFIRMAR_PACKING \'' + body.usuario + '\' ', (err, result) => {
+        // ... error checks
 
 
-    // console.log(body.USUARIO);
-    // console.log(sQuery);
-
-    request.query(sQuery, function(err, result) {
 
         if (err) {
             return res.status(500).json({
                 ok: false,
-                mensaje: 'Error actualizando estado packing',
+                mensaje: 'Error confirmando packing',
                 errors: err
             });
         }
@@ -254,8 +245,8 @@ app.put('/confirmar', (req, res) => {
         if (!result) {
             return res.status(400).json({
                 ok: false,
-                mensaje: 'Error actualizando estado packing',
-                errors: { message: 'Error actualizando estado packing' + body }
+                mensaje: 'Error confirmando packing',
+                errors: { message: 'Error confirmando packing' + body }
             });
         }
 
@@ -264,7 +255,9 @@ app.put('/confirmar', (req, res) => {
             result: result
         });
 
+        // ...
     });
+
 
 });
 

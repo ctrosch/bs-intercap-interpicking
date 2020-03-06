@@ -138,7 +138,8 @@ app.put('/', (req, res) => {
     // console.log(body.USUARIO);
 
     sQuery = 'UPDATE FCRMVP ';
-    sQuery += 'SET USR_FCRMVP_CNTPCK = @CNTPCK , USR_FCRMVP_CNTFST = @CNTFST, USR_FCRMVP_USRPCK = @USRPCK , USR_FCRMVP_ESTPCK = \'A\' ';
+    sQuery += 'SET USR_FCRMVP_CNTPCK = CASE WHEN FCRMVP_CODFOR = FCRMVP_CODAPL  THEN @CNTPCK ELSE 0 END , USR_FCRMVP_CNTFST = @CNTFST, USR_FCRMVP_USRPCK = @USRPCK , USR_FCRMVP_ESTPCK = \'A\' ';
+    sQuery += ' ,USR_FCRMVP_HORPCK = GETDATE() ';
     sQuery += ' WHERE FCRMVP_MODAPL = @MODFOR ';
     sQuery += ' AND FCRMVP_CODAPL = @CODFOR ';
     sQuery += ' AND FCRMVP_NROAPL = @NROFOR ';
@@ -149,7 +150,7 @@ app.put('/', (req, res) => {
     sQuery += ' AND FCRMVP_NUBICA = @NUBICA ';
     sQuery += ' AND FCRMVP_NFECHA = @NFECHA ';
     sQuery += ' AND FCRMVP_NDESPA = @NDESPA ';
-    sQuery += ' AND FCRMVP_CODFOR = FCRMVP_CODAPL ';
+    //sQuery += ' AND FCRMVP_CODFOR = FCRMVP_CODAPL ';
 
 
 
@@ -185,6 +186,50 @@ app.put('/', (req, res) => {
 // Actualizar estado picking según usuario
 // ==========================================
 app.put('/confirmar', (req, res) => {
+
+    // var items = JSON.parse(req.body.datos);
+    var body = req.body;
+    var request = new mssql.Request();
+
+
+    request.input('@usuario', mssql.NVarChar, body.usuario);
+    //EXECUTE
+    request.query('EXEC CONFIRMAR_PICKING \'' + body.usuario + '\' ', (err, result) => {
+        // ... error checks
+
+
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error confirmando picking',
+                errors: err
+            });
+        }
+
+        if (!result) {
+            return res.status(400).json({
+                ok: false,
+                mensaje: 'Error confirmando picking',
+                errors: { message: 'Error confirmando picking' + body }
+            });
+        }
+
+        res.status(200).json({
+            ok: true,
+            result: result
+        });
+
+        // ...
+    });
+
+
+});
+
+// ==========================================
+// Actualizar estado picking según usuario
+// ==========================================
+app.put('/confirmar-old', (req, res) => {
 
     // var items = JSON.parse(req.body.datos);
     var body = req.body;
@@ -268,6 +313,9 @@ app.put('/confirmar', (req, res) => {
     });
 
 });
+
+
+
 
 
 module.exports = app;

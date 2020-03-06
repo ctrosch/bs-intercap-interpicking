@@ -50,8 +50,12 @@ export class PickingPage implements OnInit {
 
   ngOnInit() {
 
+    console.log('************************* INI *********************************************');
+
     this.filtro = this.filtroService.inicializarFiltro('filtro-picking');
     this.usuario = this.usuarioService.getUsuario();
+
+    this.cargarPendientes();
 
     //if (this.segment) {
     //  this.segment.value = 'pendientes';
@@ -61,11 +65,13 @@ export class PickingPage implements OnInit {
 
   ionViewDidEnter() {
 
-    this.cargarPendientes();
+    //this.cargarPendientes();
 
   }
 
   cargarPendientes(event?) {
+
+    console.log('************************* BUSCA PENDIENTES *********************************************');
 
     this.cargando = true;
 
@@ -197,9 +203,13 @@ export class PickingPage implements OnInit {
           // swal("Picking confirmado","Los productos fueron confirmados correctamente","success").then(value => {});
         } else {
           // swal("Error", "No es posible guardar los datos", "error");
+          this.procesando.dismiss();
+          this.uiService.alertaInformativa('No es posible confirmar picking en estos momentos');
         }
-      });
+      } );    
+    
   }
+
 
   async presentLoading() {
     this.procesando = await this.loadingController.create({

@@ -45,9 +45,12 @@ export class PackingPage implements OnInit {
 
   ngOnInit() {
 
+    console.log('************************* INI *********************************************');
+
     this.filtro = this.filtroService.inicializarFiltro('filtro-picking');
     this.usuario = this.usuarioService.getUsuario();
-
+    
+    
     /**
     if (this.segment) {
       this.segment.value = 'pendientes';
@@ -64,6 +67,8 @@ export class PackingPage implements OnInit {
   }
 
   cargarPendientes(event?) {
+
+    console.log('************************* CARGA PENDIENTE *********************************************');
 
     this.cargando = true;
 
@@ -128,6 +133,7 @@ export class PackingPage implements OnInit {
         } else {
           // swal("Error", "No es posible guardar los datos", "error");
           this.procesando.dismiss();
+          this.uiService.alertaInformativa('No es posible confirmar packing en estos momentos');
         }
       });
   }
