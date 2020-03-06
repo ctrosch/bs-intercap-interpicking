@@ -19,8 +19,8 @@ export class FiltroPackingPage implements OnInit {
   tipoProducto = '';
 
   constructor(public filtroService: FiltroService,
-              public packingService: PackingService,
-              private navCtrl: NavController) {
+    public packingService: PackingService,
+    private navCtrl: NavController) {
 
     this.filtro = this.filtroService.inicializarFiltro('filtro-packing');
     this.prepararDatosClientes();
@@ -56,7 +56,7 @@ export class FiltroPackingPage implements OnInit {
         // console.log(item.NOMBRE);
 
         if (!map.has(item.NOMBRE)
-          && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.CIRCOM || this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
           && (!this.filtro.SITDES || this.filtro.SITDES && item['SITDES'].includes(this.filtro.SITDES) || this.filtro.SITDES.length === 0)
           && (!this.filtro.TRADES || this.filtro.TRADES && item['TRADES'].includes(this.filtro.TRADES) || this.filtro.TRADES.length === 0)) {
 
@@ -71,30 +71,30 @@ export class FiltroPackingPage implements OnInit {
 
   }
 
-    prepararDatosTransporte() {
+  prepararDatosTransporte() {
 
-      this.transportes = [];
-      const map = new Map();
-  
-      if (this.packingService.datos) {
-  
-        this.packingService.datos.forEach(item => {
-  
-          // console.log(item.NOMBRE);
-  
-          if (!map.has(item.TRADES)
-            && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
-            && (!this.filtro.SITDES || this.filtro.SITDES && item['SITDES'].includes(this.filtro.SITDES) || this.filtro.SITDES.length === 0)
-            && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)) {
-  
-            map.set(item.TRADES, true);    // set any value to Map
-            this.transportes.push(item.TRADES);
-          }
-        });
-  
-        this.transportes.sort();
-  
-      }
+    this.transportes = [];
+    const map = new Map();
+
+    if (this.packingService.datos) {
+
+      this.packingService.datos.forEach(item => {
+
+        // console.log(item.NOMBRE);
+
+        if (!map.has(item.TRADES)
+          && (!this.filtro.CIRCOM || this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.SITDES || this.filtro.SITDES && item['SITDES'].includes(this.filtro.SITDES) || this.filtro.SITDES.length === 0)
+          && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)) {
+
+          map.set(item.TRADES, true);    // set any value to Map
+          this.transportes.push(item.TRADES);
+        }
+      });
+
+      this.transportes.sort();
+
+    }
   }
 
   prepararDatosSitios() {
@@ -109,7 +109,7 @@ export class FiltroPackingPage implements OnInit {
         // console.log(item.NOMBRE);
 
         if (!map.has(item.SITDES)
-          && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.CIRCOM || this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
           && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)
           && (!this.filtro.TRADES || this.filtro.TRADES && item['TRADES'].includes(this.filtro.TRADES) || this.filtro.TRADES.length === 0)) {
 

@@ -84,6 +84,14 @@ export class PickingService {
 
   }
 
+  /** 
+  confirmarPicking(nombreUsuario: any) {
+
+    const url = URL_REST + '/colecta/confirmar';
+    return this.http.put<any>(url, { usuario: nombreUsuario});
+
+  }*/
+
   confirmarItem(item: any) {
 
     const url = URL_REST + '/colecta';

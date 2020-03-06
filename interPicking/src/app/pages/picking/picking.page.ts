@@ -31,6 +31,7 @@ export class PickingPage implements OnInit {
   codigoManual: string;
   porcentaje = 0;
   cargando = false;
+  titulo = 'Picking';
   procesando: any;
 
   circuito: string;
@@ -83,6 +84,8 @@ export class PickingPage implements OnInit {
           if (event) {
             event.target.complete();
           }
+
+          this.titulo = 'Picking ('+this.datos.length+')';
 
         } else {
 

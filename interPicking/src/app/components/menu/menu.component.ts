@@ -27,6 +27,8 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {
 
+    console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+
     this.usuarioService.cargarToken().then( () => {
         this.usuario = this.usuarioService.usuario;
     });

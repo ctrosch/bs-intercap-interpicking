@@ -171,7 +171,7 @@
                         </ion-button>
                     </ion-col>
 
-                    <ion-col *ngIf="item.ESTPCK == 'A' && cantidadManual + cantidadFaltante <= item.CANTID && cantidadFaltante > 0" size="12" class="ion-no-margin ion-no-padding ion-text-center">
+                    <ion-col *ngIf="item.ESTPCK == 'A' && cantidadManual + cantidadFaltante <= item.CANTID" size="12" class="ion-no-margin ion-no-padding ion-text-center">
 
                         <ion-button (click)="confirmar()" color="danger" expand="full" size="default">
                             <ion-icon slot="start" name="checkmark"></ion-icon>

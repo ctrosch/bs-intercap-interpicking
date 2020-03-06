@@ -1,5 +1,6 @@
-<app-header titulo="Packing" [cargando]="cargando" filtro="packing"></app-header>
+<app-header [titulo]="titulo" [cargando]="cargando" filtro="packing"></app-header>
 
+<!--
 <ion-toolbar>
     <ion-segment #segmento (ionChange)="segmentChanged($event)">
         <ion-segment-button value="pendientes" size="small">
@@ -10,6 +11,7 @@
         </ion-segment-button>
     </ion-segment>
 </ion-toolbar>
+-->
 
 <ion-content>
 
@@ -19,7 +21,7 @@
 
     <ion-list *ngIf="!cargando">
 
-        <ion-item *ngFor="let i of datos | filtroPackingCliente: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
+        <ion-item class="animated fadeIn" *ngFor="let i of datos | filtroPackingCliente: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
 
             <ion-label>
                 <h2>{{ i.NOMBRE }}</h2>
@@ -41,12 +43,9 @@
 
 <ion-footer>
 
-    <ion-toolbar *ngIf="segment.value === 'completados'">
+    <ion-button (click)="confirmarPacking()" color="primary" expand="full">
+        <ion-icon slot="start" name="send"></ion-icon>
+        Confirmar Packing
+    </ion-button>
 
-        <ion-button (click)="confirmarPacking()" color="primary" expand="full">
-            <ion-icon slot="start" name="send"></ion-icon>
-            Confirmar Packing
-        </ion-button>
-
-    </ion-toolbar>
 </ion-footer>

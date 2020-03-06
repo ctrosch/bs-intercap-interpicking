@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 
 @Component({
-  selector: 'app-configuracion',
-  templateUrl: './configuracion.page.html',
-  styleUrls: ['./configuracion.page.scss'],
+  selector: 'app-about',
+  templateUrl: './about.page.html',
+  styleUrls: ['./about.page.scss'],
 })
-export class ConfiguracionPage implements OnInit {
+export class AboutPage implements OnInit {
 
   version: string;
 
@@ -15,7 +15,7 @@ export class ConfiguracionPage implements OnInit {
     this.appVersion.getVersionNumber().then(value => {
       this.version = value;
     }).catch(err => {
-      //alert(err);
+      this.version = 'No encontrada';
     });
 
 

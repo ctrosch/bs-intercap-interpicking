@@ -24,8 +24,8 @@ app.get('/:usuario/:deposito', (req, res, next) => {
     var sQuery = ' SELECT TOP 500 * FROM PCK_PENDIENTE_CLIENTE ';
     sQuery += ' WHERE 1=1  ';
     sQuery += ' AND DEPOSI = @deposito ';
-    //sQuery += ' AND (USRPK2 IS NULL OR USRPK2 = \'\' OR USRPK2 = @usuario OR (CNTPK2+CNTFST = 0 AND USRPK2 <> \'\')) ';
-    sQuery += ' AND (USRPK2 IS NULL OR USRPK2 = \'\' OR USRPK2 = @usuario ) ';
+    sQuery += ' AND (USRPK2 IS NULL OR USRPK2 = \'\' OR USRPK2 = @usuario OR (CNTPK2 = 0 AND USRPK2 <> \'\')) ';
+    //sQuery += ' AND (USRPK2 IS NULL OR USRPK2 = \'\' OR USRPK2 = @usuario ) ';
     sQuery += ' AND (ESTPK2 = \'A\' ) ';
     sQuery += ' ORDER BY TRADES, NROCTA ';
 
@@ -187,6 +187,7 @@ app.put('/', (req, res) => {
     sQuery += ' AND FCRMVP_NUBICA = @NUBICA ';
     sQuery += ' AND FCRMVP_NFECHA = @NFECHA ';
     sQuery += ' AND FCRMVP_NDESPA = @NDESPA ';
+    sQuery += ' AND FCRMVP_CODFOR = FCRMVP_CODAPL ';
 
     request.query(sQuery, function(err, result) {
 
@@ -232,7 +233,7 @@ app.put('/confirmar', (req, res) => {
     sQuery = 'UPDATE FCRMVP ';
     sQuery += 'SET USR_FCRMVP_ESTPK2 = \'B\'  ';
     sQuery += ' WHERE  USR_FCRMVP_USRPK2 = @USRPK2 ';
-    sQuery += ' AND FCRMVP_CANTID = USR_FCRMVP_CNTPK2 + USR_FCRMVP_CNTFST';
+    sQuery += ' AND FCRMVP_CANTID = USR_FCRMVP_CNTPK2 + USR_FCRMVP_CNTFST ';
     sQuery += ' AND USR_FCRMVP_ESTPK2 = \'A\'  ';
     // sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
 

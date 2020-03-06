@@ -1,4 +1,4 @@
-<app-header titulo="Picking" [cargando]="cargando" filtro="picking"></app-header>
+<app-header [titulo]="titulo" [cargando]="cargando" filtro="picking"></app-header>
 
 <!--
 <ion-toolbar>
@@ -23,7 +23,7 @@
 
     <ion-list *ngIf="!cargando">
 
-        <ion-item-group *ngFor="let i of datos | filtro: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
+        <ion-item-group *ngFor="let i of datos | filtro: filtroService.filtro " (click)="seleccionarItem( i )">
 
             <app-item-producto [item]="i" tipo="picking"></app-item-producto>
 

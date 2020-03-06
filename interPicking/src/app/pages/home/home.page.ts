@@ -3,6 +3,7 @@ import { MenuController } from '@ionic/angular';
 import { UsuarioService } from '../../services/usuario.service';
 import { Usuario } from '../../model/usuario';
 import { AppUpdate } from '@ionic-native/app-update/ngx';
+import { AppVersion } from '@ionic-native/app-version/ngx';
 
 @Component({
   selector: 'app-home',
@@ -54,23 +55,33 @@ export class HomePage implements OnInit {
 
   constructor(private menuController: MenuController,
               private usuarioService: UsuarioService,
-              private appUpdate: AppUpdate) {
+              private appUpdate: AppUpdate,
+              private appVersion: AppVersion) {
+
+
     
-      const updateUrl = 'http://beansoft.com.ar/app/update.xml';
-      this.appUpdate.checkAppUpdate(updateUrl).then(() => { console.log('Actualización disponible ') });    
-    
+
+    const updateUrl = 'http://beansoft.com.ar/app/update.xml';
+    this.appUpdate.checkAppUpdate(updateUrl).then(() => { console.log('Actualización disponible ') });
+
 
   }
 
   ngOnInit() {
 
-    this.usuarioService.cargarToken().then( () => {
+    this.usuarioService.cargarToken().then(() => {
       this.usuario = this.usuarioService.usuario;
-      console.log(this.usuario);
-  });
+      //console.log(this.usuario);
+    });
+
+    this.appVersion.getVersionNumber().then(value => {
+      this.version = value;
+    }).catch(err => {
+      this.version = 'No encontrada';
+    });
 
 
-    }
+  }
 
   toggleMenu() {
 

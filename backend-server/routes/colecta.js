@@ -149,6 +149,7 @@ app.put('/', (req, res) => {
     sQuery += ' AND FCRMVP_NUBICA = @NUBICA ';
     sQuery += ' AND FCRMVP_NFECHA = @NFECHA ';
     sQuery += ' AND FCRMVP_NDESPA = @NDESPA ';
+    sQuery += ' AND FCRMVP_CODFOR = FCRMVP_CODAPL ';
 
 
 
@@ -185,6 +186,7 @@ app.put('/', (req, res) => {
 // ==========================================
 app.put('/confirmar', (req, res) => {
 
+    // var items = JSON.parse(req.body.datos);
     var body = req.body;
     var resultado = '';
     var error = '';
@@ -199,11 +201,46 @@ app.put('/confirmar', (req, res) => {
     sQuery += ' WHERE USR_FCRMVP_USRPCK = @USRPCK  ';
     sQuery += ' AND FCRMVP_CANTID = USR_FCRMVP_CNTPCK + USR_FCRMVP_CNTFST ';
     sQuery += ' AND FCRMVP_FECALT > \'20200101\' ';
-    sQuery += ' AND USR_FCRMVP_ESTPCK = \'A\' ';
-    // sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
+    sQuery += ' AND USR_FCRMVP_ESTPCK = \'A\'  ';
 
+
+    /**
+    sQuery = 'UPDATE FCRMVP ';
+    sQuery += 'SET USR_FCRMVP_ESTPCK = \'B\'  ';
+    sQuery += ' WHERE FCRMVP_FECALT > \'20200101\'  ';
+    sQuery += ' AND (  ';
+
+    hayItems = false;
+    agregaOR = false;
+
+    for (i in items) {
+
+        if (i.CANTID = i.CNTPCK + i.CNTFST) {
+
+            if (agregaOR) {
+                sQuery += ' OR ';
+            }
+
+            sQuery += ' ( FCRMVP_MODAPL = \'' + i.MODFOR + '\' AND FCRMVP_CODAPL = \'' + i.CODFOR + '\' AND FCRMVP_NROAPL = \'' + i.NROFOR + '\' ';
+            sQuery += ' AND FCRMVP_ITMAPL = \'' + i.NROITM + '\' AND FCRMVP_EXPAPL = \'' + i.NIVEXP + '\' ';
+            sQuery += ' AND FCRMVP_TIPPRO = \'' + i.TIPPRO + '\' AND FCRMVP_ARTCOD = \'' + i.ARTCOD + '\' AND USR_FCRMVP_ESTPCK = \'A\' ';
+            sQuery += ' AND USR_FCRMVP_USRPCK = \'' + i.USRPCK + '\') ';
+
+            agregaOR = true;
+            hayItems = true;
+        }
+    }
+
+    if (!hayItems) {
+        sQuery += '1 = 0 ';
+    }
+
+    sQuery += '  ) ';
+    */
+
+    // sQuery += ' AND (CONVERT(Numeric, dbo.FCRMVI.FCRMVI_NIVEXP) < 10)  ';
     // console.log(body.usuario);
-    // console.log(sQuery);
+
 
     request.query(sQuery, function(err, result) {
 

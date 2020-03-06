@@ -6,7 +6,7 @@ import { Filtro } from '../model/filtro';
 })
 export class FiltroPipe implements PipeTransform {
 
-  transform(arreglo: any[], pendientes: boolean, filtro: Filtro): any[] {
+  transform(arreglo: any[],  filtro: Filtro): any[] {
 
     if (!arreglo || !filtro) {
       return arreglo;

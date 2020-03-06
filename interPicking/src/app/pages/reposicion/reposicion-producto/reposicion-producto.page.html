@@ -17,6 +17,7 @@
 
 <ion-toolbar>
 
+    <!--
     <ion-segment #segmento (ionChange)="segmentChanged($event)">
         <ion-segment-button value="pendientes" size="small">
             <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtro: true : filtroService.filtro).length }} )</ion-label>
@@ -25,6 +26,7 @@
             <ion-label *ngIf="datos">Completados ( {{ (datos | filtro: false : filtroService.filtro).length }} )</ion-label>
         </ion-segment-button>
     </ion-segment>
+    -->
 
 </ion-toolbar>
 
@@ -36,7 +38,7 @@
 
     <ion-list *ngIf="!cargando">
 
-        <ion-item-group *ngFor="let i of datos | filtro: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
+        <ion-item-group *ngFor="let i of datos | filtro : filtroService.filtro " (click)="seleccionarItem( i )">
 
             <app-item-producto [item]="i" tipo="reposicion"></app-item-producto>
 

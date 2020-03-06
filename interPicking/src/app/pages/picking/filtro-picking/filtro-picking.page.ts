@@ -61,7 +61,7 @@ export class FiltroPickingPage implements OnInit {
       this.pickingService.datos.forEach(item => {
 
         if (!map.has(item.NOMBRE)
-          && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.CIRCOM || this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
           && (!this.filtro.SITDES || this.filtro.SITDES && item['SITDES'].includes(this.filtro.SITDES) || this.filtro.SITDES.length === 0)
           && (!this.filtro.TRADES || this.filtro.TRADES && item['TRADES'].includes(this.filtro.TRADES) || this.filtro.TRADES.length === 0)
           && (!this.filtro.TIPDES || this.filtro.TIPDES && item['TIPDES'].includes(this.filtro.TIPDES) || this.filtro.TIPDES.length === 0)) {
@@ -89,7 +89,7 @@ export class FiltroPickingPage implements OnInit {
         // console.log(item.NOMBRE);
 
         if (!map.has(item.TRADES)
-          && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.CIRCOM || this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
           && (!this.filtro.SITDES || this.filtro.SITDES && item['SITDES'].includes(this.filtro.SITDES) || this.filtro.SITDES.length === 0)
           && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)
           && (!this.filtro.TIPDES || this.filtro.TIPDES && item['TIPDES'].includes(this.filtro.TIPDES) || this.filtro.TIPDES.length === 0)) {
@@ -117,7 +117,7 @@ export class FiltroPickingPage implements OnInit {
         // console.log(item.NOMBRE);
 
         if (!map.has(item.TIPDES)
-          && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.CIRCOM || this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
           && (!this.filtro.SITDES || this.filtro.SITDES && item['SITDES'].includes(this.filtro.SITDES) || this.filtro.SITDES.length === 0)
           && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)
           && (!this.filtro.TRADES || this.filtro.TRADES && item['TRADES'].includes(this.filtro.TRADES) || this.filtro.TRADES.length === 0)) {
@@ -145,7 +145,7 @@ export class FiltroPickingPage implements OnInit {
         // console.log(item.NOMBRE);
 
         if (!map.has(item.SITDES)
-          && (this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.CIRCOM || this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
           && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)
           && (!this.filtro.TRADES || this.filtro.TRADES && item['TRADES'].includes(this.filtro.TRADES) || this.filtro.TRADES.length === 0)
           && (!this.filtro.TIPDES || this.filtro.TIPDES && item['TIPDES'].includes(this.filtro.TIPDES) || this.filtro.TIPDES.length === 0)) {

@@ -16,7 +16,7 @@ import { Filtro } from '../../model/filtro';
 })
 export class PackingPage implements OnInit {
 
-  @ViewChild(IonSegment, {static: true}) segment: IonSegment;
+  // @ViewChild(IonSegment, {static: true}) segment: IonSegment;
 
   usuario: Usuario = {};
 
@@ -27,18 +27,19 @@ export class PackingPage implements OnInit {
   codigoManual: string;
   porcentaje = 0;
   cargando = false;
+  titulo = 'Packing';
   procesando: any;
 
   circuito: string;
 
   constructor(private packingService: PackingService,
-              private usuarioService: UsuarioService,
-              public filtroService: FiltroService,
-              private uiService: UiServiceService,
-              private router: Router,
-              private barcodeScanner: BarcodeScanner,
-              public loadingController: LoadingController,
-              private navCtrl: NavController) {
+    private usuarioService: UsuarioService,
+    public filtroService: FiltroService,
+    private uiService: UiServiceService,
+    private router: Router,
+    private barcodeScanner: BarcodeScanner,
+    public loadingController: LoadingController,
+    private navCtrl: NavController) {
 
   }
 
@@ -47,9 +48,11 @@ export class PackingPage implements OnInit {
     this.filtro = this.filtroService.inicializarFiltro('filtro-picking');
     this.usuario = this.usuarioService.getUsuario();
 
+    /**
     if (this.segment) {
       this.segment.value = 'pendientes';
     }
+     */
 
     // this.cargarPendientes();
   }
@@ -60,13 +63,15 @@ export class PackingPage implements OnInit {
 
   }
 
-  cargarPendientes( event? ) {
+  cargarPendientes(event?) {
 
     this.cargando = true;
 
+    /**
     if (this.segment) {
       this.segment.value = 'pendientes';
     }
+     */
 
     this.packingService.getPendientes(this.usuario.USUARIO, this.usuario.DEPOSITO)
       .subscribe((resp: any) => {
@@ -79,6 +84,9 @@ export class PackingPage implements OnInit {
           if (event) {
             event.target.complete();
           }
+
+          this.titulo = 'Packing (' + this.datos.length + ')';
+
         } else {
           this.uiService.alertaInformativa('No hay pendientes de packing en estos momentos');
           this.navCtrl.navigateRoot('/home', { animated: true });
@@ -134,7 +142,7 @@ export class PackingPage implements OnInit {
 
   segmentChanged(event) {
 
-    this.pendiente = (this.segment.value === 'pendientes');
+    //    this.pendiente = (this.segment.value === 'pendientes');
 
   }
 

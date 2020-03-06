@@ -25,6 +25,7 @@ export class ReposicionPage implements OnInit {
   codigoManual: string;
   porcentaje = 0;
   cargando = false;
+  titulo = 'Reposición';
   procesando: any;
 
   circuito: string;
@@ -64,10 +65,13 @@ export class ReposicionPage implements OnInit {
 
           this.datos = resp.packing;
           this.reposicionService.datos = this.datos;
+          this.titulo = 'Reposición ('+this.datos.length+')';
 
           if (event) {
             event.target.complete();
           }
+
+
         } else {
           this.uiService.alertaInformativa('No hay pendientes de reposición en estos momentos');
           this.navCtrl.navigateRoot('/home', { animated: true });

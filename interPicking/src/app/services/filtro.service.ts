@@ -7,7 +7,7 @@ import { Storage } from '@ionic/storage';
   providedIn: 'root'
 })
 export class FiltroService {
-  
+
   nombre = 'filtro';
   filtro: Filtro = {};
 
@@ -54,15 +54,19 @@ export class FiltroService {
   /*
   * Limpiamos todos los filtros excepto el del circuito que siempre queda estático.
   */
-  limpiarFiltro() {
+  async limpiarFiltro() {
 
+    this.filtro.CIRCOM = null;
     this.filtro.NOMBRE = null;
     this.filtro.TRADES = null;
     this.filtro.TIPDES = null;
     this.filtro.NUBICA = null;
     this.filtro.SITDES = null;
 
+    await this.storage.set(this.nombre, this.filtro);
+
   }
 
 
 }
+

@@ -16,7 +16,7 @@ import { UiServiceService } from '../../../services/ui-service.service';
 })
 export class PackingProductoPage implements OnInit {
 
-  @ViewChild(IonSegment, { static: true }) segment: IonSegment;
+  // @ViewChild(IonSegment, { static: true }) segment: IonSegment;
 
   usuario: Usuario = {};
 
@@ -28,6 +28,7 @@ export class PackingProductoPage implements OnInit {
 
   codigoManual: string;
   cargando = false;
+  titulo = ''
   procesando: any;
 
   constructor(private route: ActivatedRoute,
@@ -55,9 +56,11 @@ export class PackingProductoPage implements OnInit {
 
     this.cargando = true;
 
+    /**
     if (this.segment) {
       this.segment.value = 'pendientes';
     }
+     */
 
     if (!this.item) {
       return;
@@ -74,7 +77,6 @@ export class PackingProductoPage implements OnInit {
           if (event) {
             event.target.complete();
           }
-
 
         } else {
           console.log('No hay productos pendientes de packing en estos momentos');
@@ -98,7 +100,7 @@ export class PackingProductoPage implements OnInit {
 
   segmentChanged(event) {
 
-    this.pendiente = (this.segment.value === 'pendientes');
+    //this.pendiente = (this.segment.value === 'pendientes');
 
   }
 
