@@ -1,0 +1,7 @@
+{
+  "name": "testScan",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

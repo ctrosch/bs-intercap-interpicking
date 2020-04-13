@@ -6,7 +6,7 @@ import { Filtro } from '../model/filtro';
 })
 export class FiltroPipe implements PipeTransform {
 
-  transform(arreglo: any[],  filtro: Filtro): any[] {
+  transform(arreglo: any[], pendientes: boolean, filtro: Filtro): any[] {
 
     if (!arreglo || !filtro) {
       return arreglo;
@@ -14,9 +14,8 @@ export class FiltroPipe implements PipeTransform {
 
     return arreglo.filter(item => {
 
-      // (pendientes && item.CNTPCK + item.CNTFST < item.CANTID) || (!pendientes && item.CNTPCK + item.CNTFST === item.CANTID) || !filtro )
-
-      return (!filtro.CIRCOM || filtro.CIRCOM && item['CIRCOM'].includes(filtro.CIRCOM) || filtro.CIRCOM.length === 0)
+      return ((pendientes && item.CNTPCK + item.CNTFST < item.CANTID) || (!pendientes && item.CNTPCK + item.CNTFST === item.CANTID) || !filtro )
+        && (!filtro.CIRCOM || filtro.CIRCOM && item['CIRCOM'].includes(filtro.CIRCOM) || filtro.CIRCOM.length === 0)
         && (!filtro.NOMBRE || filtro.NOMBRE && item['NOMBRE'].includes(filtro.NOMBRE) || filtro.NOMBRE.length === 0)
         && (!filtro.TRADES || filtro.TRADES && item['TRADES'].includes(filtro.TRADES) || filtro.TRADES.length === 0)
         && (!filtro.TIPDES || filtro.TIPDES && item['TIPDES'].includes(filtro.TIPDES) || filtro.TIPDES.length === 0)

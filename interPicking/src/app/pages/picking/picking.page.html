@@ -1,8 +1,7 @@
-<app-header [titulo]="titulo" [cargando]="cargando" filtro="picking"></app-header>
+<app-header [titulo]="titulo" [cargando]="cargando" filtro="picking" [completados]="completados" (changeToggle)="toggleChanged($event)"></app-header>
 
 <!--
-<ion-toolbar>
-
+<ion-toolbar>    
     <ion-segment #segmento (ionChange)="segmentChanged($event)">
         <ion-segment-button value="pendientes" size="small">
             <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtro: true : filtroService.filtro).length }} )</ion-label>
@@ -11,7 +10,6 @@
             <ion-label *ngIf="datos">Completados ( {{ (datos | filtro: false : filtroService.filtro).length }} )</ion-label>
         </ion-segment-button>
     </ion-segment>
-
 </ion-toolbar>
 -->
 
@@ -23,7 +21,7 @@
 
     <ion-list *ngIf="!cargando">
 
-        <ion-item-group *ngFor="let i of datos | filtro: filtroService.filtro " (click)="seleccionarItem( i )">
+        <ion-item-group *ngFor="let i of datos |  filtro: !completados : filtroService.filtro " (click)="seleccionarItem( i )">
 
             <app-item-producto [item]="i" tipo="picking"></app-item-producto>
 
@@ -37,9 +35,9 @@
 
     <ion-toolbar>
 
-        <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()" autofocus="true"></ion-input>
+        <ion-input *ngIf="!completados" [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()" autofocus="true"></ion-input>
 
-        <ion-buttons slot="end">
+        <ion-buttons *ngIf="!completados" slot="end">
             <ion-button shape="round" (click)="procesarCodigoManual()" color="success">
                 <ion-icon slot="icon-only" name="add"> </ion-icon>
             </ion-button>
@@ -52,6 +50,11 @@
                 <ion-icon slot="icon-only" name="send"></ion-icon>
             </ion-button>
         </ion-buttons>
+
+        <ion-button *ngIf="completados" (click)="confirmarPicking()" color="primary" expand="full">
+            <ion-icon slot="start" name="send"></ion-icon>
+            Confirmar Picking
+        </ion-button>
 
     </ion-toolbar>
 

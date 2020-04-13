@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter} from '@angular/core';
 import { Router } from '@angular/router';
+import { IonToggle } from '@ionic/angular';
 
 @Component({
   selector: 'app-header',
@@ -8,13 +9,23 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
+  @ViewChild(IonToggle, { static: true }) toggle: IonToggle;
+
   @Input() titulo: string;
   @Input() cargando?: boolean;
   @Input() filtro?: string;
+  @Input() completados: boolean;
+  @Input() ocultaToggle: boolean;
+  
+
+  @Output() changeToggle = new EventEmitter();
 
   constructor(private router: Router) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+
+    this.toggle.checked = this.completados;
+  }
   
 
   verFiltro() {    
@@ -43,8 +54,12 @@ export class HeaderComponent implements OnInit {
     if (this.filtro === 'toma-inventario') {
       this.router.navigateByUrl('toma-inventario');  
     }
+  }
 
+  toggleChanged(event) {
     
+    this.changeToggle.emit(this.toggle.checked);
+
   }
 
 }

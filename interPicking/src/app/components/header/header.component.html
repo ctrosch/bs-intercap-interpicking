@@ -10,6 +10,8 @@
 
         <ion-buttons slot="end">
 
+            <ion-toggle (ionChange)="toggleChanged($event)"></ion-toggle>
+
             <ion-button *ngIf="filtro" (click)="verFiltro()">
                 <ion-icon slot="icon-only" name="ios-funnel"></ion-icon>
             </ion-button>

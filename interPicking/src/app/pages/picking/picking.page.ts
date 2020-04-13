@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { IonSegment, NavController } from '@ionic/angular';
+import { IonSegment, NavController, IonToggle } from '@ionic/angular';
 import { PickingService } from '../../services/picking.service';
 import { LoadingController } from '@ionic/angular';
 import { Usuario } from '../../model/usuario';
@@ -9,6 +9,8 @@ import { UsuarioService } from '../../services/usuario.service';
 import { UiServiceService } from '../../services/ui-service.service';
 import { FiltroService } from '../../services/filtro.service';
 import { Filtro } from '../../model/filtro';
+import { FiltroPipe } from 'src/app/pipes/filtro.pipe';
+
 
 
 @Component({
@@ -18,11 +20,12 @@ import { Filtro } from '../../model/filtro';
 })
 export class PickingPage implements OnInit {
 
-  //@ViewChild(IonSegment, { static: true }) segment: IonSegment;
+  @ViewChild(IonSegment, { static: true }) segment: IonSegment;
+  @ViewChild(IonToggle, { static: true }) toggle: IonToggle;
 
   usuario: Usuario = {};
 
-  pendiente = true;
+  completados = false;
   filtro: Filtro;
 
   datos: any[];
@@ -37,6 +40,7 @@ export class PickingPage implements OnInit {
   circuito: string;
 
 
+
   constructor(private pickingService: PickingService,
     private usuarioService: UsuarioService,
     private uiService: UiServiceService,
@@ -44,7 +48,8 @@ export class PickingPage implements OnInit {
     private barcodeScanner: BarcodeScanner,
     public loadingController: LoadingController,
     private router: Router,
-    private navCtrl: NavController) {
+    private navCtrl: NavController,
+    private filtroPipe: FiltroPipe) {
 
   }
 
@@ -54,12 +59,12 @@ export class PickingPage implements OnInit {
 
     this.filtro = this.filtroService.inicializarFiltro('filtro-picking');
     this.usuario = this.usuarioService.getUsuario();
-
+    
     this.cargarPendientes();
 
-    //if (this.segment) {
-    //  this.segment.value = 'pendientes';
-    //}
+    if (this.segment) {
+      this.segment.value = 'pendientes';
+    }
 
   }
 
@@ -75,9 +80,9 @@ export class PickingPage implements OnInit {
 
     this.cargando = true;
 
-    //if (this.segment) {
-    //  this.segment.value = 'pendientes';
-    //}
+    if (this.segment) {
+      this.segment.value = 'pendientes';
+    }
 
     this.pickingService.getPendientes(this.usuario.USUARIO, this.usuario.DEPOSITO)
       .subscribe((resp: any) => {
@@ -91,7 +96,8 @@ export class PickingPage implements OnInit {
             event.target.complete();
           }
 
-          this.titulo = 'Picking ('+this.datos.length+')';
+          //this.titulo = 'Picking ('+this.datos.length+')';
+          this.titulo = 'Picking ('+this.filtroPipe.transform(this.datos,this.completados,this.filtro).length+')';
 
         } else {
 
@@ -219,8 +225,13 @@ export class PickingPage implements OnInit {
   }
 
   segmentChanged(event) {
+    //this.completados = (this.segment.value === 'completados');
+  }
 
-    // this.pendiente = (this.segment.value === 'pendientes');
+  toggleChanged(completado) {
+
+    console.log(completado);
+    this.completados = completado;
 
   }
 
