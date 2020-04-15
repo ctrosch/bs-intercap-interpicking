@@ -1,0 +1,59 @@
+<app-header [titulo]="titulo" [cargando]="cargando" filtro="picking"></app-header>
+
+<!--
+<ion-toolbar>
+
+    <ion-segment #segmento (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="pendientes" size="small">
+            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtro: true : filtroService.filtro).length }} )</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="completados">
+            <ion-label *ngIf="datos">Completados ( {{ (datos | filtro: false : filtroService.filtro).length }} )</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+
+</ion-toolbar>
+-->
+
+<ion-content fullscreen>
+
+    <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list *ngIf="!cargando">
+
+        <ion-item-group *ngFor="let i of datos | filtro: filtroService.filtro " (click)="seleccionarItem( i )">
+
+            <app-item-producto [item]="i" tipo="picking"></app-item-producto>
+
+        </ion-item-group>
+
+    </ion-list>
+
+</ion-content>
+
+<ion-footer>
+
+    <ion-toolbar>
+
+        <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()" autofocus="true"></ion-input>
+
+        <ion-buttons slot="end">
+            <ion-button shape="round" (click)="procesarCodigoManual()" color="success">
+                <ion-icon slot="icon-only" name="add"> </ion-icon>
+            </ion-button>
+
+            <ion-button shape="round" (click)="scanCode()" color="secondary">
+                <ion-icon slot="icon-only" name="barcode"></ion-icon>
+            </ion-button>
+
+            <ion-button shape="round" (click)="confirmarPicking()" color="primary">
+                <ion-icon slot="icon-only" name="send"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
+    </ion-toolbar>
+
+
+</ion-footer>

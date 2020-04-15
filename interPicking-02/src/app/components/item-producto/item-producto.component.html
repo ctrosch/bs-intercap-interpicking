@@ -1,0 +1,47 @@
+<ion-item lines="none" class="animated fadeIn">
+    <ion-label color="dark" class="ion-text-wrap">
+        <h4>
+            {{ item.DESCRP }}
+        </h4>
+    </ion-label>
+
+</ion-item>
+
+<ion-item lines="full" class="animated fadeIn">
+
+    <ion-avatar slot="start">
+        <ion-img [src]="item.IMGPRD"></ion-img>
+    </ion-avatar>
+
+    <ion-label>
+
+        <p>Código {{ item.TIPPRO }}-{{ item.ARTCOD }}</p>
+
+        <p *ngIf="item.NROPAR">N° Parte: {{ item.NROPAR }}</p>
+
+        <p>Ubicación: {{ item.NUBICA }}</p>
+
+        <p *ngIf="item.NFECHA">Fecha F.: {{ item.NFECHA | date:'dd/MM/yyyy' }}</p>
+
+        <p *ngIf="item.NDESPA">Nro Desp.: {{ item.NDESPA }}</p>
+
+        <p *ngIf="item.CODBAR">Código Barra: {{ item.CODBAR }}</p>
+
+        <p>Cliente: {{ item.NOMBRE }} </p>
+
+        <p *ngIf="item.NIVEXP >= 10" class="danger" style="color: red !important;">
+            Producto en Kit
+        </p>
+
+
+    </ion-label>
+
+    <ion-note *ngIf="tipo === 'picking' || tipo === 'reposicion' " slot="end" color="{{ item.CNTPCK == 0 ? 'danger' : item.CANTID > item.CNTPCK ? 'warning' : 'success' }}">
+        {{ item.CNTPCK }} / {{ item.CNTFST }} / {{ item.CANTID }}
+    </ion-note>
+
+    <ion-note *ngIf="tipo === 'packing'" slot="end" color="{{ item.CNTPK2== 0 ? 'danger' : (item.CANTID - item.CNTFST) > item.CNTPK2 ? 'warning' : 'success' }}">
+        {{ item.CNTPK2 }} / {{ item.CANTID - item.CNTFST }}
+    </ion-note>
+
+</ion-item>
