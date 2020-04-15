@@ -1,4 +1,28 @@
-<app-header [titulo]="titulo" [cargando]="cargando" filtro="packing"></app-header>
+<ion-header no-border>
+    <ion-toolbar>
+
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/"></ion-back-button>
+        </ion-buttons>
+
+        <ion-title ion-text-capitalize> {{ titulo }} </ion-title>
+
+        <ion-buttons slot="end">
+
+            <ion-toggle (ionChange)="toggleChanged($event)"></ion-toggle>
+
+            <ion-button (click)="verFiltro()">
+                <ion-icon slot="icon-only" name="ios-funnel"></ion-icon>
+            </ion-button>
+
+            <!-- Circles -->
+            <ion-spinner *ngIf="cargando" name="crescent" color="success"></ion-spinner>
+
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+
 
 <!--
 <ion-toolbar>
@@ -21,7 +45,7 @@
 
     <ion-list *ngIf="!cargando">
 
-        <ion-item class="animated fadeIn" *ngFor="let i of datos | filtroPackingCliente: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
+        <ion-item class="animated fadeIn" *ngFor="let i of datos | filtroPackingCliente: !completados : filtroService.filtro " (click)="seleccionarItem( i )">
 
             <ion-label>
                 <h2>{{ i.NOMBRE }}</h2>
@@ -43,7 +67,7 @@
 
 <ion-footer>
 
-    <ion-button (click)="confirmarPacking()" color="primary" expand="full">
+    <ion-button *ngIf="completados" (click)="confirmarPacking()" color="primary" expand="full">
         <ion-icon slot="start" name="send"></ion-icon>
         Confirmar Packing
     </ion-button>

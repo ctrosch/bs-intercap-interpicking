@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { IonSegment, LoadingController, NavController } from '@ionic/angular';
+import { IonSegment, LoadingController, NavController, IonToggle } from '@ionic/angular';
 import { PackingService } from '../../services/packing.service';
 import { Usuario } from '../../model/usuario';
 import { UsuarioService } from '../../services/usuario.service';
@@ -17,10 +17,12 @@ import { Filtro } from '../../model/filtro';
 export class PackingPage implements OnInit {
 
   // @ViewChild(IonSegment, {static: true}) segment: IonSegment;
+  @ViewChild(IonToggle, { static: true }) toggle: IonToggle;
 
   usuario: Usuario = {};
 
   pendiente = true;
+  completados = false;
   filtro: Filtro;
 
   datos: any[];
@@ -128,6 +130,7 @@ export class PackingPage implements OnInit {
 
           this.cargarPendientes();
           this.procesando.dismiss();
+          this.toggle.checked = false;
 
           // swal("Picking confirmado","Los productos fueron confirmados correctamente","success").then(value => {});
         } else {
@@ -194,6 +197,14 @@ export class PackingPage implements OnInit {
     this.procesarCodigoBarra(this.codigoManual);
     this.codigoManual = '';
 
+  }
+
+  toggleChanged(event) {
+    this.completados = !this.completados;
+  }
+
+  verFiltro() {
+    this.router.navigateByUrl('filtro-packing');
   }
 
 }

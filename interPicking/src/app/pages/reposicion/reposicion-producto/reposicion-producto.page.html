@@ -6,11 +6,16 @@
 
         <ion-title ion-text-capitalize="ion-text-capitalize">{{ item.SITDES_DESCRP }} | {{ item.CODFOR }} - {{ item.NROFOR }} </ion-title>
 
+        <ion-toggle value="!completados"></ion-toggle>
+
+
         <ion-buttons slot="end">
             <!-- Circles -->
             <ion-spinner *ngIf="cargando" name="crescent" color="success"></ion-spinner>
 
         </ion-buttons>
+
+
 
     </ion-toolbar>
 </ion-header>
@@ -38,7 +43,7 @@
 
     <ion-list *ngIf="!cargando">
 
-        <ion-item-group *ngFor="let i of datos | filtro : filtroService.filtro " (click)="seleccionarItem( i )">
+        <ion-item-group *ngFor="let i of datos | filtro : !completados :filtroService.filtro " (click)="seleccionarItem( i )">
 
             <app-item-producto [item]="i" tipo="reposicion"></app-item-producto>
 

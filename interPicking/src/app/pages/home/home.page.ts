@@ -33,7 +33,7 @@ export class HomePage implements OnInit {
     {
       icon: 'beaker',
       name: 'Reposición',
-      imagen: '/assets/img/recepcion.png',
+      imagen: '/assets/img/reposicion.png',
       redirectTo: '/reposicion',
       detalle: 'Enviar mercadería que envían otras sucursales'
     },

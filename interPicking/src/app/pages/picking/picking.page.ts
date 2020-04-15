@@ -9,7 +9,8 @@ import { UsuarioService } from '../../services/usuario.service';
 import { UiServiceService } from '../../services/ui-service.service';
 import { FiltroService } from '../../services/filtro.service';
 import { Filtro } from '../../model/filtro';
-import { FiltroPipe } from 'src/app/pipes/filtro.pipe';
+
+
 
 
 
@@ -48,8 +49,7 @@ export class PickingPage implements OnInit {
     private barcodeScanner: BarcodeScanner,
     public loadingController: LoadingController,
     private router: Router,
-    private navCtrl: NavController,
-    private filtroPipe: FiltroPipe) {
+    private navCtrl: NavController) {
 
   }
 
@@ -97,7 +97,7 @@ export class PickingPage implements OnInit {
           }
 
           //this.titulo = 'Picking ('+this.datos.length+')';
-          this.titulo = 'Picking ('+this.filtroPipe.transform(this.datos,this.completados,this.filtro).length+')';
+          //this.titulo = 'Picking ('+this.filtroPipe.transform(this.datos,this.completados,this.filtro).length+')';
 
         } else {
 
@@ -119,7 +119,7 @@ export class PickingPage implements OnInit {
 
   seleccionarItem(i: any) {
 
-    this.pickingService.item = i;
+    this.pickingService.item = i;    
     this.router.navigateByUrl('picking-item/' + i.ID);
   }
 
@@ -191,6 +191,7 @@ export class PickingPage implements OnInit {
     }
   }
 
+  
   confirmarPicking() {
 
     this.presentLoading();
@@ -200,8 +201,8 @@ export class PickingPage implements OnInit {
 
         if (resp.ok) {
 
-          this.filtroService.limpiarFiltro();
-
+          this.filtroService.limpiarFiltro();          
+          this.toggle.checked = false;
           this.cargarPendientes();
           this.procesando.dismiss();
 
@@ -228,11 +229,12 @@ export class PickingPage implements OnInit {
     //this.completados = (this.segment.value === 'completados');
   }
 
-  toggleChanged(completado) {
+  toggleChanged(event) {
+    this.completados = !this.completados;
+  }
 
-    console.log(completado);
-    this.completados = completado;
-
+  verFiltro() {
+    this.router.navigateByUrl('filtro-picking');
   }
 
 }

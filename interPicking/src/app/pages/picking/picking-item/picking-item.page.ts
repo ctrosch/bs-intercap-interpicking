@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { ToastController, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { PickingService } from '../../../services/picking.service';
 import { UiServiceService } from '../../../services/ui-service.service';
 import { Usuario } from '../../../model/usuario';
@@ -139,7 +139,8 @@ confirmar() {
       .subscribe(resp => {
         if (resp.ok) {
 
-          this.router.navigateByUrl('picking');
+          //this.router.navigateByUrl('picking');
+          this.navCtrl.navigateRoot('/picking', { animated: true });
 
         } else {
           // swal({title: 'Error',text: 'Problemas para confirmar picking',icon: 'error',});

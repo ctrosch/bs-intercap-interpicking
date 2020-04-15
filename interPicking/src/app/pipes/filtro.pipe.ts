@@ -8,6 +8,8 @@ export class FiltroPipe implements PipeTransform {
 
   transform(arreglo: any[], pendientes: boolean, filtro: Filtro): any[] {
 
+    console.log("Filtro pipe");
+
     if (!arreglo || !filtro) {
       return arreglo;
     }

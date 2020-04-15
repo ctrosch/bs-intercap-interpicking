@@ -23,6 +23,9 @@
                 <h2>{{ item.TRADES }}</h2>
                 <p class="primary">{{ item.CODFOR }} - {{ item.NROFOR }}</p>
             </ion-label>
+
+            <ion-toggle slot="end" (ionChange)="toggleChanged($event)"></ion-toggle>
+
         </ion-item>
     </ion-list>
 
@@ -47,7 +50,7 @@
 
     <ion-list *ngIf="!cargando">
 
-        <ion-item-group *ngFor="let i of datos | filtroPackingCliente: pendiente : filtroService.filtro " (click)="seleccionarItem( i )">
+        <ion-item-group *ngFor="let i of datos | filtroPackingCliente: !completados : filtroService.filtro " (click)="seleccionarItem( i )">
 
             <app-item-producto [item]="i" tipo="packing"></app-item-producto>
 

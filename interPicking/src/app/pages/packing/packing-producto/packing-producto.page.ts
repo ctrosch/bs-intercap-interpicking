@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PackingService } from '../../../services/packing.service';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { ToastController, IonSegment } from '@ionic/angular';
+import { ToastController, IonSegment, IonToggle } from '@ionic/angular';
 import { Filtro } from '../../../model/filtro';
 import { FiltroService } from '../../../services/filtro.service';
 import { Usuario } from '../../../model/usuario';
@@ -17,9 +17,11 @@ import { UiServiceService } from '../../../services/ui-service.service';
 export class PackingProductoPage implements OnInit {
 
   // @ViewChild(IonSegment, { static: true }) segment: IonSegment;
+  @ViewChild(IonToggle, { static: true }) toggle: IonToggle;
 
   usuario: Usuario = {};
 
+  completados = false;
   pendiente = true;
   filtro: Filtro;
 
@@ -155,6 +157,10 @@ export class PackingProductoPage implements OnInit {
       
       // swal({title: 'Error',text: 'Error leyendo código de barra',icon: 'error',});
     });
+  }
+
+  toggleChanged(event) {
+    this.completados = !this.completados;
   }
 
 

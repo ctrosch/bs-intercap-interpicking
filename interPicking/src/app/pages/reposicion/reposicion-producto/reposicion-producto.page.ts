@@ -21,6 +21,7 @@ export class ReposicionProductoPage implements OnInit {
   usuario: Usuario = {};
 
   pendiente = true;
+  completados = false;
   filtro: Filtro;
 
   datos: any[];
