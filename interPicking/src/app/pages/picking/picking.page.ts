@@ -9,6 +9,7 @@ import { UsuarioService } from '../../services/usuario.service';
 import { UiServiceService } from '../../services/ui-service.service';
 import { FiltroService } from '../../services/filtro.service';
 import { Filtro } from '../../model/filtro';
+import { DataLocalService } from '../../services/data-local.service';
 
 
 
@@ -46,6 +47,7 @@ export class PickingPage implements OnInit {
     private usuarioService: UsuarioService,
     private uiService: UiServiceService,
     public filtroService: FiltroService,
+    private dataLocal: DataLocalService,
     private barcodeScanner: BarcodeScanner,
     public loadingController: LoadingController,
     private router: Router,
@@ -145,6 +147,8 @@ export class PickingPage implements OnInit {
   procesarCodigoBarra(codigoBarra: string) {
 
     console.log("Codigo de barra leido: " + codigoBarra);
+
+    this.dataLocal.guardarRegistro('codigo',codigoBarra);
 
     if (codigoBarra === undefined) {
       this.uiService.presentToast('Código de barra vacío');
