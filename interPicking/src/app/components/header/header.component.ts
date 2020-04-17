@@ -16,15 +16,12 @@ export class HeaderComponent implements OnInit {
   @Input() filtro?: string;
   @Input() completados: boolean;
   @Input() ocultaToggle: boolean;
-  
 
-  @Output() changeToggle = new EventEmitter();
 
   constructor(private router: Router) { }
 
   ngOnInit() {
-
-    this.toggle.checked = this.completados;
+    
   }
   
 
@@ -56,10 +53,5 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  toggleChanged(event) {
-    
-    this.changeToggle.emit(this.toggle.checked);
-
-  }
 
 }
