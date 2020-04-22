@@ -10,9 +10,71 @@ var app = express();
 // ==========================================
 // Obtener todos los productos pendientes a colectar
 // ==========================================
+app.get('/:usuario/:deposito/:circuito', (req, res, next) => {
+
+    var deposito = req.params.deposito;
+    var usuario = req.params.usuario;
+    var circuito = req.params.circuito;
+
+    var sOrden = ' NUBICA, TIPPRO, ARTCOD, NROCTA';
+
+    // VER COMO CAMBIAR ESTO
+    if (deposito === '40') {
+        sOrden = ' TIPPRO, ARTCOD, NROCTA, NUBICA';
+    }
+
+    var request = new mssql.Request();
+    // request.input('sitio', mssql.NVarChar, sitio);
+    request.input('deposito', mssql.NVarChar, deposito);
+    request.input('usuario', mssql.NVarChar, usuario);
+    request.input('circuito', mssql.NVarChar, circuito);
+
+    var sQuery = 'SELECT TOP 800 P.* FROM PCK_PENDIENTE_PRODUCTO P ';
+    sQuery += ' WHERE P.DEPOSI = @deposito ';
+    sQuery += ' AND (CIRCOM = @circuito ) ';
+    sQuery += ' AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario OR (CNTPCK+CNTFST = 0 AND USRPCK <> \'\')) ';
+    sQuery += ' AND (ESTPCK = \'A\' ) ';
+    sQuery += ' ORDER BY ' + sOrden;
+
+    //console.log(request);
+    //console.log(req.params);
+    //console.log(sQuery);
+
+    request.query(sQuery, function(err, result) {
+
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                colecta: [],
+                mensaje: 'Error obteniendo datos colecta para el deposito ' + deposito,
+                errors: err
+            });
+        }
+
+        if (!result.recordset || result.recordset.length === 0) {
+            return res.status(200).json({
+                ok: false,
+                colecta: [],
+                mensaje: 'No existen datos de colecta para el sitio deposito ' + deposito,
+                errors: { message: 'No existen datos de colecta para el deposito ' + deposito }
+            });
+        }
+
+        var colecta = result.recordset;
+
+        res.status(200).json({
+            ok: true,
+            colecta: colecta
+        });
+    });
+});
+
+// ==========================================
+// Obtener todos los productos pendientes a colectar
+// ==========================================
 app.get('/:usuario/:deposito', (req, res, next) => {
 
-    var sitio = req.params.sitio;
     var deposito = req.params.deposito;
     var usuario = req.params.usuario;
 
