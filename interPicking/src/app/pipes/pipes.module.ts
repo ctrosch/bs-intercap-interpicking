@@ -5,6 +5,7 @@ import { FiltroPackingClientePipe } from './filtro-packing-cliente.pipe';
 import { CapitalizePipe } from './capitalize.pipe';
 import { FiltroPipe } from './filtro.pipe';
 import { FiltroReposicionPipe } from './filtro-reposicion.pipe';
+import { FechaFabricacionPipe } from './fecha-fabricacion.pipe';
 
 
 
@@ -14,11 +15,11 @@ import { FiltroReposicionPipe } from './filtro-reposicion.pipe';
     FiltroPackingClientePipe,     
     CapitalizePipe, 
     FiltroPipe,  
-  FiltroReposicionPipe],
+  FiltroReposicionPipe, FechaFabricacionPipe],
   imports: [CommonModule],
   exports: [DomSanitizerPipe, 
     FiltroPipe,     
     FiltroPackingClientePipe,
-    FiltroReposicionPipe]
+    FiltroReposicionPipe, FechaFabricacionPipe]
 })
 export class PipesModule { }

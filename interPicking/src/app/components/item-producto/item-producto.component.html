@@ -5,6 +5,8 @@
 </ion-item>
 -->
 
+
+
 <ion-item lines="full" class="animated fadeIn">
 
     <ion-grid>
@@ -32,9 +34,7 @@
 
                     <p *ngIf="item.NROPAR">N° Parte: {{ item.NROPAR }}</p>
 
-                    <p *ngIf="item.NFECHA">Fecha F.: {{ item.NFECHA | date:'dd/MM/yyyy' }}</p>
-
-                    <p *ngIf="item.NDESPA">Nro Desp.: {{ item.NDESPA }}</p>
+                    <p *ngIf="item.NFECHA">Fecha F.: {{ item.NFECHA | fechaFabricacion }}</p>
 
                     <!--
                     <p *ngIf="item.CODBAR">Código Barra: {{ item.CODBAR }}</p>
@@ -48,11 +48,23 @@
 
                     <p *ngIf="item.IDPROD">Id Producteca: {{ item.IDPROD }}</p>
 
-                    <p *ngIf="item.FORENT">T. Entrega: {{ item.FORENT }}</p>
+                    <!--
+                    <p>
+                         Nro Desp.: {{ item.NDESPA }}
+                    </p>
+                    -->
 
+                    <ion-icon *ngIf="item.NIVEXP >= 10" name="archive" color="danger"></ion-icon>
+
+                    <ion-icon *ngIf="item.NDESPA" name="radio-button-on" color="primary"></ion-icon>
+
+
+
+                    <!--
                     <p *ngIf="item.NIVEXP >= 10" class="danger" style="color: red !important;">
                         Producto en Kit
                     </p>
+                    -->
 
 
                 </ion-label>
@@ -62,13 +74,17 @@
 
                 <h4 style="margin-top: 0px; top: 0px; font-size: 14px;text-align: center;">{{ item.NUBICA }}</h4>
 
-                <ion-note *ngIf="tipo === 'picking' || tipo === 'reposicion' " class="text-align: center;" color="{{ item.CNTPCK == 0 ? 'danger' : item.CANTID > item.CNTPCK ? 'warning' : 'success' }}">
-                    {{ item.CNTPCK }} / {{ item.CNTFST }} / {{ item.CANTID }}
-                </ion-note>
+                <h4 style="margin-top: 0px; top: 0px; font-size: 14px;text-align: center;">
 
-                <ion-note *ngIf="tipo === 'packing'" class="text-align: center;" color="{{ item.CNTPK2== 0 ? 'danger' : (item.CANTID - item.CNTFST) > item.CNTPK2 ? 'warning' : 'success' }}">
-                    {{ item.CNTPK2 }} / {{ item.CANTID - item.CNTFST }}
-                </ion-note>
+
+                    <ion-note *ngIf="tipo === 'picking' || tipo === 'reposicion' " class="text-align: center;" color="{{ item.CNTPCK == 0 ? 'danger' : item.CANTID > item.CNTPCK ? 'warning' : 'success' }}">
+                        {{ item.CNTPCK }} / {{ item.CNTFST }} / {{ item.CANTID }}
+                    </ion-note>
+
+                    <ion-note *ngIf="tipo === 'packing'" class="text-align: center;" color="{{ item.CNTPK2== 0 ? 'danger' : (item.CANTID - item.CNTFST) > item.CNTPK2 ? 'warning' : 'success' }}">
+                        {{ item.CNTPK2 }} / {{ item.CANTID - item.CNTFST }}
+                    </ion-note>
+                </h4>
 
             </ion-col>
 

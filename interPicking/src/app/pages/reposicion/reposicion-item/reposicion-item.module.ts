@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ReposicionItemPage } from './reposicion-item.page';
 import { ComponentsModule } from '../../../components/components.module';
+import { PipesModule } from '../../../pipes/pipes.module';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     ComponentsModule,
+    PipesModule,
     RouterModule.forChild(routes)
   ],
   declarations: [ReposicionItemPage]
