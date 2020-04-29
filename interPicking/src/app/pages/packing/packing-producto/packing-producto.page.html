@@ -1,4 +1,4 @@
-<ion-header no-border="no-border">
+<ion-header no-border>
     <ion-toolbar>
         <ion-buttons slot="start">
             <ion-back-button defaultHref="/packing" [routerLink]="['/packing']"></ion-back-button>
@@ -29,20 +29,10 @@
         </ion-item>
     </ion-list>
 
-    <!--
-    <ion-segment #segmento (ionChange)="segmentChanged($event)">
-        <ion-segment-button value="pendientes" size="small">
-            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtroPackingCliente: true : filtroService.filtro).length }} )</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="completados">
-            <ion-label *ngIf="datos">Completados ( {{ (datos | filtroPackingCliente: false : filtroService.filtro).length }} )</ion-label>
-        </ion-segment-button>
-    </ion-segment>
-    -->
 
 </ion-toolbar>
 
-<ion-content>
+<ion-content fullscreen>
 
     <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
         <ion-refresher-content></ion-refresher-content>

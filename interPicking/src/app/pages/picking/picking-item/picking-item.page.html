@@ -7,7 +7,7 @@
                 <ion-img [src]="item.IMGPRD"></ion-img>
             </ion-avatar>
             <ion-label class="ion-text-wrap">
-                <h3>{{ item.DESCRP }}</h3>
+                <h3 class="text-center">{{ item.DESCRP }}</h3>
                 <p class="text-center">Código {{ item.TIPPRO }} - {{ item.ARTCOD }}</p>
                 <p class="text-center" *ngIf="item.NROPAR">N° Parte {{ item.NROPAR }} </p>
             </ion-label>
@@ -27,165 +27,228 @@
         </ion-item>
 
         <ion-item>
-            <ion-label color="success">Picking {{ cantidadManual }} {{ item.UNIMED}}</ion-label>
-            <ion-label color="danger">Faltante {{ cantidadFaltante }} {{ item.UNIMED}}</ion-label>
-            <ion-label color="primary">Pedido {{ item.CANTID}} {{ item.UNIMED }}</ion-label>
+            <ion-label color="success">
+                <p class="text-center">Picking</p>
+                <h2 class="text-center">{{ cantidadManual }} {{ item.UNIMED}}</h2>
+            </ion-label>
+
+            <ion-label color="danger">
+                <p class="text-center">Faltante</p>
+                <h2 class="text-center">{{ cantidadFaltante }} {{ item.UNIMED}}</h2>
+            </ion-label>
+
+            <ion-label color="primary">
+                <p class="text-center">Pedido</p>
+                <h2 class="text-center">{{ item.CANTID}} {{ item.UNIMED }}</h2>
+            </ion-label>
         </ion-item>
+
+        <ion-item>
+
+            <ion-slides pager="false">
+                <ion-slide>
+                    <ion-grid class="paddin padding-calc">
+
+                        <ion-row>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(1,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>1</ion-label>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(2,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>2</ion-label>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(3,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>3</ion-label>
+                                </ion-button>
+                            </ion-col>
+
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(4,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>4</ion-label>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(5,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>5</ion-label>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(6,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>6</ion-label>
+                                </ion-button>
+                            </ion-col>
+
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(7,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>7</ion-label>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(8,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>8</ion-label>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(9,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>9</ion-label>
+                                </ion-button>
+                            </ion-col>
+
+                            <ion-col size="8" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(0,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>0</ion-label>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="clean('P')" color="danger" expand="full" size="default">
+                                    <ion-icon slot="start" name="backspace"></ion-icon>
+                                </ion-button>
+                            </ion-col>
+
+                            <ion-col *ngIf="item.ESTPCK == 'A' && cantidadManual + cantidadFaltante <= item.CANTID" size="12" class="ion-no-margin ion-no-padding ion-text-center">
+
+                                <ion-button (click)="confirmar()" color="success" expand="full" size="default">
+                                    <ion-icon slot="start" name="checkmark"></ion-icon>
+                                    <ion-label>Confirmar Cantidades</ion-label>
+                                </ion-button>
+                            </ion-col>
+
+                        </ion-row>
+                    </ion-grid>
+                </ion-slide>
+
+                <ion-slide>
+                    <ion-grid class="paddin padding-calc">
+                        <ion-row>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(1,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>1</ion-label>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(2,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>2</ion-label>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(3,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>3</ion-label>
+                                </ion-button>
+                            </ion-col>
+
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(4,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>4</ion-label>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(5,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>5</ion-label>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(6,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>6</ion-label>
+                                </ion-button>
+                            </ion-col>
+
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(7,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>7</ion-label>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(8,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>8</ion-label>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(9,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>9</ion-label>
+                                </ion-button>
+                            </ion-col>
+
+                            <ion-col size="8" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="add(0,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
+                                    <ion-label>0</ion-label>
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
+                                <ion-button (click)="clean('F')" color="danger" expand="full" size="default">
+                                    <ion-icon slot="start" name="backspace"></ion-icon>
+                                </ion-button>
+                            </ion-col>
+
+                            <ion-col *ngIf="item.ESTPCK == 'A' && cantidadManual + cantidadFaltante <= item.CANTID" size="12" class="ion-no-margin ion-no-padding ion-text-center">
+
+                                <ion-button (click)="confirmar()" color="danger" expand="full" size="default">
+                                    <ion-icon slot="start" name="checkmark"></ion-icon>
+                                    <ion-label>Informar Faltante</ion-label>
+                                </ion-button>
+
+                            </ion-col>
+
+                        </ion-row>
+                    </ion-grid>
+
+                </ion-slide>
+
+            </ion-slides>
+
+        </ion-item>
+
+        <ion-item>
+            <ion-label>
+                <p>Nro Despacho</p>
+                <h3>{{ item.NDESPA }}</h3>
+            </ion-label>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>
+                <p>Cliente</p>
+                <h3>{{ item.NOMBRE }}</h3>
+            </ion-label>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>
+                <p>Transporte</p>
+                <h3>{{ item.TRADES }}</h3>
+            </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="item.CODINI || item.IDPROD">
+            <ion-label *ngIf="item.CODINI">
+                <p>Nro Pedido</p>
+                <h3>{{ item.CODINI }} - {{ item.NROINI }}</h3>
+            </ion-label>
+            <ion-label *ngIf="item.IDPROD">
+                <p>Id Producteca</p>
+                <h3>{{ item.IDPROD }}</h3>
+            </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="item.NROGUI">
+            <ion-label>
+                <p>Nro Guía</p>
+                <h3>{{ item.NROGUI }}</h3>
+            </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="item.DATCOM">
+            <ion-label>
+                <p>Comprador</p>
+                <h3>{{ item.DATCOM }}</h3>
+            </ion-label>
+        </ion-item>
+
     </ion-list>
 
-    <ion-slides pager="false">
-        <ion-slide>
-            <ion-grid class="paddin padding-calc">
-
-                <ion-row>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(1,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>1</ion-label>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(2,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>2</ion-label>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(3,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>3</ion-label>
-                        </ion-button>
-                    </ion-col>
-
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(4,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>4</ion-label>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(5,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>5</ion-label>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(6,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>6</ion-label>
-                        </ion-button>
-                    </ion-col>
-
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(7,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>7</ion-label>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(8,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>8</ion-label>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(9,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>9</ion-label>
-                        </ion-button>
-                    </ion-col>
-
-                    <ion-col size="8" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(0,'P')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>0</ion-label>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="clean('P')" color="danger" expand="full" size="default">
-                            <ion-icon slot="start" name="backspace"></ion-icon>
-                        </ion-button>
-                    </ion-col>
-
-                    <ion-col *ngIf="item.ESTPCK == 'A' && cantidadManual + cantidadFaltante <= item.CANTID" size="12" class="ion-no-margin ion-no-padding ion-text-center">
-
-                        <ion-button (click)="confirmar()" color="success" expand="full" size="default">
-                            <ion-icon slot="start" name="checkmark"></ion-icon>
-                            <ion-label>Confirmar Cantidades</ion-label>
-                        </ion-button>
-                    </ion-col>
-
-                </ion-row>
-            </ion-grid>
-        </ion-slide>
-
-        <ion-slide>
-            <ion-grid class="paddin padding-calc">
-                <ion-row>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(1,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>1</ion-label>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(2,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>2</ion-label>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(3,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>3</ion-label>
-                        </ion-button>
-                    </ion-col>
-
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(4,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>4</ion-label>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(5,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>5</ion-label>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(6,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>6</ion-label>
-                        </ion-button>
-                    </ion-col>
-
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(7,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>7</ion-label>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(8,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>8</ion-label>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(9,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>9</ion-label>
-                        </ion-button>
-                    </ion-col>
-
-                    <ion-col size="8" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="add(0,'F')" [disabled]="item.ESTPCK == 'B'" color="primary" expand="full" size="default">
-                            <ion-label>0</ion-label>
-                        </ion-button>
-                    </ion-col>
-                    <ion-col size="4" class="ion-no-margin ion-no-padding ion-text-center">
-                        <ion-button (click)="clean('F')" color="danger" expand="full" size="default">
-                            <ion-icon slot="start" name="backspace"></ion-icon>
-                        </ion-button>
-                    </ion-col>
-
-                    <ion-col *ngIf="item.ESTPCK == 'A' && cantidadManual + cantidadFaltante <= item.CANTID" size="12" class="ion-no-margin ion-no-padding ion-text-center">
-
-                        <ion-button (click)="confirmar()" color="danger" expand="full" size="default">
-                            <ion-icon slot="start" name="checkmark"></ion-icon>
-                            <ion-label>Informar Faltante</ion-label>
-                        </ion-button>
-
-                    </ion-col>
-
-                </ion-row>
-            </ion-grid>
-
-        </ion-slide>
-
-    </ion-slides>
 
 
 
