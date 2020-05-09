@@ -36,7 +36,7 @@
 
             <ion-label color="primary">
                 <p class="text-center">Pedido</p>
-                <h2 class="text-center">{{ item.CANTID}} {{ item.UNIMED }}</h2>
+                <h2 class="text-center">{{ item.CANTID - item.CNTFST }} {{ item.UNIMED }}</h2>
             </ion-label>
         </ion-item>
 
@@ -104,7 +104,7 @@
                         </ion-button>
                     </ion-col>
 
-                    <ion-col *ngIf="item.ESTPK2 == 'A' && cantidadManual <= item.CANTID" size="12" class="ion-text-center" no-margin no-padding>
+                    <ion-col *ngIf="item.ESTPK2 == 'A' && cantidadManual <= item.CANTID - item.CNTFST" size="12" class="ion-text-center" no-margin no-padding>
                         <ion-button (click)="confirmar()" color="success" expand="full" size="default">
                             <ion-icon slot="start" name="checkmark"></ion-icon>
                             <ion-label>Confirmar</ion-label>

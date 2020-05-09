@@ -22,21 +22,6 @@
     </ion-toolbar>
 </ion-header>
 
-
-
-<!--
-<ion-toolbar>
-    <ion-segment #segmento (ionChange)="segmentChanged($event)">
-        <ion-segment-button value="pendientes" size="small">
-            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtroPackingCliente: true : filtroService.filtro).length }} )</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="completados">
-            <ion-label *ngIf="datos">Completados ( {{ (datos | filtroPackingCliente: false : filtroService.filtro).length }} )</ion-label>
-        </ion-segment-button>
-    </ion-segment>
-</ion-toolbar>
--->
-
 <ion-content>
 
     <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
