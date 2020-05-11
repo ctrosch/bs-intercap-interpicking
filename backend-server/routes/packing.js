@@ -171,13 +171,15 @@ app.put('/', (req, res) => {
     request.input('NUBICA', mssql.NVarChar, body.NUBICA);
     request.input('NFECHA', mssql.NVarChar, body.NFECHA);
     request.input('NDESPA', mssql.NVarChar, body.NDESPA);
-    //request.input('ESTPCK', mssql.NVarChar, body.ESTPCK);
+    request.input('ESTPCK', mssql.NVarChar, body.ESTPCK);
     //request.input('USRPCK', mssql.NVarChar, body.USRPCK);
     request.input('USRPK2', mssql.NVarChar, body.USUARIO);
 
-    sQuery = ' UPDATE FCRMVP ';
-    sQuery += ' SET USR_FCRMVP_CNTPK2 = CASE WHEN FCRMVP_CODFOR = FCRMVP_CODAPL  THEN @CNTPK2 ELSE 0 END , USR_FCRMVP_USRPK2 = @USRPK2, USR_FCRMVP_ESTPK2 = \'A\' ';
-    sQuery += ' ,USR_FCRMVP_HORPK2 = GETDATE() ';
+    sQuery = ' UPDATE FCRMVP SET';
+    sQuery += ' USR_FCRMVP_CNTPK2 = CASE WHEN FCRMVP_CODFOR = FCRMVP_CODAPL  THEN @CNTPK2 ELSE 0 END ,';
+    sQuery += ' USR_FCRMVP_USRPK2 = @USRPK2, USR_FCRMVP_ESTPK2 = \'A\' ,';
+    sQuery += ' USR_FCRMVP_HORPK2 = GETDATE() ,';
+    sQuery += ' USR_FCRMVP_ESTPCK = @ESTPCK ';
     sQuery += ' WHERE FCRMVP_MODAPL = @MODFOR ';
     sQuery += ' AND FCRMVP_CODAPL = @CODFOR ';
     sQuery += ' AND FCRMVP_NROAPL = @NROFOR ';

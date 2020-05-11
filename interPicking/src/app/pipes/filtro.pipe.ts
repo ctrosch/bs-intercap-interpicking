@@ -6,9 +6,9 @@ import { Filtro } from '../model/filtro';
 })
 export class FiltroPipe implements PipeTransform {
 
-  transform(arreglo: any[], pendientes: boolean, filtro: Filtro): any[] {
+  transform(arreglo: any[], pendientes: boolean, pipeTrigger: boolean, filtro: Filtro): any[] {
 
-    console.log("Filtro pipe");
+    //console.log("Filtro pipe");
 
     if (!arreglo || !filtro) {
       return arreglo;

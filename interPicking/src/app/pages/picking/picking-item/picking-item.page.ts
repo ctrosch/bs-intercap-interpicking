@@ -140,7 +140,8 @@ confirmar() {
         if (resp.ok) {
 
           //this.router.navigateByUrl('picking');
-          this.navCtrl.navigateRoot('/picking', { animated: true });
+          //this.navCtrl.navigateRoot('/picking', { animated: true });
+          this.router.navigateByUrl('/picking');
 
         } else {
           // swal({title: 'Error',text: 'Problemas para confirmar picking',icon: 'error',});

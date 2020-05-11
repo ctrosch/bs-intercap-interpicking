@@ -28,6 +28,7 @@ export class PickingPage implements OnInit {
   usuario: Usuario = {};
 
   completados = false;
+  pipeTrigger = false;
   filtro: Filtro;
 
   datos: any[];
@@ -72,8 +73,10 @@ export class PickingPage implements OnInit {
 
   ionViewDidEnter() {
 
-    //this.cargarPendientes();
+    console.log('ionViewDidEnter');
 
+    this.pipeTrigger = !this.pipeTrigger;
+    
   }
 
   cargarPendientes(event?) {
@@ -239,6 +242,33 @@ export class PickingPage implements OnInit {
 
   verFiltro() {
     this.router.navigateByUrl('filtro-picking');
+  }
+
+
+  volverEstado(i: any) {
+
+    console.log('volver estado');
+
+    if (!i) {
+      return;
+    }
+
+      i.ESTPCK = 'A';      
+      i.USRPCK = '';
+      i.CNTPCK = 0;
+   
+
+    this.pickingService.confirmarItem(i)
+      .subscribe(resp => {
+        if (resp.ok) {
+
+          this.pipeTrigger = !this.pipeTrigger;
+
+        } else {
+          // swal({title: 'Error',text: 'Problemas para confirmar picking',icon: 'error',});
+        }
+      });
+
   }
 
 }

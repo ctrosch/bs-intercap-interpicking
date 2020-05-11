@@ -163,5 +163,31 @@ export class PackingProductoPage implements OnInit {
     this.completados = !this.completados;
   }
 
+  volverEstado(i: any) {
+
+    console.log('volver estado');
+
+    if (!i) {
+      return;
+    }
+
+      i.ESTPCK = 'A';
+      i.ESTPK2 = 'A';
+      i.CNTPK2 = 0;
+   
+
+    this.packingService.confirmarItem(i)
+      .subscribe(resp => {
+        if (resp.ok) {
+
+          this.router.navigateByUrl('packing');
+
+        } else {
+          // swal({title: 'Error',text: 'Problemas para confirmar picking',icon: 'error',});
+        }
+      });
+
+  }
+
 
 }

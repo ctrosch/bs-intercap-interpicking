@@ -59,8 +59,6 @@ export class HomePage implements OnInit {
               private appVersion: AppVersion) {
 
 
-    
-
     const updateUrl = 'http://beansoft.com.ar/app/update.xml';
     this.appUpdate.checkAppUpdate(updateUrl).then(() => { console.log('Actualización disponible ') });
 

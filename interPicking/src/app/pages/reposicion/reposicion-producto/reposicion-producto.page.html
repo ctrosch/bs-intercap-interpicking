@@ -1,39 +1,23 @@
-<ion-header no-border="no-border">
+<ion-header no-border>
     <ion-toolbar>
         <ion-buttons slot="start">
             <ion-back-button defaultHref="/reposicion" [routerLink]="['/reposicion']"></ion-back-button>
         </ion-buttons>
 
-        <ion-title ion-text-capitalize="ion-text-capitalize">{{ item.SITDES_DESCRP }} | {{ item.CODFOR }} - {{ item.NROFOR }} </ion-title>
-
-        <ion-toggle value="!completados"></ion-toggle>
-
+        <ion-title ion-text-capitalize="ion-text-capitalize">{{ item.SITDES_DESCRP }}</ion-title>
 
         <ion-buttons slot="end">
+
+            <ion-toggle (ionChange)="toggleChanged($event)"></ion-toggle>
+
             <!-- Circles -->
             <ion-spinner *ngIf="cargando" name="crescent" color="success"></ion-spinner>
 
         </ion-buttons>
 
-
-
     </ion-toolbar>
 </ion-header>
 
-<ion-toolbar>
-
-    <!--
-    <ion-segment #segmento (ionChange)="segmentChanged($event)">
-        <ion-segment-button value="pendientes" size="small">
-            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtro: true : filtroService.filtro).length }} )</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="completados">
-            <ion-label *ngIf="datos">Completados ( {{ (datos | filtro: false : filtroService.filtro).length }} )</ion-label>
-        </ion-segment-button>
-    </ion-segment>
-    -->
-
-</ion-toolbar>
 
 <ion-content>
 
@@ -43,9 +27,20 @@
 
     <ion-list *ngIf="!cargando">
 
-        <ion-item-group *ngFor="let i of datos | filtro : !completados :filtroService.filtro " (click)="seleccionarItem( i )">
+        <ion-item-group *ngFor="let i of datos | filtro : !completados: pipeTrigger :filtroService.filtro ">
 
-            <app-item-producto [item]="i" tipo="reposicion"></app-item-producto>
+            <ion-item-sliding>
+                <ion-item-options *ngIf="i.CNTPCK > 0" side="start">
+                    <ion-item-option (click)="volverEstado( i )" color="danger" expandable>
+                        Devolver a estantería
+                    </ion-item-option>
+                </ion-item-options>
+
+                <ion-item lines="full" (click)="seleccionarItem( i )" class="ion-no-margin ion-no-padding animated fadeIn">
+                    <app-item-producto [item]="i" tipo="reposicion" titulo></app-item-producto>
+                </ion-item>
+
+            </ion-item-sliding>
 
         </ion-item-group>
 

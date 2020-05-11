@@ -17,6 +17,8 @@ export class HeaderComponent implements OnInit {
   @Input() completados: boolean;
   @Input() ocultaToggle: boolean;
 
+  
+
 
   constructor(private router: Router) { }
 

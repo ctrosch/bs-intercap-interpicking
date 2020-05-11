@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { IonSegment, LoadingController, NavController } from '@ionic/angular';
+import { IonSegment, LoadingController, NavController, IonToggle } from '@ionic/angular';
 import { Usuario } from '../../model/usuario';
 import { UsuarioService } from '../../services/usuario.service';
 import { UiServiceService } from '../../services/ui-service.service';
@@ -16,9 +16,12 @@ import { ReposicionService } from '../../services/reposicion.service';
 })
 export class ReposicionPage implements OnInit {
 
+  @ViewChild(IonToggle, { static: true }) toggle: IonToggle;
+
   usuario: Usuario = {};
 
-  pendiente = true;
+  completados = false;
+  pipeTrigger = false;
   filtro: Filtro;
 
   datos: any[];
@@ -106,6 +109,8 @@ export class ReposicionPage implements OnInit {
 
         if (resp.ok) {
 
+          this.filtroService.limpiarFiltro();          
+          this.toggle.checked = false;
           this.cargarPendientes();
           this.procesando.dismiss();
 
@@ -184,6 +189,10 @@ export class ReposicionPage implements OnInit {
     this.procesarCodigoBarra(this.codigoManual);
     this.codigoManual = '';
 
+  }
+
+  toggleChanged(event) {
+    this.completados = !this.completados;
   }
 
 }

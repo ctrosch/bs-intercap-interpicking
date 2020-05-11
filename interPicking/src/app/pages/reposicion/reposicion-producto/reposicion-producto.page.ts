@@ -22,6 +22,7 @@ export class ReposicionProductoPage implements OnInit {
 
   pendiente = true;
   completados = false;
+  pipeTrigger = false;
   filtro: Filtro;
 
   datos: any[];
@@ -51,6 +52,13 @@ export class ReposicionProductoPage implements OnInit {
     this.item = this.reposicionService.item;
     this.cargarPendientes();
   }
+
+  ionViewDidEnter() {
+
+    this.pipeTrigger = !this.pipeTrigger;
+
+  }
+
 
   cargarPendientes(event?) {
 
@@ -160,6 +168,38 @@ export class ReposicionProductoPage implements OnInit {
       
       // swal({title: 'Error',text: 'Error leyendo código de barra',icon: 'error',});
     });
+  }
+
+  
+  toggleChanged(event) {
+    this.completados = !this.completados;
+  }
+
+
+  volverEstado(i: any) {
+
+    console.log('volver estado');
+
+    if (!i) {
+      return;
+    }
+
+      i.ESTPCK = 'A';      
+      i.USRPCK = '';
+      i.CNTPCK = 0;
+   
+
+    this.reposicionService.confirmarItem(i)
+      .subscribe(resp => {
+        if (resp.ok) {
+
+          this.router.navigateByUrl('picking');
+
+        } else {
+          // swal({title: 'Error',text: 'Problemas para confirmar picking',icon: 'error',});
+        }
+      });
+
   }
 
 
