@@ -29,7 +29,7 @@ app.get('/:usuario/:deposito/:circuito', (req, res, next) => {
     request.input('usuario', mssql.NVarChar, usuario);
     request.input('circuito', mssql.NVarChar, circuito);
 
-    var sQuery = 'SELECT TOP 800 P.* FROM PCK_PENDIENTE_PRODUCTO P ';
+    var sQuery = 'SELECT TOP 1500 P.* FROM PCK_PENDIENTE_PRODUCTO P ';
     sQuery += ' WHERE P.DEPOSI = @deposito ';
     sQuery += ' AND (CIRCOM = @circuito ) ';
     sQuery += ' AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario OR (CNTPCK+CNTFST = 0 AND USRPCK <> \'\')) ';
@@ -90,7 +90,7 @@ app.get('/:usuario/:deposito', (req, res, next) => {
     request.input('deposito', mssql.NVarChar, deposito);
     request.input('usuario', mssql.NVarChar, usuario);
 
-    var sQuery = 'SELECT TOP 800 P.* FROM PCK_PENDIENTE_PRODUCTO P ';
+    var sQuery = 'SELECT TOP 1500 P.* FROM PCK_PENDIENTE_PRODUCTO P ';
     sQuery += ' WHERE P.DEPOSI = @deposito ';
     sQuery += ' AND (USRPCK IS NULL OR USRPCK = \'\' OR USRPCK = @usuario OR (CNTPCK+CNTFST = 0 AND USRPCK <> \'\')) ';
     sQuery += ' AND (ESTPCK = \'A\' ) ';
