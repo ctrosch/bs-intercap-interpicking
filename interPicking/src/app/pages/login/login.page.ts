@@ -11,7 +11,7 @@ import { UiServiceService } from '../../services/ui-service.service';
 })
 export class LoginPage implements OnInit {
 
-  @ViewChild('slidePrincipal', { static: true }) slides: IonSlides;
+  //@ViewChild('slidePrincipal', { static: true }) slides: IonSlides;
 
   cargando = false;
   
@@ -64,21 +64,21 @@ export class LoginPage implements OnInit {
               private uiService: UiServiceService) { }
 
   ngOnInit() {
-    this.slides.lockSwipes( true );
+    //this.slides.lockSwipes( true );
   }
 
   async login(fLogin: NgForm) {
     
-    if ( fLogin.invalid ) { return; }
-
-    const valido = await this.usuarioService.login( this.loginUser.USUARIO, this.loginUser.PASSWORD );
-
-    if ( valido ) {
+    if (fLogin.invalid) { return; }
+    
+    const valido = await this.usuarioService.login(this.loginUser.USUARIO, this.loginUser.PASSWORD);
+        
+    if ( valido === '' ) {
       // navegar al tabs
       this.navCtrl.navigateRoot( '/home', { animated: true } );
     } else {
       // mostrar alerta de usuario y contraseña no correctos
-      this.uiService.alertaInformativa('Usuario y contraseña no son correctos o el usuario no tiene depósito asignado');
+      this.uiService.alertaInformativa(valido);
     }
   }
 

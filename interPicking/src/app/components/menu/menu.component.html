@@ -6,7 +6,7 @@
             <ion-avatar slot="start">
                 <ion-img src="/assets/img/avatar.svg"></ion-img>
             </ion-avatar>
-            <ion-title>
+            <ion-title *ngIf="usuario">
                 {{ usuario.NOMBRE }}
             </ion-title>
 

@@ -32,6 +32,7 @@ export class PickingPage implements OnInit {
   filtro: Filtro;
 
   datos: any[];
+  datosMostrar: any[];
   clientes: any[];
 
   codigoManual: string;
@@ -94,7 +95,7 @@ export class PickingPage implements OnInit {
 
         if (resp.ok) {
 
-          this.datos = resp.colecta;
+          this.datos = resp.colecta;          
           this.pickingService.datos = this.datos;
 
           if (event) {

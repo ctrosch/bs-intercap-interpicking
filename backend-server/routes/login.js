@@ -41,8 +41,8 @@ app.post('/', (req, res) => {
         if (!usuarioBD || usuarioBD.length === 0) {
             return res.json({
                 ok: false,
-                mensaje: 'No se encontro usuario ' + body.usuario,
-                errors: 'Usuario o contraseña Incorrecta'
+                mensaje: 'No se encontro usuario o contraseña incorrecta ' + body.usuario,
+                errors: 'No se encontro usuario o contraseña incorrecta ' + body.usuario
             });
         }
 
@@ -56,15 +56,17 @@ app.post('/', (req, res) => {
 
         }
 
+
         /**
-        if (!bcrypt.compareSync(body.password, usuarioBD.USR_USRINP_CLVDOM)) {
-            return res.status(400).json({
+        if (body.password !== usuarioBD.USR_USRINP_CLVDOM) {
+            return res.status(200).json({
                 ok: false,
-                mensaje: 'Credenciales incorrectas - password',
-                errors: err
+                mensaje: 'Password incorrecto',
+                errors: 'Password incorrecto'
             });
         }
-         */
+        */
+
 
         // Crear un token!!!
         //usuarioBD.USR_USRINP_CLVDOM = '-';
@@ -76,11 +78,7 @@ app.post('/', (req, res) => {
             usuario: usuarioBD,
             token: token
         });
-
-
-
     });
-
 });
 
 
