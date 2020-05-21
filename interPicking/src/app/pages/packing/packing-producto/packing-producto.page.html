@@ -4,11 +4,11 @@
             <ion-back-button defaultHref="/packing" [routerLink]="['/packing']"></ion-back-button>
         </ion-buttons>
 
-        <ion-title ion-text-capitalize="ion-text-capitalize">{{ item.NOMBRE }} </ion-title>
+        <ion-title>{{ item.NOMBRE }} </ion-title>
 
         <ion-buttons slot="end">
             <!-- Circles -->
-            <ion-spinner *ngIf="cargando" name="crescent" color="success"></ion-spinner>
+            <ion-spinner *ngIf="cargando" name="crescent" color="primary"></ion-spinner>
 
         </ion-buttons>
 
@@ -72,11 +72,11 @@
 
             <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()" autofocus="true"></ion-input>
 
-            <ion-button shape="round" (click)="procesarCodigoManual()" color="success">
+            <ion-button shape="round" (click)="procesarCodigoManual()" color="dark">
                 <ion-icon slot="icon-only" name="add"> </ion-icon>
             </ion-button>
 
-            <ion-button shape="round" (click)="scanCode()" color="primary">
+            <ion-button shape="round" (click)="scanCode()" color="dark">
                 <ion-icon slot="icon-only" name="barcode"></ion-icon>
             </ion-button>
 

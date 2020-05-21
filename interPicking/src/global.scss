@@ -120,3 +120,23 @@
     margin-left: auto !important;
     margin-right: auto !important;
 }
+
+.inp-green {
+    color: #adc90e !important;
+}
+
+.inp-green-back {
+    background-color: #adc90e !important;
+}
+
+.inp-blue {
+    color: #2f2c7e !important;
+}
+
+.inp-blue-back {
+    background-color: #2f2c7e !important;
+}
+
+ion-toolbar {
+    --background: #adc90e;
+}

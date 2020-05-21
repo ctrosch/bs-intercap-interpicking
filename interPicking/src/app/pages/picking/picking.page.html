@@ -18,7 +18,7 @@
 
 
             <!-- Circles -->
-            <ion-spinner *ngIf="cargando" name="crescent" color="success"></ion-spinner>
+            <ion-spinner *ngIf="cargando" name="crescent" color="primary"></ion-spinner>
 
         </ion-buttons>
     </ion-toolbar>
@@ -69,16 +69,17 @@
 
 <ion-footer>
 
-    <ion-toolbar>
-
-        <ion-input *ngIf="!completados" [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()" autofocus="true"></ion-input>
+    <ion-toolbar *ngIf="!completados">
 
         <ion-buttons *ngIf="!completados" slot="end">
-            <ion-button shape="round" (click)="procesarCodigoManual()" color="success">
+
+            <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()" autofocus="true"></ion-input>
+
+            <ion-button shape="round" (click)="procesarCodigoManual()" color="dark">
                 <ion-icon slot="icon-only" name="add"> </ion-icon>
             </ion-button>
 
-            <ion-button shape="round" (click)="scanCode()" color="secondary">
+            <ion-button shape="round" (click)="scanCode()" color="dark">
                 <ion-icon slot="icon-only" name="barcode"></ion-icon>
             </ion-button>
 
@@ -89,12 +90,14 @@
             -->
         </ion-buttons>
 
-        <ion-button *ngIf="completados" (click)="confirmarPicking()" color="primary" expand="full">
-            <ion-icon slot="start" name="send"></ion-icon>
-            Confirmar Picking
-        </ion-button>
+
 
     </ion-toolbar>
+
+    <ion-button *ngIf="completados" (click)="confirmarPicking()" color="primary" expand="full">
+        <ion-icon slot="start" name="send"></ion-icon>
+        Confirmar Picking
+    </ion-button>
 
 
 </ion-footer>
