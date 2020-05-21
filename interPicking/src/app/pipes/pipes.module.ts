@@ -9,17 +9,22 @@ import { FechaFabricacionPipe } from './fecha-fabricacion.pipe';
 
 
 
+
 @NgModule({
   declarations: [
-    DomSanitizerPipe,    
-    FiltroPackingClientePipe,     
-    CapitalizePipe, 
-    FiltroPipe,  
-  FiltroReposicionPipe, FechaFabricacionPipe],
-  imports: [CommonModule],
-  exports: [DomSanitizerPipe, 
-    FiltroPipe,     
+    DomSanitizerPipe,
     FiltroPackingClientePipe,
-    FiltroReposicionPipe, FechaFabricacionPipe]
+    CapitalizePipe,
+    FiltroPipe,
+    FiltroReposicionPipe,
+    FechaFabricacionPipe
+    ],
+  imports: [CommonModule],
+  exports: [DomSanitizerPipe,
+    FiltroPipe,
+    FiltroPackingClientePipe,
+    FiltroReposicionPipe,
+    FechaFabricacionPipe
+    ]
 })
 export class PipesModule { }

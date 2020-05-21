@@ -29,6 +29,17 @@
 
         <ion-item>
 
+            <ion-label>Fecha</ion-label>
+
+            <ion-select interface="action-sheet " placeholder="" cancel-text="CANCELAR" [(ngModel)]="filtroService.filtro.FCHMOV">
+                <ion-select-option value="">TODOS</ion-select-option>
+                <ion-select-option *ngFor="let i of fechas" [value]="i">{{ i | date:"dd/MM/yyyy" }}</ion-select-option>
+            </ion-select>
+
+        </ion-item>
+
+        <ion-item>
+
             <ion-label>Transportes</ion-label>
 
             <ion-select interface="action-sheet " placeholder="" cancel-text="CANCELAR" [(ngModel)]="filtroService.filtro.TRADES">

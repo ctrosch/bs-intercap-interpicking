@@ -12,7 +12,7 @@
             <ion-toggle (ionChange)="toggleChanged($event)"></ion-toggle>
 
             <ion-button (click)="verFiltro()">
-                <ion-icon slot="icon-only" name="ios-funnel"></ion-icon>
+                <ion-icon slot="icon-only" [color]="filtroService.filtro.ACTIVO ? 'primary' :'dark'" name="ios-funnel"></ion-icon>
             </ion-button>
 
             <!-- Circles -->
@@ -38,6 +38,10 @@
                 <p class="primary">{{ i.TRADES }} </p>
 
                 <p>{{ i.CODFOR }} - {{ i.NROFOR }} - {{ i.FCHMOV | date: 'dd/MM/yy' }} </p>
+
+                <ion-chip color="primary" *ngIf="i.ESTPK2 == 'B'">
+                    <ion-label color="primary">Confirmado</ion-label>
+                </ion-chip>
 
             </ion-label>
 

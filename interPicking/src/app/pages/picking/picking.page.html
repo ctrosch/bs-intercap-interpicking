@@ -12,8 +12,10 @@
             <ion-toggle (ionChange)="toggleChanged($event)"></ion-toggle>
 
             <ion-button (click)="verFiltro()">
-                <ion-icon slot="icon-only" name="ios-funnel"></ion-icon>
+                <ion-icon slot="icon-only" [color]="filtroService.filtro.ACTIVO ? 'primary' :'dark'" name="ios-funnel"></ion-icon>
             </ion-button>
+
+
 
             <!-- Circles -->
             <ion-spinner *ngIf="cargando" name="crescent" color="success"></ion-spinner>

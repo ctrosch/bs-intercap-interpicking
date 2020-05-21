@@ -22,6 +22,9 @@
             <ion-label>
                 <h2>{{ item.TRADES }}</h2>
                 <p class="primary">{{ item.CODFOR }} - {{ item.NROFOR }}</p>
+                <ion-chip color="primary" *ngIf="item.ESTPK2 == 'B'">
+                    <ion-label color="primary">Confirmado</ion-label>
+                </ion-chip>
             </ion-label>
 
             <ion-toggle slot="end" (ionChange)="toggleChanged($event)"></ion-toggle>

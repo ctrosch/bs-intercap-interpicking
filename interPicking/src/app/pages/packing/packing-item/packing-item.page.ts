@@ -83,6 +83,12 @@ export class PackingItemPage implements OnInit {
         .subscribe(resp => {
           if (resp.ok) {
 
+            if(this.item.CANTID === this.item.CANTID - this.item.CNTFST){
+              this.item.ESTPK2 = 'B';
+            }else{
+              this.item.ESTPK2 = 'A';
+            }
+
             this.router.navigateByUrl('packing-producto/' + this.item.ID);
 
           } else {

@@ -26,7 +26,7 @@ app.get('/:usuario/:deposito', (req, res, next) => {
     sQuery += ' AND DEPOSI = @deposito ';
     sQuery += ' AND (USRPK2 IS NULL OR USRPK2 = \'\' OR USRPK2 = @usuario OR (CNTPK2 = 0 AND USRPK2 <> \'\')) ';
     //sQuery += ' AND (USRPK2 IS NULL OR USRPK2 = \'\' OR USRPK2 = @usuario ) ';
-    sQuery += ' AND (ESTPK2 = \'A\' ) ';
+    sQuery += ' AND (ESTPCK = \'B\' ) ';
     sQuery += ' ORDER BY TRADES, NROCTA ';
 
     request.query(sQuery, function(err, result) {
@@ -115,7 +115,7 @@ app.get('/items/:modfor/:codfor/:nrofor', (req, res, next) => {
     sQuery += ' WHERE MODFOR = @modfor ';
     sQuery += ' AND CODFOR = @codfor ';
     sQuery += ' AND NROFOR = @nrofor ';
-    sQuery += ' AND ESTPK2 = \'A\' ';
+    //sQuery += ' AND ESTPK2 = \'A\' ';
     sQuery += ' ORDER BY TIPPRO, ARTCOD ';
 
     request.query(sQuery, function(err, result) {

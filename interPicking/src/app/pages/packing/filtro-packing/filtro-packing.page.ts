@@ -16,6 +16,7 @@ export class FiltroPackingPage implements OnInit {
   sitios: string[];
   clientes: string[];
   transportes: string[];
+  fechas: Date[];
   tipoProducto = '';
 
   constructor(public filtroService: FiltroService,
@@ -26,6 +27,7 @@ export class FiltroPackingPage implements OnInit {
     this.prepararDatosClientes();
     this.prepararDatosTransporte();
     this.prepararDatosSitios();
+    this.prepararDatosFechas();
 
   }
 
@@ -57,6 +59,7 @@ export class FiltroPackingPage implements OnInit {
 
         if (!map.has(item.NOMBRE)
           && (!this.filtro.CIRCOM || this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.FCHMOV || this.filtro.FCHMOV && item['FCHMOV'].includes(this.filtro.FCHMOV) || this.filtro.FCHMOV === null)
           && (!this.filtro.SITDES || this.filtro.SITDES && item['SITDES'].includes(this.filtro.SITDES) || this.filtro.SITDES.length === 0)
           && (!this.filtro.TRADES || this.filtro.TRADES && item['TRADES'].includes(this.filtro.TRADES) || this.filtro.TRADES.length === 0)) {
 
@@ -84,6 +87,7 @@ export class FiltroPackingPage implements OnInit {
 
         if (!map.has(item.TRADES)
           && (!this.filtro.CIRCOM || this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.FCHMOV || this.filtro.FCHMOV && item['FCHMOV'].includes(this.filtro.FCHMOV) || this.filtro.FCHMOV === null)
           && (!this.filtro.SITDES || this.filtro.SITDES && item['SITDES'].includes(this.filtro.SITDES) || this.filtro.SITDES.length === 0)
           && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)) {
 
@@ -110,6 +114,7 @@ export class FiltroPackingPage implements OnInit {
 
         if (!map.has(item.SITDES)
           && (!this.filtro.CIRCOM || this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+          && (!this.filtro.FCHMOV || this.filtro.FCHMOV && item['FCHMOV'].includes(this.filtro.FCHMOV) || this.filtro.FCHMOV === null)
           && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)
           && (!this.filtro.TRADES || this.filtro.TRADES && item['TRADES'].includes(this.filtro.TRADES) || this.filtro.TRADES.length === 0)) {
 
@@ -119,6 +124,31 @@ export class FiltroPackingPage implements OnInit {
       });
 
       this.sitios.sort();
+
+    }
+  }
+
+  prepararDatosFechas() {
+
+    this.fechas = [];
+    const map = new Map();
+
+    if (this.packingService.datos) {
+
+      this.packingService.datos.forEach(item => {
+
+        if (!map.has(item.FCHMOV)
+        && (!this.filtro.CIRCOM || this.filtro.CIRCOM && item['CIRCOM'].includes(this.filtro.CIRCOM) || this.filtro.CIRCOM.length === 0)
+        && (!this.filtro.SITDES || this.filtro.SITDES && item['SITDES'].includes(this.filtro.SITDES) || this.filtro.SITDES.length === 0)
+        && (!this.filtro.NOMBRE || this.filtro.NOMBRE && item['NOMBRE'].includes(this.filtro.NOMBRE) || this.filtro.NOMBRE.length === 0)
+        && (!this.filtro.TRADES || this.filtro.TRADES && item['TRADES'].includes(this.filtro.TRADES) || this.filtro.TRADES.length === 0)) {
+
+          map.set(item.FCHMOV, true);    // set any value to Map
+          this.fechas.push(item.FCHMOV);
+        }
+      });
+
+      this.fechas.sort();
 
     }
   }

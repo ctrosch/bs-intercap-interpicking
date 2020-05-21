@@ -49,7 +49,7 @@ export class PackingPage implements OnInit {
 
     console.log('************************* INI *********************************************');
 
-    this.filtro = this.filtroService.inicializarFiltro('filtro-picking');
+    this.filtro = this.filtroService.inicializarFiltro('filtro-packing');
     this.usuario = this.usuarioService.getUsuario();
     
     

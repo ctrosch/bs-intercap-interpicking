@@ -33,15 +33,17 @@ export class UsuarioService {
           if ( resp['ok'] ) {
             await this.guardarToken(resp['token']);
             await this.guardarUsuario(resp['usuario']);
-            resolve('');
+            resolve(true);
           } else {
             this.token = null;
             this.storage.clear();
-            resolve(resp['mensaje']);
+            resolve(false);
+            //resolve(resp['mensaje']);
           }
 
         }, error => {
-            resolve('Error de conexión, servicio no disponible');
+            resolve(false);
+            //resolve('Error de conexión, servicio no disponible');
         });
     });
 

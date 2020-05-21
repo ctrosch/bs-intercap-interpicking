@@ -12,11 +12,14 @@ export class FiltroService {
   filtro: Filtro = {};
 
   private filtroTemplate: Filtro = {
+    ACTIVO: false,
     CIRCOM: '',
+    FCHMOV: null,
     NOMBRE: null,
     TRADES: null,
     TIPDES: null,
-    SITDES: null
+    SITDES: null,
+
   };
 
   constructor(private storage: Storage) {
@@ -33,6 +36,12 @@ export class FiltroService {
 
   async guardarFiltro() {
 
+    if (this.filtro.CIRCOM || this.filtro.SITDES || this.filtro.FCHMOV || this.filtro.NOMBRE || this.filtro.TRADES || this.filtro.TIPDES || this.filtro.ARTCOD || this.filtro.NUBICA || this.filtro.NROPAR ){
+      this.filtro.ACTIVO =  true;
+    }else{
+      this.filtro.ACTIVO =  false;
+    }
+
     await this.storage.set(this.nombre, this.filtro);
 
   }
@@ -43,7 +52,7 @@ export class FiltroService {
 
     if (!this.filtro) {
 
-      console.log('Cargando filtro template');
+      //console.log('Cargando filtro template');
 
       this.filtro = this.filtroTemplate;
       this.guardarFiltro();
@@ -56,12 +65,14 @@ export class FiltroService {
   */
   async limpiarFiltro() {
 
+    this.filtro.ACTIVO = false;
     this.filtro.CIRCOM = null;
     this.filtro.NOMBRE = null;
     this.filtro.TRADES = null;
     this.filtro.TIPDES = null;
     this.filtro.NUBICA = null;
     this.filtro.SITDES = null;
+    this.filtro.FCHMOV = null;
 
     await this.storage.set(this.nombre, this.filtro);
 

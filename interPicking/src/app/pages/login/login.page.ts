@@ -73,12 +73,12 @@ export class LoginPage implements OnInit {
     
     const valido = await this.usuarioService.login(this.loginUser.USUARIO, this.loginUser.PASSWORD);
         
-    if ( valido === '' ) {
+    if ( valido ) {
       // navegar al tabs
       this.navCtrl.navigateRoot( '/home', { animated: true } );
     } else {
       // mostrar alerta de usuario y contraseña no correctos
-      this.uiService.alertaInformativa(valido);
+      this.uiService.alertaInformativa('No se encontro usuario o contraseña incorrecta');
     }
   }
 
