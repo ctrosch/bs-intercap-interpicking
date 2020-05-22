@@ -44,6 +44,7 @@
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
 
+    <!--
     <ion-list *ngIf="!cargando">
 
         <ion-item-group *ngFor="let i of datos |  filtro: !completados : pipeTrigger :filtroService.filtro ">
@@ -64,6 +65,30 @@
         </ion-item-group>
 
     </ion-list>
+-->
+
+    <ion-virtual-scroll [items]="datos |  filtro: !completados : pipeTrigger :filtroService.filtro">
+
+        <ion-item-group class="animated fadeIn" *virtualItem="let i">
+
+            <ion-item-sliding>
+                <ion-item-options *ngIf="i.CNTPCK + i.CNTFST > 0" side="start">
+                    <ion-item-option (click)="volverEstado( i )" color="danger" expandable>
+                        Devolver a estantería
+                    </ion-item-option>
+                </ion-item-options>
+
+                <ion-item lines="full" (click)="seleccionarItem( i )" class="ion-no-margin ion-no-padding animated fadeIn">
+                    <app-item-producto [item]="i" tipo="picking" titulo></app-item-producto>
+                </ion-item>
+
+            </ion-item-sliding>
+
+        </ion-item-group>
+
+
+    </ion-virtual-scroll>
+
 
 </ion-content>
 
