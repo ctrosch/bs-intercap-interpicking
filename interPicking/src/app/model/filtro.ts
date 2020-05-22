@@ -1,6 +1,6 @@
 
 export interface Filtro {
-  ACTIVO : boolean;
+  ACTIVO?: boolean;
   CIRCOM?: string;
   SITDES?: string;
   FCHMOV?: Date;
