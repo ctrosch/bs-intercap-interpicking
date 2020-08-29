@@ -1,0 +1,128 @@
+<ion-header no-border>
+    <ion-toolbar>
+
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/"></ion-back-button>
+        </ion-buttons>
+
+        <ion-title ion-text-capitalize> {{ titulo }} </ion-title>
+
+        <ion-buttons slot="end">
+
+            <ion-toggle (ionChange)="toggleChanged($event)"></ion-toggle>
+
+            <ion-button (click)="verFiltro()">
+                <ion-icon slot="icon-only" [color]="filtroService.filtro.ACTIVO ? 'primary' :'dark'" name="ios-funnel"></ion-icon>
+            </ion-button>
+
+
+
+            <!-- Circles -->
+            <ion-spinner *ngIf="cargando" name="crescent" color="primary"></ion-spinner>
+
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+
+<!--
+<ion-toolbar>    
+    <ion-segment #segmento (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="pendientes" size="small">
+            <ion-label *ngIf="datos">Pendientes ( {{ (datos | filtro: true : filtroService.filtro).length }} )</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="completados">
+            <ion-label *ngIf="datos">Completados ( {{ (datos | filtro: false : filtroService.filtro).length }} )</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+</ion-toolbar>
+-->
+
+<ion-content>
+
+    <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <!--
+    <ion-list *ngIf="!cargando">
+
+        <ion-item-group *ngFor="let i of datos |  filtro: !completados : pipeTrigger :filtroService.filtro ">
+
+            <ion-item-sliding>
+                <ion-item-options *ngIf="i.CNTPCK + i.CNTFST > 0" side="start">
+                    <ion-item-option (click)="volverEstado( i )" color="danger" expandable>
+                        Devolver a estantería
+                    </ion-item-option>
+                </ion-item-options>
+
+                <ion-item lines="full" (click)="seleccionarItem( i )" class="ion-no-margin ion-no-padding animated fadeIn">
+                    <app-item-producto [item]="i" tipo="picking" titulo></app-item-producto>
+                </ion-item>
+
+            </ion-item-sliding>
+
+        </ion-item-group>
+
+    </ion-list>
+-->
+
+    <ion-virtual-scroll [items]="datos |  filtro: !completados : pipeTrigger :filtroService.filtro">
+
+        <ion-item-group class="animated fadeIn" *virtualItem="let i">
+
+            <ion-item-sliding>
+                <ion-item-options *ngIf="i.CNTPCK + i.CNTFST > 0" side="start">
+                    <ion-item-option (click)="volverEstado( i )" color="danger" expandable>
+                        Devolver a estantería
+                    </ion-item-option>
+                </ion-item-options>
+
+                <ion-item lines="full" (click)="seleccionarItem( i )" class="ion-no-margin ion-no-padding animated fadeIn">
+                    <app-item-producto [item]="i" tipo="picking" titulo></app-item-producto>
+                </ion-item>
+
+            </ion-item-sliding>
+
+        </ion-item-group>
+
+
+    </ion-virtual-scroll>
+
+
+</ion-content>
+
+<ion-footer>
+
+    <ion-toolbar *ngIf="!completados">
+
+        <ion-buttons *ngIf="!completados" slot="end">
+
+            <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()" autofocus="true"></ion-input>
+
+            <ion-button shape="round" (click)="procesarCodigoManual()" color="dark">
+                <ion-icon slot="icon-only" name="add"> </ion-icon>
+            </ion-button>
+
+            <ion-button shape="round" (click)="scanCode()" color="dark">
+                <ion-icon slot="icon-only" name="barcode"></ion-icon>
+            </ion-button>
+
+            <!--
+            <ion-button shape="round" (click)="confirmarPicking()" color="primary">
+                <ion-icon slot="icon-only" name="send"></ion-icon>
+            </ion-button>
+            -->
+        </ion-buttons>
+
+
+
+    </ion-toolbar>
+
+    <ion-button *ngIf="completados" (click)="confirmarPicking()" color="primary" expand="full">
+        <ion-icon slot="start" name="send"></ion-icon>
+        Confirmar Picking
+    </ion-button>
+
+
+</ion-footer>

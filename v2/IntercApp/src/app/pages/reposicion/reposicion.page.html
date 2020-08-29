@@ -1,0 +1,55 @@
+<ion-header no-border>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/"></ion-back-button>
+        </ion-buttons>
+
+        <ion-title ion-text-capitalize="ion-text-capitalize">Reposiciones</ion-title>
+
+        <ion-buttons slot="end">
+
+            <!--
+            <ion-toggle value="!completados"></ion-toggle>
+            -->
+
+            <!-- Circles -->
+            <ion-spinner *ngIf="cargando" name="crescent" color="primary"></ion-spinner>
+
+        </ion-buttons>
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+
+    <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list *ngIf="!cargando">
+
+        <ion-item class="animated fadeIn" *ngFor="let i of datos | filtroReposicion: !completados : filtroService.filtro " (click)="seleccionarItem( i )">
+
+            <ion-label>
+                <h2>{{ i.SITDES_DESCRP }}</h2>
+                <p>{{ i.CODFOR }} - {{ i.NROFOR }} - {{ i.FCHMOV | date: 'dd/MM/yy' }} </p>
+
+            </ion-label>
+
+            <ion-chip slot="end" color="{{ i.CNTPCK == 0 ? 'danger' :  i.CANTID > i.CNTPCK ? 'warning' : 'success' }}">
+                <ion-label>
+                    {{ i.CNTPCK }} / {{ i.CNTFST }} / {{ i.CANTID }}
+                </ion-label>
+            </ion-chip>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+
+    <ion-button (click)="confirmarReposicion()" color="primary" expand="full">
+        <ion-icon slot="start" name="send"></ion-icon>
+        Confirmar Reposición
+    </ion-button>
+
+</ion-footer>

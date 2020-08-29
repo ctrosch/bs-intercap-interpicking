@@ -1,0 +1,89 @@
+<ion-grid class="ion-no-padding">
+    <ion-row class="ion-align-items-center">
+        <ion-col size="12">
+            <ion-label color="dark" class="ion-text-wrap">
+                <h4 class="text-center">
+                    {{ item.DESCRP }}
+                </h4>
+            </ion-label>
+        </ion-col>
+
+    </ion-row>
+
+    <ion-row class="ion-align-items-center">
+        <ion-col size="2">
+
+            <ion-img [src]="item.IMGPRD"></ion-img>
+
+        </ion-col>
+        <ion-col size="7" class="ion-align-self-start">
+            <ion-label>
+
+                <p>Código: {{ item.TIPPRO }}-{{ item.ARTCOD }}</p>
+
+                <p *ngIf="item.NROPAR">N° Parte: {{ item.NROPAR }}</p>
+
+                <p *ngIf="item.NFECHA">Fecha F.: {{ item.NFECHA | fechaFabricacion }}</p>
+
+                <p *ngIf="tipo === 'picking'">Cliente: {{ item.NOMBRE }} </p>
+
+                <p *ngIf=" item.CODINI ">Nro Pedido: {{ item.CODINI }} - {{ item.NROINI }} </p>
+
+                <p *ngIf="item.IDPROD ">Id Producteca: {{ item.IDPROD }}</p>
+
+                <p *ngIf="item.DATCOM ">Comprador: {{ item.DATCOM }}</p>
+
+            </ion-label>
+
+            <ion-chip color="primary" *ngIf="tipo === 'picking' && item.ESTPCK == 'B'">
+                <ion-label color="primary">Confirmado</ion-label>
+            </ion-chip>
+
+            <!--
+            <ion-chip color="primary" *ngIf="tipo === 'picking' && item.ESTPCK == 'B'">
+                <ion-label color="primary">Confirmado</ion-label>
+            </ion-chip>
+            -->
+
+            <ion-chip color="success" *ngIf="tipo === 'packing' && item.ESTPK2 == 'B' && (item.CANTID - item.CNTFST) > 0 ">
+                <ion-label color="success">Para Facturar</ion-label>
+            </ion-chip>
+
+            <ion-chip color="danger" *ngIf="tipo === 'packing' && item.ESTPK2 == 'B' && (item.CANTID - item.CNTFST) === 0 ">
+                <ion-label color="danger">Faltante</ion-label>
+            </ion-chip>
+
+            <ion-chip color="primary" *ngIf="item.USRPCK">
+                <ion-label color="secondary">{{ 'Picking ' + item.USRPCK }}</ion-label>
+            </ion-chip>
+
+            <ion-chip color="success" *ngIf="item.USRPK2">
+                <ion-label color="success">{{ 'Packing ' + item.USRPK2 }}</ion-label>
+            </ion-chip>
+
+        </ion-col>
+        <ion-col size="3 " class="ion-align-self-center ">
+
+            <ion-icon *ngIf="item.NIVEXP>= 10" name="archive" color="danger"></ion-icon>
+
+            <ion-icon *ngIf="item.NDESPA" name="radio-button-on" color="primary"></ion-icon>
+
+
+            <h4 style="margin-top: 0px; top: 0px; font-size: 14px;text-align: center;">{{ item.NUBICA }}</h4>
+
+            <h4 style="margin-top: 0px; top: 0px; font-size: 14px;text-align: center;">
+
+
+                <ion-note *ngIf="tipo === 'picking' || tipo === 'reposicion' " class="text-align: center;" color="{{ item.CNTPCK == 0 ? 'danger' : item.CANTID > item.CNTPCK ? 'warning' : 'success' }}">
+                    {{ item.CNTPCK }} / {{ item.CNTFST }} / {{ item.CANTID }}
+                </ion-note>
+
+                <ion-note *ngIf="tipo === 'packing'" class="text-align: center;" color="{{ item.CNTPK2== 0 ? 'danger' : (item.CANTID - item.CNTFST) > item.CNTPK2 ? 'warning' : 'success' }}">
+                    {{ item.CNTPK2 }} / {{ item.CANTID - item.CNTFST }}
+                </ion-note>
+            </h4>
+
+        </ion-col>
+
+    </ion-row>
+</ion-grid>

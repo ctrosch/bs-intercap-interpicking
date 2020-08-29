@@ -1,0 +1,64 @@
+<ion-header no-border>
+    <ion-toolbar>
+
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/"></ion-back-button>
+        </ion-buttons>
+
+        <ion-title ion-text-capitalize> {{ titulo }} </ion-title>
+
+        <ion-buttons slot="end">
+
+            <ion-toggle (ionChange)="toggleChanged($event)"></ion-toggle>
+
+            <ion-button (click)="verFiltro()">
+                <ion-icon slot="icon-only" [color]="filtroService.filtro.ACTIVO ? 'primary' :'dark'" name="ios-funnel"></ion-icon>
+            </ion-button>
+
+            <!-- Circles -->
+            <ion-spinner *ngIf="cargando" name="crescent" color="primary"></ion-spinner>
+
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list *ngIf="!cargando">
+
+        <ion-item class="animated fadeIn" *ngFor="let i of datos | filtroPackingCliente: !completados : filtroService.filtro " (click)="seleccionarItem( i )">
+
+            <ion-label>
+                <h2>{{ i.NOMBRE }}</h2>
+
+                <p class="primary">{{ i.TRADES }} </p>
+
+                <p>{{ i.CODFOR }} - {{ i.NROFOR }} - {{ i.FCHMOV | date: 'dd/MM/yy' }} </p>
+
+                <ion-chip color="primary" *ngIf="i.ESTPK2 == 'B'">
+                    <ion-label color="primary">Confirmado</ion-label>
+                </ion-chip>
+
+            </ion-label>
+
+            <ion-chip slot="end" color="{{ i.CNTPK2 == 0 ? 'danger' :  i.CANTID > i.CNTPK2 ? 'warning' : 'success' }}">
+                <ion-label>
+                    {{ i.CNTPK2 }} / {{ i.CANTID }}
+                </ion-label>
+            </ion-chip>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+
+    <ion-button *ngIf="completados" (click)="confirmarPacking()" color="primary" expand="full">
+        <ion-icon slot="start" name="send"></ion-icon>
+        Confirmar Packing
+    </ion-button>
+
+</ion-footer>

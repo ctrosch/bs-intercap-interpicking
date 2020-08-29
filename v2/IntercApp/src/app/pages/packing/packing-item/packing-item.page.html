@@ -1,0 +1,193 @@
+<app-header titulo="Item"> </app-header>
+
+<ion-content class="animated fadeIn">
+
+    <ion-list>
+
+        <ion-item>
+            <ion-avatar>
+                <ion-img [src]="item.IMGPRD"></ion-img>
+            </ion-avatar>
+            <ion-label class="ion-text-wrap">
+                <h3 class="text-center">{{ item.DESCRP }}</h3>
+                <p class="text-center">Código {{ item.TIPPRO }} - {{ item.ARTCOD }}</p>
+                <p class="text-center" *ngIf="item.NROPAR">N° Parte {{ item.NROPAR }} </p>
+            </ion-label>
+        </ion-item>
+
+        <ion-item>
+            <ion-label *ngIf="item.NUBICA" color="primary">
+                <ion-icon name="locate" size="small"></ion-icon>
+                {{ item.NUBICA }}
+            </ion-label>
+
+            <ion-label *ngIf="item.NFECHA" color="success" class="text-center">
+                <ion-icon name="calendar"></ion-icon>
+                {{ item.NFECHA | fechaFabricacion }}
+            </ion-label>
+
+        </ion-item>
+
+        <ion-item>
+            <ion-label color="success">
+                <p class="text-center">Picking</p>
+                <h2 class="text-center">{{ cantidadManual }} {{ item.UNIMED}}</h2>
+            </ion-label>
+
+            <ion-label color="primary">
+                <p class="text-center">Pedido</p>
+                <h2 class="text-center">{{ item.CANTID - item.CNTFST }} {{ item.UNIMED }}</h2>
+            </ion-label>
+        </ion-item>
+
+        <ion-item>
+
+            <ion-grid class="paddin padding-calc">
+                <ion-row>
+
+                    <ion-col size="4" class="ion-text-center ion-no-margin ion-no-padding">
+                        <ion-button (click)="add(1)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="default">
+                            <ion-label>1</ion-label>
+                        </ion-button>
+                    </ion-col>
+                    <ion-col size="4" class="ion-text-center ion-no-margin ion-no-padding">
+                        <ion-button (click)="add(2)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="default">
+                            <ion-label>2</ion-label>
+                        </ion-button>
+                    </ion-col>
+                    <ion-col size="4" class="ion-text-center ion-no-margin ion-no-padding">
+                        <ion-button (click)="add(3)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="default">
+                            <ion-label>3</ion-label>
+                        </ion-button>
+                    </ion-col>
+
+                    <ion-col size="4" class="ion-text-center ion-no-margin ion-no-padding">
+                        <ion-button (click)="add(4)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="default">
+                            <ion-label>4</ion-label>
+                        </ion-button>
+                    </ion-col>
+                    <ion-col size="4" class="ion-text-center ion-no-margin ion-no-padding">
+                        <ion-button (click)="add(5)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="default">
+                            <ion-label>5</ion-label>
+                        </ion-button>
+                    </ion-col>
+                    <ion-col size="4" class="ion-text-center ion-no-margin ion-no-padding">
+                        <ion-button (click)="add(6)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="default">
+                            <ion-label>6</ion-label>
+                        </ion-button>
+                    </ion-col>
+
+                    <ion-col size="4" class="ion-text-center ion-no-margin ion-no-padding">
+                        <ion-button (click)="add(7)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="default">
+                            <ion-label>7</ion-label>
+                        </ion-button>
+                    </ion-col>
+                    <ion-col size="4" class="ion-text-center ion-no-margin ion-no-padding">
+                        <ion-button (click)="add(8)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="default">
+                            <ion-label>8</ion-label>
+                        </ion-button>
+                    </ion-col>
+                    <ion-col size="4" class="ion-text-center ion-no-margin ion-no-padding">
+                        <ion-button (click)="add(9)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="default">
+                            <ion-label>9</ion-label>
+                        </ion-button>
+                    </ion-col>
+
+                    <ion-col size="8" class="ion-text-center ion-no-margin ion-no-padding">
+                        <ion-button (click)="add(0)" [disabled]="item.ESTPK2 == 'B'" color="primary" expand="full" size="default">
+                            <ion-label>0</ion-label>
+                        </ion-button>
+                    </ion-col>
+                    <ion-col size="4" class="ion-text-center ion-no-margin ion-no-padding">
+                        <ion-button (click)="clean()" color="danger" expand="full" size="default">
+                            <ion-icon slot="start" name="backspace"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+
+                    <ion-col *ngIf="cantidadManual <= item.CANTID - item.CNTFST" size="12" class="ion-text-center ion-no-margin ion-no-padding">
+                        <ion-button (click)="confirmar()" color="success" expand="full" size="default">
+                            <ion-icon slot="start" name="checkmark"></ion-icon>
+                            <ion-label>Confirmar</ion-label>
+                        </ion-button>
+                    </ion-col>
+
+                </ion-row>
+            </ion-grid>
+
+        </ion-item>
+
+        <ion-item>
+            <ion-label>
+                <p>Nro Despacho</p>
+                <h3>{{ item.NDESPA }}</h3>
+            </ion-label>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>
+                <p>Cliente</p>
+                <h3>{{ item.NOMBRE }}</h3>
+            </ion-label>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>
+                <p>Transporte</p>
+                <h3>{{ item.TRADES }}</h3>
+            </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="item.CODINI || item.IDPROD">
+            <ion-label *ngIf="item.CODINI">
+                <p>Nro Pedido</p>
+                <h3>{{ item.CODINI }} - {{ item.NROINI }}</h3>
+            </ion-label>
+            <ion-label *ngIf="item.IDPROD">
+                <p>Id Producteca</p>
+                <h3>{{ item.IDPROD }}</h3>
+            </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="item.NROGUI">
+            <ion-label>
+                <p>Nro Guía</p>
+                <h3>{{ item.NROGUI }}</h3>
+            </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="item.DATCOM">
+            <ion-label>
+                <p>Comprador</p>
+                <h3>{{ item.DATCOM }}</h3>
+            </ion-label>
+        </ion-item>
+
+    </ion-list>
+
+
+
+
+
+
+</ion-content>
+
+
+<ion-footer>
+    <!--
+    <ion-toolbar>
+
+        <ion-input [(ngModel)]="codigoBarra" (keyup.enter)="procesarCodigoBarra()"></ion-input>
+
+        <ion-buttons slot="end">
+            <ion-button shape="round" (click)="procesarCodigoBarra()" [disabled]="item.ESTPK2 == 'B'" color="success">
+                <ion-icon slot="icon-only" name="add"></ion-icon>
+            </ion-button>
+            <ion-button shape="round" (click)="scanCode()" [disabled]="item.ESTPK2 == 'B'" color="primary">
+                <ion-icon slot="icon-only" name="barcode"></ion-icon>
+            </ion-button>
+
+        </ion-buttons>
+
+    </ion-toolbar>
+    -->
+</ion-footer>

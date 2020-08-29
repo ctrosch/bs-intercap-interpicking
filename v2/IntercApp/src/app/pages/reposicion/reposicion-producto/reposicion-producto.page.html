@@ -1,0 +1,67 @@
+<ion-header no-border>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/reposicion" [routerLink]="['/reposicion']"></ion-back-button>
+        </ion-buttons>
+
+        <ion-title ion-text-capitalize="ion-text-capitalize">{{ item.SITDES_DESCRP }}</ion-title>
+
+        <ion-buttons slot="end">
+
+            <ion-toggle (ionChange)="toggleChanged($event)"></ion-toggle>
+
+            <!-- Circles -->
+            <ion-spinner *ngIf="cargando" name="crescent" color="primary"></ion-spinner>
+
+        </ion-buttons>
+
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+
+    <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list *ngIf="!cargando">
+
+        <ion-item-group *ngFor="let i of datos | filtro : !completados: pipeTrigger :filtroService.filtro ">
+
+            <ion-item-sliding>
+                <ion-item-options *ngIf="i.CNTPCK > 0" side="start">
+                    <ion-item-option (click)="volverEstado( i )" color="danger" expandable>
+                        Devolver a estantería
+                    </ion-item-option>
+                </ion-item-options>
+
+                <ion-item lines="full" (click)="seleccionarItem( i )" class="ion-no-margin ion-no-padding animated fadeIn">
+                    <app-item-producto [item]="i" tipo="reposicion" titulo></app-item-producto>
+                </ion-item>
+
+            </ion-item-sliding>
+
+        </ion-item-group>
+
+    </ion-list>
+
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-buttons slot="end">
+
+            <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()" autofocus="true"></ion-input>
+
+            <ion-button shape="round" (click)="procesarCodigoManual()" color="dark">
+                <ion-icon slot="icon-only" name="add"> </ion-icon>
+            </ion-button>
+
+            <ion-button shape="round" (click)="scanCode()" color="dark">
+                <ion-icon slot="icon-only" name="barcode"></ion-icon>
+            </ion-button>
+
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,45 @@
+<form (ngSubmit)="login( fLogin )" #fLogin="ngForm">
+    <ion-grid fixed class="padding-login">
+        <ion-row>
+            <ion-col size="2"></ion-col>
+            <ion-col size="8">
+                <ion-img class="img animated fadeIn maxWid300 marAuto" src="/assets/img/AppIcon.png"></ion-img>
+            </ion-col>
+            <ion-col size="2"></ion-col>
+        </ion-row>
+
+        <ion-row>
+            <ion-col>
+
+                <ion-list>
+
+                    <ion-item>
+                        <ion-label position="floating">Ususario</ion-label>
+                        <ion-input name="usuario" type="usuario" [(ngModel)]="loginUser.USUARIO" required></ion-input>
+                    </ion-item>
+
+                    <ion-item>
+                        <ion-label position="floating">Password</ion-label>
+                        <ion-input name="password" type="password" [(ngModel)]="loginUser.PASSWORD" required></ion-input>
+                    </ion-item>
+
+                </ion-list>
+            </ion-col>
+        </ion-row>
+
+        <ion-row>
+            <ion-col class="marAuto">
+
+                <div class="marAuto">
+
+                    <ion-button type="submit" class="marAuto text-center" [disabled]="cargando">
+                        Ingresar
+                    </ion-button>
+
+                </div>
+
+            </ion-col>
+        </ion-row>
+
+    </ion-grid>
+</form>
