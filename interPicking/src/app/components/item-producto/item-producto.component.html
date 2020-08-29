@@ -33,23 +33,34 @@
 
                 <p *ngIf="item.DATCOM ">Comprador: {{ item.DATCOM }}</p>
 
-                <ion-chip color="primary" *ngIf="tipo === 'picking' && item.ESTPCK == 'B'">
-                    <ion-label color="primary">Confirmado</ion-label>
-                </ion-chip>
-
-                <ion-chip color="success" *ngIf="tipo === 'packing' && item.ESTPK2 == 'B' ">
-                    <ion-label color="success">Para Facturar</ion-label>
-                </ion-chip>
-
-                <ion-chip color="primary" *ngIf="item.USRPCK">
-                    <ion-label color="secondary">{{ 'Picking ' + item.USRPCK }}</ion-label>
-                </ion-chip>
-
-                <ion-chip color="success" *ngIf="item.USRPK2">
-                    <ion-label color="success">{{ 'Packing ' + item.USRPK2 }}</ion-label>
-                </ion-chip>
-
             </ion-label>
+
+            <ion-chip color="primary" *ngIf="tipo === 'picking' && item.ESTPCK == 'B'">
+                <ion-label color="primary">Confirmado</ion-label>
+            </ion-chip>
+
+            <!--
+            <ion-chip color="primary" *ngIf="tipo === 'picking' && item.ESTPCK == 'B'">
+                <ion-label color="primary">Confirmado</ion-label>
+            </ion-chip>
+            -->
+
+            <ion-chip color="success" *ngIf="tipo === 'packing' && item.ESTPK2 == 'B' && (item.CANTID - item.CNTFST) > 0 ">
+                <ion-label color="success">Para Facturar</ion-label>
+            </ion-chip>
+
+            <ion-chip color="danger" *ngIf="tipo === 'packing' && item.ESTPK2 == 'B' && (item.CANTID - item.CNTFST) === 0 ">
+                <ion-label color="danger">Faltante</ion-label>
+            </ion-chip>
+
+            <ion-chip color="primary" *ngIf="item.USRPCK">
+                <ion-label color="secondary">{{ 'Picking ' + item.USRPCK }}</ion-label>
+            </ion-chip>
+
+            <ion-chip color="success" *ngIf="item.USRPK2">
+                <ion-label color="success">{{ 'Packing ' + item.USRPK2 }}</ion-label>
+            </ion-chip>
+
         </ion-col>
         <ion-col size="3 " class="ion-align-self-center ">
 

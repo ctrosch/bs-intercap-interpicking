@@ -165,13 +165,13 @@ export class PackingProductoPage implements OnInit {
 
   volverEstado(i: any) {
 
-    console.log('volver estado');
+    //console.log('volver estado');
 
     if (!i) {
       return;
     }
 
-      i.ESTPCK = 'A';
+      i.ESTPCK = 'B';
       i.ESTPK2 = 'A';
       i.CNTPK2 = 0;
    
@@ -186,7 +186,6 @@ export class PackingProductoPage implements OnInit {
           // swal({title: 'Error',text: 'Problemas para confirmar picking',icon: 'error',});
         }
       });
-
   }
 
 

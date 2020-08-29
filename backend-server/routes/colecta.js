@@ -23,6 +23,11 @@ app.get('/:usuario/:deposito', (req, res, next) => {
         sOrden = ' TIPPRO, ARTCOD, NROCTA, NUBICA';
     }
 
+    // VER COMO CAMBIAR ESTO
+    if (deposito === '30') {
+        sOrden = ' FCHMOV, NUBICA, TIPPRO, ARTCOD, NROCTA';
+    }
+
     var request = new mssql.Request();
     // request.input('sitio', mssql.NVarChar, sitio);
     request.input('deposito', mssql.NVarChar, deposito);
