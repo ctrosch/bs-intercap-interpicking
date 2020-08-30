@@ -5,6 +5,7 @@ import { IonSegment, LoadingController, NavController, IonToggle } from '@ionic/
 import { PackingService } from '../../services/packing.service';
 import { Usuario } from '../../model/usuario';
 import { UsuarioService } from '../../services/usuario.service';
+import { BultoService } from '../../services/bulto.service';
 import { UiServiceService } from '../../services/ui-service.service';
 import { FiltroService } from '../../services/filtro.service';
 import { Filtro } from '../../model/filtro';
@@ -26,6 +27,7 @@ export class PackingPage implements OnInit {
   filtro: Filtro;
 
   datos: any[];
+  bultos: any[];
   codigoManual: string;
   porcentaje = 0;
   cargando = false;
@@ -35,6 +37,7 @@ export class PackingPage implements OnInit {
   circuito: string;
 
   constructor(private packingService: PackingService,
+    private bultoService: BultoService,
     private usuarioService: UsuarioService,
     public filtroService: FiltroService,
     private uiService: UiServiceService,
@@ -57,6 +60,8 @@ export class PackingPage implements OnInit {
     this.cargarPendientes();
 
   }
+
+
 
   cargarPendientes(event?) {
 
