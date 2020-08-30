@@ -47,19 +47,9 @@ export class PackingPage implements OnInit {
 
   ngOnInit() {
 
-    console.log('************************* INI *********************************************');
-
     this.filtro = this.filtroService.inicializarFiltro('filtro-packing');
     this.usuario = this.usuarioService.getUsuario();
-    
-    
-    /**
-    if (this.segment) {
-      this.segment.value = 'pendientes';
-    }
-     */
 
-    // this.cargarPendientes();
   }
 
   ionViewDidEnter() {
@@ -70,15 +60,7 @@ export class PackingPage implements OnInit {
 
   cargarPendientes(event?) {
 
-    console.log('************************* CARGA PENDIENTE *********************************************');
-
     this.cargando = true;
-
-    /**
-    if (this.segment) {
-      this.segment.value = 'pendientes';
-    }
-     */
 
     this.packingService.getPendientes(this.usuario.USUARIO, this.usuario.DEPOSITO)
       .subscribe((resp: any) => {

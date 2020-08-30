@@ -25,6 +25,7 @@ app.use(function(req, res, next) {
 // Importar rutas
 var appRoutes = require('./routes/app');
 var pickingRoutes = require('./routes/picking');
+var bultosRoutes = require('./routes/bultos');
 var packingRoutes = require('./routes/packing');
 var reposicionRoutes = require('./routes/reposicion');
 var usuarioRoutes = require('./routes/usuario');
@@ -51,6 +52,7 @@ var connection = mssql.connect(config, function(err, res) {
 
 // Rutas
 app.use('/picking', pickingRoutes);
+app.use('/bultos', bultosRoutes);
 app.use('/packing', packingRoutes);
 app.use('/reposicion', reposicionRoutes);
 app.use('/usuario', usuarioRoutes);
