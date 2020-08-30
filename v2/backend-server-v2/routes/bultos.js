@@ -29,7 +29,17 @@ app.get('/:usuario/:estado', (req, res, next) => {
     request.input('estado', mssql.NVarChar, estado);
     request.input('usuario', mssql.NVarChar, usuario);
 
-    var sQuery = ' SELECT TOP 100 * USR_FCBULT ';
+    var sQuery = ' SELECT TOP 100 ';
+    sQuery += ' USR_FCBULT_CODFOR AS CODFOR, ';
+    sQuery += ' USR_FCBULT_NROFOR AS NROFOR, ';
+    sQuery += ' USR_FCBULT_FCHMOV AS FCHMOV, ';
+    sQuery += ' USR_FCBULT_NROCTA AS NROCTA, ';
+    sQuery += ' VTMCLH_NOMBRE AS NOMBRE, ';
+    sQuery += ' USR_FCBULT_DEPOSI AS DEPOSI, ';
+    sQuery += ' USR_FCBULT_OBSERV AS OBSERV, ';
+    sQuery += ' USR_FCBULT_USRPCK AS USRPCK, ';
+    sQuery += ' USR_FCBULT_ESTADO AS ESTADO ';
+    sQuery += ' FROM USR_FCBULT INNER JOIN VTMCLH ON USR_FCBULT_NROCTA = VTMCLH_NROCTA   ';
     sQuery += ' WHERE 1=1  ';
     sQuery += ' AND USR_FCBULT_USRPCK = @usuario ';
     sQuery += ' AND USR_FCBULT_ESTADO IN (\'A\',\'B\') ';
