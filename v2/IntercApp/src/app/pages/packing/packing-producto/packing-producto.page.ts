@@ -60,12 +60,6 @@ export class PackingProductoPage implements OnInit {
 
     this.cargando = true;
 
-    /**
-    if (this.segment) {
-      this.segment.value = 'pendientes';
-    }
-     */
-
     if (!this.item) {
       return;
     }
