@@ -4,6 +4,7 @@ export interface Bulto {
   NROFOR?: string;
   FCHMOV?: string;
   NROCTA?: string;
+  NOMBRE?: string;
   DEPOSI?: string;
   OBSERV?: string;
   USRPCK?: string;
