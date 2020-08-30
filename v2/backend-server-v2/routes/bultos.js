@@ -7,6 +7,15 @@ var mdAutenticacion = require('../middlewares/autenticacion');
 
 var app = express();
 
+app.get('/', (req, res, next) => {
+
+    res.status(200).json({
+        ok: true,
+        mensaje: 'Bultos'
+    });
+
+});
+
 // ==========================================
 // Obtener todos los bultos por usuario y estado
 // ==========================================
