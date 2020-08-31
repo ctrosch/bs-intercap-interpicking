@@ -15,6 +15,7 @@ export class PackingItemPage implements OnInit {
 
   usuario: Usuario = {};
 
+  bulto: any;
   item: any;
   codigoBarra: string;
   cantidadManual = 0;
@@ -31,6 +32,7 @@ export class PackingItemPage implements OnInit {
   ngOnInit() {
 
     // console.log('ItemColecta - ngOnInit');
+    this.bulto = this.packingService.bulto;
     this.item = this.packingService.itemProducto;
     this.usuario = this.usuarioService.getUsuario();
 
@@ -77,7 +79,17 @@ export class PackingItemPage implements OnInit {
 
     if (resultado) {
 
-      this.item.USUARIO = this.usuario.USUARIO;
+      this.item.USUARIO = '';
+      this.item.NROBUL = '';
+
+      if (this.item.CNTPK2 > 0) {
+
+        this.item.USUARIO = this.usuario.USUARIO;
+        this.item.NROBUL = this.bulto.CODFOR + '-' + this.bulto.NROFOR;
+
+      }
+
+      console.log('NRO DE BULTO A CONFIRMAR ' + this.item.NROBUL);
 
       this.packingService.confirmarItem(this.item)
         .subscribe(resp => {
@@ -92,7 +104,7 @@ export class PackingItemPage implements OnInit {
             this.router.navigateByUrl('packing-producto/' + this.item.ID);
 
           } else {
-            // swal({title: 'Error',text: 'Problemas para confirmar picking',icon: 'error',});
+            
           }
         });
       // }

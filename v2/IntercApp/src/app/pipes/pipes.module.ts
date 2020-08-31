@@ -6,6 +6,7 @@ import { CapitalizePipe } from './capitalize.pipe';
 import { FiltroPipe } from './filtro.pipe';
 import { FiltroReposicionPipe } from './filtro-reposicion.pipe';
 import { FechaFabricacionPipe } from './fecha-fabricacion.pipe';
+import { FiltroBultoClientePipe } from './filtro-bulto-cliente.pipe';
 
 
 
@@ -13,6 +14,7 @@ import { FechaFabricacionPipe } from './fecha-fabricacion.pipe';
 @NgModule({
   declarations: [
     DomSanitizerPipe,
+    FiltroBultoClientePipe,
     FiltroPackingClientePipe,
     CapitalizePipe,
     FiltroPipe,
@@ -24,7 +26,8 @@ import { FechaFabricacionPipe } from './fecha-fabricacion.pipe';
     FiltroPipe,
     FiltroPackingClientePipe,
     FiltroReposicionPipe,
-    FechaFabricacionPipe
+    FechaFabricacionPipe,
+    FiltroBultoClientePipe
     ]
 })
 export class PipesModule { }

@@ -4,7 +4,7 @@
             <ion-back-button defaultHref="/packing" [routerLink]="['/packing']"></ion-back-button>
         </ion-buttons>
 
-        <ion-title>{{ item.NOMBRE }} </ion-title>
+        <ion-title>Bulto: {{ item.NROFOR }} </ion-title>
 
         <ion-buttons slot="end">
             <!-- Circles -->
@@ -20,8 +20,8 @@
     <ion-list *ngIf="!cargando">
         <ion-item>
             <ion-label>
-                <h2>{{ item.TRADES }}</h2>
-                <p class="primary">{{ item.CODFOR }} - {{ item.NROFOR }}</p>
+                <h2>{{ item.NOMBRE }}</h2>
+                <p class="primary">{{ item.TRADES }}</p>
                 <ion-chip color="primary" *ngIf="item.ESTPK2 == 'B'">
                     <ion-label color="primary">Confirmado</ion-label>
                 </ion-chip>
@@ -66,7 +66,7 @@
 
 <ion-footer>
     <ion-toolbar>
-        <ion-buttons slot="end">
+        <ion-buttons *ngIf="!completados" slot="end">
 
             <ion-input [(ngModel)]="codigoManual" (keyup.enter)="procesarCodigoManual()" autofocus="true"></ion-input>
 
@@ -78,6 +78,16 @@
                 <ion-icon slot="icon-only" name="barcode"></ion-icon>
             </ion-button>
 
+
+
         </ion-buttons>
+
+        <ion-button *ngIf="completados" (click)="cerrarBulto()" color="primary" expand="full">
+            <ion-icon slot="start" name="send"></ion-icon>
+            Cerrar Bulto
+        </ion-button>
+
+
+
     </ion-toolbar>
 </ion-footer>

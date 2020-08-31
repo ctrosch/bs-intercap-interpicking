@@ -1,0 +1,37 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Clientes Pendientes de Packing</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+
+    <ion-label *ngIf="mensaje" color="danger">{{ mensaje }}</ion-label>
+
+
+    <ion-list *ngIf="!cargando">
+
+        <ion-item class="animated fadeIn" *ngFor="let i of datos" (click)="seleccionarItem( i )">
+
+            <ion-label>
+                <h2>{{ i.NOMBRE }}</h2>
+
+                <p class="primary">{{ i.TRADES }} </p>
+
+            </ion-label>
+
+            <ion-chip slot="end" color="success">
+                <ion-label>
+                    {{ i.CANTID }}
+                </ion-label>
+            </ion-chip>
+        </ion-item>
+    </ion-list>
+
+
+</ion-content>

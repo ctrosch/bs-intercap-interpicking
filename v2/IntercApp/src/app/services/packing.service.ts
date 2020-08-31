@@ -11,8 +11,9 @@ import { UiServiceService } from './ui-service.service';
 })
 export class PackingService {
 
-  datos: any[];
+  bulto: any;
   item: any;
+  datos: any[];
   itemProducto: any;
 
   constructor(
@@ -24,18 +25,18 @@ export class PackingService {
   getPendientes(usuario: string, deposito: string) {
 
     // console.log('PackingService - getPendientes');
-    const url = URL_REST + '/packing' + '/' + usuario + '/' + deposito;
+    const url = URL_REST + '/packing/clientes/' + deposito;
     return this.http.get<any[]>(url);
 
   }
 
-  getProductosPendiente(item: any) {
+  getProductosPendiente(bulto: any) {
 
-    if (!item) {
+    if (!bulto) {
       return;
     }
 
-    const url = URL_REST + '/packing/items/' + item.MODFOR + '/' + item.CODFOR + '/' + item.NROFOR;
+    const url = URL_REST + '/packing/items/'+ bulto.CIRCOM + '/' + bulto.DEPOSI + '/' + bulto.NROCTA + '/' + bulto.TRACOD + '/' +bulto.CODFOR+'-'+bulto.NROFOR;
     return this.http.get(url);
 
   }

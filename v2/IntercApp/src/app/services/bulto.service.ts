@@ -6,12 +6,14 @@ import { Storage } from '@ionic/storage';
 import { UiServiceService } from './ui-service.service';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class BultoService {
 
   datos: any[];
+  bulto: any;
   item: any;
   itemProducto: any;
 
@@ -23,84 +25,34 @@ export class BultoService {
 
   getListaByUsuario(usuario: string, estado: string) {
 
-    const url = URL_REST + '/bultos' + '/' + usuario + '/' + estado;
+    const url = URL_REST + '/bultos/pendientes/' + usuario + '/' + estado;
+    return this.http.get<any[]>(url);
+  }
+
+  getBulto(codfor: string, nrofor: string) {
+
+    const url = URL_REST + '/bultos' + '/' + codfor + '/' + nrofor;
+    return this.http.get<any[]>(url);
+  }
+
+  getProximoNumero(codfor: string) {
+
+    const url = URL_REST + '/bultos/' + codfor;
     return this.http.get<any[]>(url);
 
   }
 
-  getProductosPendiente(item: any) {
+  guardar(bulto: any) {
 
-    if (!item) {
-      return;
-    }
-
-    const url = URL_REST + '/packing/items/' + item.MODFOR + '/' + item.CODFOR + '/' + item.NROFOR;
-    return this.http.get(url);
-
+    const url = URL_REST + '/bultos';
+    return this.http.post<any>(url, bulto);
   }
 
-  getItemPendiente(id: string) {
+  actualizar(bulto: any) {
 
-    if (id.length <= 0) {
-      return;
-    }
-
-    const url = URL_REST + '/packing/' + id;
-    return this.http.get(url);
-
+    const url = URL_REST + '/bultos';
+    return this.http.put<any>(url, bulto);
   }
 
-  confirmarCantidad(item: any, cantidad: number) {
-
-    if (item === undefined) {
-      this.uiService.alertaInformativa('No se encontró producto');
-      return;
-    }
-
-    if (cantidad <= item.CANTID) {
-
-      item.CNTPK2 = cantidad;
-
-      this.uiService.presentToast('Producto registrado');
-
-      return true;
-    } else {
-      this.uiService.presentToast('El valor para cantidad no puede ser mayor a lo solicitado');
-      return false;
-    }
-
-  }
-
-  confirmarItem(item: any) {
-
-    const url = URL_REST + '/packing';
-    return this.http.put<any>(url, item);
-  }
-
-  guardarItem(item: any) {
-
-    const url = URL_REST + '/packing';
-    return this.http.put<any>(url, item)
-      .subscribe(resp => {
-
-      });
-  }
-
-  removerItem(arr, item) {
-    var i = arr.indexOf(item);
-    i !== -1 && arr.splice(i, 1);
-  }
-
-  confirmarPacking(nombreUsuario: any) {
-
-    const url = URL_REST + '/packing/confirmar';
-    return this.http.put<any>(url, { usuario: nombreUsuario });
-  }
-
-  resetCantidad(item: any) {
-
-    item.CNTPK2 = 0;
-    item.ESTPK2 = 'A';
-
-  }
+  
 }

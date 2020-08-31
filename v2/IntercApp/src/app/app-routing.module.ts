@@ -57,7 +57,13 @@ const routes: Routes = [
     canLoad:[UsuarioGuard] },
   { path: 'reposicion-producto/:id', 
     loadChildren: './pages/reposicion/reposicion-producto/reposicion-producto.module#ReposicionProductoPageModule',
-    canLoad:[UsuarioGuard] },  { path: 'about', loadChildren: './pages/about/about.module#AboutPageModule' }
+    canLoad:[UsuarioGuard] },
+  { path: 'about', loadChildren: './pages/about/about.module#AboutPageModule' },
+  {
+    path: 'packing-clientes',
+    loadChildren: './pages/packing/packing-clientes/packing-clientes.module#PackingClientesPageModule',
+    canLoad:[UsuarioGuard]
+  }
 
 
 

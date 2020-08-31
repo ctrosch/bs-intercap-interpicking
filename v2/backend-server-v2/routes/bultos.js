@@ -17,9 +17,228 @@ app.get('/', (req, res, next) => {
 });
 
 // ==========================================
+// Crear un nuevo bulto
+// ==========================================
+app.post('/', (req, res) => {
+
+    var body = req.body;
+    var request = new mssql.Request();
+    var request1 = new mssql.Request();
+
+    var sQuery = '';
+
+    request.input('CODFOR', mssql.NVarChar, body.CODFOR);
+    request.input('NROFOR', mssql.NVarChar, body.NROFOR);
+    //request.input('FCHMOV', mssql.NVarChar, body.FCHMOV);
+    //request.input('ESTADO', mssql.NVarChar, body.ESTADO);    
+    request.input('CIRCOM', mssql.NVarChar, body.CIRCOM);
+    request.input('DEPOSI', mssql.NVarChar, body.DEPOSI);
+    request.input('NROCTA', mssql.NVarChar, body.NROCTA);
+    request.input('OBSERV', mssql.NVarChar, body.OBSERV);
+    request.input('USRPCK', mssql.NVarChar, body.USRPCK);
+    request.input('TRACOD', mssql.NVarChar, body.TRACOD);
+
+    sQuery = ' INSERT INTO USR_FCBULT  ';
+    sQuery += ' (USR_FCBULT_CODFOR, USR_FCBULT_NROFOR, USR_FCBULT_FCHMOV, USR_FCBULT_ESTADO,';
+    sQuery += ' USR_FCBULT_NROCTA, USR_FCBULT_OBSERV, USR_FCBULT_USRPCK, ';
+    sQuery += ' USR_FCBULT_DEPOSI, USR_FCBULT_TRACOD, USR_FCBULT_CIRCOM, ';
+    sQuery += ' USR_FC_FECALT, USR_FC_FECMOD, USR_FC_USERID, ';
+    sQuery += ' USR_FC_ULTOPR, USR_FC_DEBAJA,USR_FC_OALIAS)';
+
+    sQuery += 'VALUES(@codfor, @nrofor, ';
+    sQuery += ' GETDATE(), \'A\', ';
+    sQuery += ' @nrocta, @observ, @usrpck, ';
+    sQuery += ' @deposi, @tracod, @circom, ';
+    sQuery += ' GETDATE(), GETDATE(), \'API\',';
+    sQuery += '\'A\', \'N\', \'USR_FCBULT\');';
+
+    request.query(sQuery, function(err, result) {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error creando bulto ' + nrofor,
+                errors: err
+            });
+        }
+
+        if (!result) {
+            return res.status(400).json({
+                ok: false,
+                mensaje: 'Error creando bulto' + nrofor,
+                errors: { message: 'Error creando bulto' + body }
+            });
+        }
+
+
+
+        res.status(200).json({
+            ok: true,
+            result: result
+        });
+    });
+});
+
+// ==========================================
+// Actualizar Bulto
+// ==========================================
+app.put('/', (req, res) => {
+
+    var body = req.body;
+    var request = new mssql.Request();
+
+    var sQuery = '';
+    request.input('CODFOR', mssql.NVarChar, body.CODFOR);
+    request.input('NROFOR', mssql.NVarChar, body.NROFOR);
+    request.input('FCHMOV', mssql.NVarChar, body.FCHMOV);
+    request.input('ESTADO', mssql.NVarChar, body.ESTADO);
+    request.input('NROCTA', mssql.NVarChar, body.NROCTA);
+    request.input('OBSERV', mssql.NVarChar, body.OBSERV);
+    request.input('USRPCK', mssql.NVarChar, body.USRPCK);
+    request.input('DEPOSI', mssql.NVarChar, body.DEPOSI);
+    request.input('TRACOD', mssql.NVarChar, body.TRACOD);
+    request.input('CIRCOM', mssql.NVarChar, body.CIRCOM);
+
+    sQuery = ' UPDATE USR_FCBULT SET  ';
+    sQuery += ' USR_FCBULT_ESTADO = @estado,  ';
+    sQuery += ' USR_FCBULT_OBSERV = @observ,       ';
+    sQuery += ' USR_FC_FECMOD= GETDATE(), ';
+    sQuery += ' USR_FC_ULTOPR=\'M\'  ';
+    sQuery += ' WHERE USR_FCBULT_CODFOR=@codfor AND USR_FCBULT_NROFOR=@nrofor; ';
+
+    request.query(sQuery, function(err, result) {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                mensaje: 'Error actualizando bultos',
+                errors: err
+            });
+        }
+
+        if (!result) {
+            return res.status(400).json({
+                ok: false,
+                mensaje: 'Error actualizando bultos',
+                errors: { message: 'Error actualizando bultos' + body }
+            });
+        }
+
+        res.status(200).json({
+            ok: true,
+            result: result
+        });
+    });
+});
+
+// ==========================================
+// Obtener bulto por id
+// ==========================================
+app.get('/:codfor/:nrofor', (req, res, next) => {
+
+    var codfor = req.params.codfor;
+    var nrofor = req.params.nrofor;
+
+    var request = new mssql.Request();
+    //request.input('sitio', mssql.NVarChar, sitio);
+    request.input('codfor', mssql.NVarChar, codfor);
+    request.input('nrofor', mssql.NVarChar, nrofor);
+
+    var sQuery = ' SELECT ';
+    sQuery += ' USR_FCBULT_CODFOR AS CODFOR, ';
+    sQuery += ' USR_FCBULT_NROFOR AS NROFOR, ';
+    sQuery += ' USR_FCBULT_FCHMOV AS FCHMOV, ';
+    sQuery += ' USR_FCBULT_CIRCOM AS CIRCOM, ';
+    sQuery += ' CASE WHEN USR_FCBULT_CIRCOM = \'0250\' THEN \'MAYORISTA\' WHEN USR_FCBULT_CIRCOM = \'0260\' THEN \'DROPSHIPPING\' WHEN USR_FCBULT_CIRCOM = \'0270\' THEN \'ONLINE\' ELSE \'MAYORISTA\' END AS CIRDES, ';
+    sQuery += ' USR_FCBULT_TRACOD AS TRACOD, ';
+    sQuery += ' GRTTRA_DESCRP AS TRADES, ';
+    sQuery += ' USR_FCBULT_NROCTA AS NROCTA, ';
+    sQuery += ' VTMCLH_NOMBRE AS NOMBRE, ';
+    sQuery += ' USR_FCBULT_DEPOSI AS DEPOSI, ';
+    sQuery += ' USR_FCBULT_OBSERV AS OBSERV, ';
+    sQuery += ' USR_FCBULT_USRPCK AS USRPCK, ';
+    sQuery += ' USR_FCBULT_ESTADO AS ESTADO ';
+    sQuery += ' FROM USR_FCBULT    ';
+    sQuery += ' INNER JOIN VTMCLH ON USR_FCBULT_NROCTA = VTMCLH_NROCTA ';
+    sQuery += ' INNER JOIN GRTTRA ON USR_FCBULT_TRACOD = GRTTRA_TRACOD  ';
+    sQuery += ' WHERE USR_FCBULT_CODFOR=@codfor AND USR_FCBULT_NROFOR=@nrofor; ';
+
+    request.query(sQuery, function(err, result) {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                bulto: {},
+                mensaje: 'Error obteniendo bulto ' + codfor + ' - ' + nrofor,
+                errors: err
+            });
+        }
+
+        if (!result.recordset || result.recordset.length === 0) {
+            return res.status(200).json({
+                ok: false,
+                bulto: {},
+                mensaje: 'Error obteniendo bulto ' + codfor + ' - ' + nrofor,
+                errors: { message: 'Error obteniendo bulto ' + codfor + ' - ' + nrofor }
+            });
+        }
+
+        var bulto = result.recordset[0];
+
+        res.status(200).json({
+            ok: true,
+            bulto: bulto
+        });
+    });
+});
+
+// ==========================================
+// Obtener proximo numero
+// ==========================================
+app.get('/:codfor', (req, res, next) => {
+
+    var codfor = req.params.codfor;
+
+    var request = new mssql.Request();
+    //request.input('sitio', mssql.NVarChar, sitio);
+    request.input('codfor', mssql.NVarChar, codfor);
+
+    var sQuery = '(SELECT ISNULL(MAX(USR_FCBULT_NROFOR),0)+1 AS NROFOR FROM USR_FCBULT WHERE USR_FCBULT_CODFOR = @codfor)';
+
+    request.query(sQuery, function(err, result) {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                proximoNumero: 0,
+                mensaje: 'Error obteniendo bulto ' + codfor + ' - ' + nrofor,
+                errors: err
+            });
+        }
+
+        if (!result.recordset || result.recordset.length === 0) {
+            return res.status(200).json({
+                ok: false,
+                proximoNumero: 0,
+                mensaje: 'Error obteniendo bulto ' + codfor + ' - ' + nrofor,
+                errors: { message: 'Error obteniendo bulto ' + codfor + ' - ' + nrofor }
+            });
+        }
+
+        var proximoNumero = result.recordset[0];
+
+        res.status(200).json({
+            ok: true,
+            proximoNumero: proximoNumero.NROFOR
+        });
+    });
+});
+
+
+// ==========================================
 // Obtener todos los bultos por usuario y estado
 // ==========================================
-app.get('/:usuario/:estado', (req, res, next) => {
+app.get('/pendientes/:usuario/:estado', (req, res, next) => {
 
     var estado = req.params.estado;
     var usuario = req.params.usuario;
@@ -33,13 +252,19 @@ app.get('/:usuario/:estado', (req, res, next) => {
     sQuery += ' USR_FCBULT_CODFOR AS CODFOR, ';
     sQuery += ' USR_FCBULT_NROFOR AS NROFOR, ';
     sQuery += ' USR_FCBULT_FCHMOV AS FCHMOV, ';
+    sQuery += ' USR_FCBULT_CIRCOM AS CIRCOM, ';
+    sQuery += ' CASE WHEN USR_FCBULT_CIRCOM = \'0250\' THEN \'MAYORISTA\' WHEN USR_FCBULT_CIRCOM = \'0260\' THEN \'DROPSHIPPING\' WHEN USR_FCBULT_CIRCOM = \'0270\' THEN \'ONLINE\' ELSE \'MAYORISTA\' END AS CIRDES, ';
+    sQuery += ' USR_FCBULT_TRACOD AS TRACOD, ';
+    sQuery += ' GRTTRA_DESCRP AS TRADES, ';
     sQuery += ' USR_FCBULT_NROCTA AS NROCTA, ';
     sQuery += ' VTMCLH_NOMBRE AS NOMBRE, ';
     sQuery += ' USR_FCBULT_DEPOSI AS DEPOSI, ';
     sQuery += ' USR_FCBULT_OBSERV AS OBSERV, ';
     sQuery += ' USR_FCBULT_USRPCK AS USRPCK, ';
     sQuery += ' USR_FCBULT_ESTADO AS ESTADO ';
-    sQuery += ' FROM USR_FCBULT INNER JOIN VTMCLH ON USR_FCBULT_NROCTA = VTMCLH_NROCTA   ';
+    sQuery += ' FROM USR_FCBULT    ';
+    sQuery += ' INNER JOIN VTMCLH ON USR_FCBULT_NROCTA = VTMCLH_NROCTA ';
+    sQuery += ' INNER JOIN GRTTRA ON USR_FCBULT_TRACOD = GRTTRA_TRACOD  ';
     sQuery += ' WHERE 1=1  ';
     sQuery += ' AND USR_FCBULT_USRPCK = @usuario ';
     sQuery += ' AND USR_FCBULT_ESTADO IN (\'A\',\'B\') ';
@@ -61,7 +286,7 @@ app.get('/:usuario/:estado', (req, res, next) => {
                 ok: false,
                 bultos: [],
                 mensaje: 'No existen datos de bultos para el usuario ' + usuario,
-                errors: { message: 'No existen datos de bultos para el usuario ' + deposito }
+                errors: { message: 'No existen datos de bultos para el usuario ' + usuario }
             });
         }
 
@@ -74,208 +299,7 @@ app.get('/:usuario/:estado', (req, res, next) => {
     });
 });
 
-// ==========================================
-// Obtener un item pendiente de packing
-// ==========================================
-app.get('/:id', (req, res, next) => {
 
-    var id = req.params.id;
-
-    var request = new mssql.Request();
-    request.input('id', mssql.NVarChar, id);
-    request.query('SELECT TOP 1 * FROM PCK_PENDIENTE_CLIENTE WHERE ID = @id', function(err, result) {
-
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                packing: [],
-                mensaje: 'Error obteniendo item packing con el id ' + id,
-                errors: err
-            });
-        }
-
-        if (!result.recordset || result.recordset.length === 0) {
-            return res.status(200).json({
-                ok: false,
-                packing: [],
-                mensaje: 'No existe item packing con id ' + id,
-                errors: { message: 'No existe item packing con id ' + id }
-            });
-        }
-
-
-        var packing = result.recordset;
-
-        res.status(200).json({
-            ok: true,
-            packing: packing
-        });
-    });
-});
-
-// ==========================================
-// Obtener lista de items pendientes por pedido
-// ==========================================
-app.get('/items/:modfor/:codfor/:nrofor', (req, res, next) => {
-
-    var modfor = req.params.modfor;
-    var codfor = req.params.codfor;
-    var nrofor = req.params.nrofor;
-
-    var request = new mssql.Request();
-    request.input('modfor', mssql.NVarChar, modfor);
-    request.input('codfor', mssql.NVarChar, codfor);
-    request.input('nrofor', mssql.NVarChar, nrofor);
-
-    var sQuery = ' SELECT * FROM PCK_PENDIENTE_PRODUCTO ';
-    sQuery += ' WHERE MODFOR = @modfor ';
-    sQuery += ' AND CODFOR = @codfor ';
-    sQuery += ' AND NROFOR = @nrofor ';
-    //sQuery += ' AND ESTPK2 = \'A\' ';
-    sQuery += ' ORDER BY TIPPRO, ARTCOD ';
-
-    request.query(sQuery, function(err, result) {
-
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                packing: [],
-                mensaje: 'Error obteniendo items packing del pedido ' + modfor + '-' + codfor + '-' + nrofor,
-                errors: err
-            });
-        }
-
-        if (!result.recordset || result.recordset.length === 0) {
-            return res.status(400).json({
-                ok: false,
-                packing: [],
-                mensaje: 'No existe item packing del pedido ' + modfor + '-' + codfor + '-' + nrofor,
-                errors: { message: 'No existe item packing del pedido ' + modfor + '-' + codfor + '-' + nrofor }
-            });
-        }
-
-
-        var packing = result.recordset;
-
-        res.status(200).json({
-            ok: true,
-            packing: packing
-        });
-    });
-});
-
-
-// ==========================================
-// Actualizar cantidades packing
-// ==========================================
-app.put('/', (req, res) => {
-
-    var body = req.body;
-    var resultado = '';
-    var error = '';
-    var request = new mssql.Request();
-
-    var sQuery = '';
-    request.input('MODFOR', mssql.NVarChar, body.MODFOR);
-    request.input('CODFOR', mssql.NVarChar, body.CODFOR);
-    request.input('NROFOR', mssql.Int, body.NROFOR);
-    request.input('NROITM', mssql.Int, body.NROITM);
-    request.input('NIVEXP', mssql.NVarChar, body.NIVEXP);
-    request.input('TIPPRO', mssql.NVarChar, body.TIPPRO);
-    request.input('ARTCOD', mssql.NVarChar, body.ARTCOD);
-    request.input('CNTPK2', mssql.Int, body.CNTPK2);
-    request.input('NUBICA', mssql.NVarChar, body.NUBICA);
-    request.input('NFECHA', mssql.NVarChar, body.NFECHA);
-    request.input('NDESPA', mssql.NVarChar, body.NDESPA);
-    request.input('ESTPCK', mssql.NVarChar, body.ESTPCK);
-    //request.input('USRPCK', mssql.NVarChar, body.USRPCK);
-    request.input('USRPK2', mssql.NVarChar, body.USUARIO);
-
-    sQuery = ' UPDATE FCRMVP SET';
-    sQuery += ' USR_FCRMVP_CNTPK2 = CASE WHEN FCRMVP_CODFOR = FCRMVP_CODAPL  THEN @CNTPK2 ELSE 0 END ,';
-    sQuery += ' USR_FCRMVP_USRPK2 = @USRPK2, USR_FCRMVP_ESTPK2 = \'A\' ,';
-    sQuery += ' USR_FCRMVP_HORPK2 = GETDATE() ,';
-    sQuery += ' USR_FCRMVP_ESTPCK = @ESTPCK ';
-    sQuery += ' WHERE FCRMVP_MODAPL = @MODFOR ';
-    sQuery += ' AND FCRMVP_CODAPL = @CODFOR ';
-    sQuery += ' AND FCRMVP_NROAPL = @NROFOR ';
-    sQuery += ' AND FCRMVP_ITMAPL = @NROITM ';
-    sQuery += ' AND FCRMVP_EXPAPL = @NIVEXP ';
-    sQuery += ' AND FCRMVP_TIPPRO = @TIPPRO ';
-    sQuery += ' AND FCRMVP_ARTCOD = @ARTCOD ';
-    sQuery += ' AND FCRMVP_NUBICA = @NUBICA ';
-    sQuery += ' AND FCRMVP_NFECHA = @NFECHA ';
-    sQuery += ' AND FCRMVP_NDESPA = @NDESPA ';
-    //sQuery += ' AND FCRMVP_CODFOR = FCRMVP_CODAPL ';
-
-    request.query(sQuery, function(err, result) {
-
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                mensaje: 'Error actualizando cantidades packing',
-                errors: err
-            });
-        }
-
-        if (!result) {
-            return res.status(400).json({
-                ok: false,
-                mensaje: 'Error actualizando cantidades packing',
-                errors: { message: 'Error actualizando cantidades packing' + body }
-            });
-        }
-
-        res.status(200).json({
-            ok: true,
-            result: result
-        });
-    });
-});
-
-// ==========================================
-// Actualizar estado packing según usuario
-// ==========================================
-app.put('/confirmar', (req, res) => {
-
-    // var items = JSON.parse(req.body.datos);
-    var body = req.body;
-    var request = new mssql.Request();
-
-
-    request.input('@usuario', mssql.NVarChar, body.usuario);
-    //EXECUTE
-    request.query('EXEC CONFIRMAR_PACKING \'' + body.usuario + '\' ', (err, result) => {
-        // ... error checks
-
-
-
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                mensaje: 'Error confirmando packing',
-                errors: err
-            });
-        }
-
-        if (!result) {
-            return res.status(400).json({
-                ok: false,
-                mensaje: 'Error confirmando packing',
-                errors: { message: 'Error confirmando packing' + body }
-            });
-        }
-
-        res.status(200).json({
-            ok: true,
-            result: result
-        });
-
-        // ...
-    });
-
-
-});
 
 
 module.exports = app;

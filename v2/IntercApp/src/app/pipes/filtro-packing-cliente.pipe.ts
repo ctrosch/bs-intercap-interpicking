@@ -14,7 +14,7 @@ export class FiltroPackingClientePipe implements PipeTransform {
 
     return arreglo.filter(item => {
 
-      return  ((pendientes && item.CNTPK2 - item.CNTFST < item.CANTID) || (!pendientes && item.CNTPK2 - item.CNTFST === item.CANTID) || !filtro )
+      return ((pendientes && item.CNTPK2 - item.CNTFST < item.CANTID) || (!pendientes && item.CNTPK2 - item.CNTFST === item.CANTID) || !filtro)        
         && (!filtro.CIRCOM || filtro.CIRCOM && item['CIRCOM'].includes(filtro.CIRCOM) || filtro.CIRCOM.length === 0)
         && (!filtro.FCHMOV || filtro.FCHMOV && item['FCHMOV'].includes(filtro.FCHMOV) || filtro.FCHMOV === null)
         && (!filtro.NOMBRE || filtro.NOMBRE && item['NOMBRE'].includes(filtro.NOMBRE) || filtro.NOMBRE.length === 0)

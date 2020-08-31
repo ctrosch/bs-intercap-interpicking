@@ -8,6 +8,7 @@ import { FiltroService } from '../../../services/filtro.service';
 import { Usuario } from '../../../model/usuario';
 import { UsuarioService } from '../../../services/usuario.service';
 import { UiServiceService } from '../../../services/ui-service.service';
+import { BultoService } from '../../../services/bulto.service';
 
 @Component({
   selector: 'app-packing-producto',
@@ -34,6 +35,7 @@ export class PackingProductoPage implements OnInit {
   procesando: any;
 
   constructor(private route: ActivatedRoute,
+              private bultoService: BultoService,
               private router: Router,
               public filtroService: FiltroService,
               private uiService: UiServiceService,
@@ -48,8 +50,6 @@ export class PackingProductoPage implements OnInit {
   }
 
   ngOnInit() {
-
-    console.log('************************* CARGA PENDIENTE *********************************************');
 
     // console.log('ItemColecta - ngOnInit');
     this.item = this.packingService.item;
@@ -94,6 +94,26 @@ export class PackingProductoPage implements OnInit {
     this.packingService.itemProducto = i;
     this.router.navigateByUrl('packing-item/' + i.ID);
 
+  }
+
+  cerrarBulto() {
+
+    this.bultoService.bulto.ESTADO = 'B';
+    this.bultoService.actualizar(this.bultoService.bulto)    
+      .subscribe(resp => {
+
+        console.log('respuesta de actualizar');
+        console.log(resp);
+
+        if (resp.ok) {
+
+           this.uiService.presentToast('Bulto Cerrado, Imprimiendo...');
+          
+        } else {          
+          
+        }
+      });
+    
   }
 
   segmentChanged(event) {

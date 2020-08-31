@@ -28,16 +28,20 @@
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
 
+
+    <ion-label *ngIf="mensaje" color="danger">{{ mensaje }}</ion-label>
+
+
     <ion-list *ngIf="!cargando">
 
-        <ion-item class="animated fadeIn" *ngFor="let i of datos | filtroPackingCliente: !completados : filtroService.filtro " (click)="seleccionarItem( i )">
+        <ion-item class="animated fadeIn" *ngFor="let i of datos | filtroBultoCliente: !completados" (click)="seleccionarItem( i )">
 
             <ion-label>
                 <h2>{{ i.NOMBRE }}</h2>
-
-                <p class="primary">{{ i.TRADES }} </p>
-
                 <p>{{ i.CODFOR }} - {{ i.NROFOR }} - {{ i.FCHMOV | date: 'dd/MM/yy' }} </p>
+                <p class="primary">{{ i.TRADES }} </p>
+                <p class="primary">Canal: {{ i.CIRDES }} </p>
+
 
                 <ion-chip color="primary" *ngIf="i.ESTPK2 == 'B'">
                     <ion-label color="primary">Confirmado</ion-label>
@@ -54,10 +58,11 @@
     </ion-list>
 
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button>
+        <ion-fab-button (click)="nuevoBulto()">
             <ion-icon name="add"></ion-icon>
         </ion-fab-button>
     </ion-fab>
+
 
 </ion-content>
 

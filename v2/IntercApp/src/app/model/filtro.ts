@@ -10,5 +10,6 @@ export interface Filtro {
   ARTCOD?: string;
   NROPAR?: string;
   NUBICA?: string;
+  NROBUL?: string;
   
 }

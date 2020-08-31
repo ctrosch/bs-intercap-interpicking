@@ -9,6 +9,7 @@ import { BultoService } from '../../services/bulto.service';
 import { UiServiceService } from '../../services/ui-service.service';
 import { FiltroService } from '../../services/filtro.service';
 import { Filtro } from '../../model/filtro';
+import { Bulto } from '../../model/bulto';
 
 @Component({
   selector: 'app-packing',
@@ -29,9 +30,10 @@ export class PackingPage implements OnInit {
   datos: any[];
   bultos: any[];
   codigoManual: string;
+  mensaje: string;
   porcentaje = 0;
   cargando = false;
-  titulo = 'Packing';
+  titulo = 'Packing';  
   procesando: any;
 
   circuito: string;
@@ -57,11 +59,44 @@ export class PackingPage implements OnInit {
 
   ionViewDidEnter() {
 
-    this.cargarPendientes();
+    this.getBultosPendientes();
+
+    //this.cargarPendientes();
 
   }
 
+  getBultosPendientes(event?) {
 
+    this.cargando = true;
+    this.mensaje = null;
+
+    this.bultoService.getListaByUsuario(this.usuario.USUARIO, this.usuario.DEPOSITO)
+      .subscribe((resp: any) => {
+
+        if (resp.ok) {
+
+          this.datos = resp.bultos;
+          this.bultoService.datos = this.datos;
+
+          if (event) {
+            event.target.complete();
+          }
+
+          this.titulo = 'Bultos (' + this.datos.length + ')';
+
+        } else {
+          //this.uiService.alertaInformativa('No se encontraron bultos pendientes de facturar');
+          this.mensaje = 'No se encontraron bultos pendientes de facturar';
+        }
+
+        this.cargando = false;
+
+      });
+
+
+
+
+  }
 
   cargarPendientes(event?) {
 
@@ -98,10 +133,54 @@ export class PackingPage implements OnInit {
     this.cargarPendientes(event);
   }
 
-  seleccionarItem(i: any) {
+  nuevoBulto() {
+    
+    let bulto: any = {};
+    
+    bulto.DEPOSI = this.usuario.DEPOSITO;
+    bulto.USRPCK = this.usuario.USUARIO;
 
-    this.packingService.item = i;
-    this.router.navigateByUrl('packing-producto/' + i.ID);
+    console.log('Deposito: ' + bulto.DEPOSI);
+
+    
+    bulto.CODFOR = 'BUL'+bulto.DEPOSI;
+    
+
+    console.log(bulto.CODFOR);
+
+    
+    
+
+    this.bultoService.getProximoNumero(bulto.CODFOR).subscribe((resp: any) => {
+
+      console.log(resp);
+
+      if (resp.ok) {
+
+        bulto.NROFOR = String(resp.proximoNumero);
+        bulto.FCHMOV = '20203108';
+        bulto.ESTADO = 'A';
+
+        console.log('Bulto nuevo: '+ bulto.CODFOR + '-' + bulto.NROFOR);
+
+        this.bultoService.bulto = bulto;
+        this.packingService.bulto = bulto;
+        this.router.navigateByUrl('packing-clientes');
+
+      }
+    });
+
+    
+   
+  }
+
+  seleccionarItem(bulto: any) {
+
+    this.bultoService.bulto = bulto;
+    this.packingService.bulto = bulto;
+    this.packingService.item = bulto;
+    this.router.navigateByUrl('packing-producto/' + bulto.CODFOR);
+
   }
 
   confirmarPacking() {
