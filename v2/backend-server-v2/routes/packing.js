@@ -180,11 +180,6 @@ app.put('/', (req, res) => {
     request.input('NROBUL', mssql.NVarChar, body.NROBUL);
     request.input('USRPK2', mssql.NVarChar, body.USUARIO);
 
-
-    console.log('body.NRONUL ' + body.NROBUL);
-
-
-
     sQuery = ' UPDATE FCRMVP SET';
     sQuery += ' USR_FCRMVP_CNTPK2 = CASE WHEN FCRMVP_CODFOR = FCRMVP_CODAPL  THEN @CNTPK2 ELSE 0 END ,';
     sQuery += ' USR_FCRMVP_USRPK2 = @USRPK2, ';
