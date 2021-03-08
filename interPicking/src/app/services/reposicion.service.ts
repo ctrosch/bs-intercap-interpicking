@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ToastController } from '@ionic/angular';
-import { URL_REST } from '../config/config';
-import { Storage } from '@ionic/storage';
 import { UiServiceService } from './ui-service.service';
+import { UrlRestService } from './url-rest.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +14,15 @@ export class ReposicionService {
 
   constructor(
     private http: HttpClient,
-    private uiService: UiServiceService) {
+    private uiService: UiServiceService,
+    private urlRestService: UrlRestService) {
 
   }
 
   getPendientes(usuario: string, deposito: string) {
 
     // console.log('reposicionService - getPendientes');
-    const url = URL_REST + '/reposicion' + '/' + usuario + '/' + deposito;
+    const url = this.urlRestService.getUrl() + '/reposicion' + '/' + usuario + '/' + deposito;
     return this.http.get<any[]>(url);
 
   }
@@ -34,7 +33,7 @@ export class ReposicionService {
       return;
     }
 
-    const url = URL_REST + '/reposicion/items/' + item.MODFOR.trim() + '/' + item.CODFOR.trim() + '/' + item.NROFOR;
+    const url = this.urlRestService.getUrl() + '/reposicion/items/' + item.MODFOR.trim() + '/' + item.CODFOR.trim() + '/' + item.NROFOR;
     return this.http.get(url);
 
   }
@@ -45,7 +44,7 @@ export class ReposicionService {
       return;
     }
 
-    const url = URL_REST + '/reposicion/' + id;
+    const url = this.urlRestService.getUrl() + '/reposicion/' + id;
     return this.http.get(url);
 
   }
@@ -73,13 +72,13 @@ export class ReposicionService {
 
   confirmarItem(item: any) {
 
-    const url = URL_REST + '/reposicion';
+    const url = this.urlRestService.getUrl() + '/reposicion';
     return this.http.put<any>(url, item);
   }
 
   guardarItem(item: any) {
 
-    const url = URL_REST + '/reposicion';
+    const url = this.urlRestService.getUrl() + '/reposicion';
     return this.http.put<any>(url, item)
       .subscribe(resp => {
 
@@ -93,7 +92,7 @@ export class ReposicionService {
 
   confirmarReposicion(nombreUsuario: any) {
 
-    const url = URL_REST + '/reposicion/confirmar';
+    const url = this.urlRestService.getUrl() + '/reposicion/confirmar';
     return this.http.put<any>(url, { usuario: nombreUsuario });
   }
 

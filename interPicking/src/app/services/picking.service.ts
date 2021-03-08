@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { URL_REST } from '../config/config';
 import { UiServiceService } from './ui-service.service';
+import { UsuarioService } from './usuario.service';
+import { UrlRestService } from './url-rest.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +15,15 @@ export class PickingService {
 
   constructor(
     private http: HttpClient,    
-    private uiService: UiServiceService) {
+    private uiService: UiServiceService,
+    private urlRestService: UrlRestService) {
 
   }
 
   getPendientes(usuario: string, deposito: string) {
 
     // console.log('PackingService - getPendientes');
-    const url = URL_REST + '/colecta' + '/' + usuario + '/' + deposito;
+    const url = this.urlRestService.getUrl() + '/colecta' + '/' + usuario + '/' + deposito;
 
     return this.http.get<any[]>(url);
 
@@ -37,7 +39,7 @@ export class PickingService {
       return;
     }
 
-    const url = URL_REST + '/colecta/' + this.item.id;
+    const url = this.urlRestService.getUrl() + '/colecta/' + this.item.id;
     return this.http.get<any>(url);
 
   }
@@ -65,7 +67,7 @@ export class PickingService {
 
   guardarItem(item: any) {
 
-    const url = URL_REST + '/colecta';
+    const url = this.urlRestService.getUrl() + '/colecta';
     return this.http.put<any>(url, item)
       .subscribe(resp => {
 
@@ -79,22 +81,14 @@ export class PickingService {
 
   confirmarPicking(nombreUsuario: any) {
 
-    const url = URL_REST + '/colecta/confirmar';
+    const url = this.urlRestService.getUrl() + '/colecta/confirmar';
     return this.http.put<any>(url, { usuario: nombreUsuario });
 
   }
 
-  /** 
-  confirmarPicking(nombreUsuario: any) {
-
-    const url = URL_REST + '/colecta/confirmar';
-    return this.http.put<any>(url, { usuario: nombreUsuario});
-
-  }*/
-
   confirmarItem(item: any) {
 
-    const url = URL_REST + '/colecta';
+    const url = this.urlRestService.getUrl() + '/colecta';
     return this.http.put<any>(url, item);
   }
 

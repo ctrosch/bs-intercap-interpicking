@@ -3,7 +3,7 @@ import { Storage } from '@ionic/storage';
 import { Usuario } from '../model/usuario';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NavController } from '@ionic/angular';
-import { URL_REST } from '../config/config';
+import { UrlRestService } from './url-rest.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,8 @@ export class UsuarioService {
 
   constructor( private http: HttpClient,
                private storage: Storage,
-               private navCtrl: NavController ) { }
+               private navCtrl: NavController,
+               private urlRestService: UrlRestService ) { }
 
 
   login( usuario: string, password: string ) {
@@ -26,7 +27,7 @@ export class UsuarioService {
 
     return new Promise( resolve => {
 
-      this.http.post(`${ URL_REST }/login`, data )
+      this.http.post(`${ this.urlRestService.getUrl() }/login`, data )
         .subscribe( async resp => {
           // console.log(resp);
 
@@ -61,7 +62,7 @@ export class UsuarioService {
 
     return new Promise( resolve => {
 
-      this.http.post(`${ URL_REST }/usuario`, usuario )
+      this.http.post(`${ this.urlRestService.getUrl() }/usuario`, usuario )
           .subscribe( async resp => {
             console.log(resp);
 
@@ -144,7 +145,7 @@ export class UsuarioService {
         'x-token': this.token
       });
 
-      this.http.get(`${ URL_REST }/usuario/`, { headers })
+      this.http.get(`${ this.urlRestService.getUrl() }/usuario/`, { headers })
         .subscribe( resp => {
 
           if ( resp['ok'] ) {
@@ -173,7 +174,7 @@ export class UsuarioService {
 
     return new Promise( resolve => {
 
-      this.http.post(`${ URL_REST }/usuario/update`, usuario, { headers })
+      this.http.post(`${ this.urlRestService.getUrl() }/usuario/update`, usuario, { headers })
         .subscribe( resp => {
 
           if ( resp['ok'] ) {

@@ -3,6 +3,7 @@ import { UsuarioService } from '../../services/usuario.service';
 import { Usuario } from '../../model/usuario';
 import { resolve } from 'url';
 import { AppVersion } from '@ionic-native/app-version/ngx';
+import { UrlRestService } from '../../services/url-rest.service';
 
 @Component({
   selector: 'app-menu',
@@ -14,7 +15,9 @@ export class MenuComponent implements OnInit {
   usuario: Usuario = {};
   version: string;
 
-  constructor(private usuarioService: UsuarioService,private appVersion: AppVersion) { 
+  constructor(private usuarioService: UsuarioService,
+              private urlRestService: UrlRestService,
+              private appVersion: AppVersion) { 
 
     this.appVersion.getVersionNumber().then(value => {
       this.version = value;
@@ -27,11 +30,13 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+    console.log('Menu Component  ++++++++++++++++++++++++++++++++++++++++++++++++++++');
 
     this.usuarioService.cargarToken().then( () => {
         this.usuario = this.usuarioService.usuario;
     });
+
+    
   }
 
   logout() {

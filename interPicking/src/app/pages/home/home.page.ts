@@ -4,6 +4,7 @@ import { UsuarioService } from '../../services/usuario.service';
 import { Usuario } from '../../model/usuario';
 import { AppUpdate } from '@ionic-native/app-update/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
+import { UrlRestService } from '../../services/url-rest.service';
 
 @Component({
   selector: 'app-home',
@@ -55,6 +56,7 @@ export class HomePage implements OnInit {
 
   constructor(private menuController: MenuController,
               private usuarioService: UsuarioService,
+              private urlRestService: UrlRestService,
               private appUpdate: AppUpdate,
               private appVersion: AppVersion) {
 

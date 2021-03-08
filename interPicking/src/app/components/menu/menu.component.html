@@ -6,8 +6,11 @@
             <ion-avatar slot="start">
                 <ion-img src="/assets/img/avatar.svg"></ion-img>
             </ion-avatar>
-            <ion-title *ngIf="usuario">
-                {{ usuario.NOMBRE }}
+            <ion-title *ngIf="usuarioService.usuario">
+                {{ usuarioService.usuario.NOMBRE }}
+            </ion-title>
+            <ion-title *ngIf="urlRestService.empresa">
+                {{ urlRestService.empresa.NOMBRE }}
             </ion-title>
 
         </ion-toolbar>

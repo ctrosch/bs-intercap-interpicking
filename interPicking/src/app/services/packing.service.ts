@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ToastController } from '@ionic/angular';
-import { URL_REST } from '../config/config';
-import { Storage } from '@ionic/storage';
 import { UiServiceService } from './ui-service.service';
+import { UrlRestService } from './url-rest.service';
 
 
 @Injectable({
@@ -15,16 +13,20 @@ export class PackingService {
   item: any;
   itemProducto: any;
 
+  
+
   constructor(
+
     private http: HttpClient,
-    private uiService: UiServiceService) {
+    private uiService: UiServiceService,
+    private urlRestService: UrlRestService) {
 
   }
 
   getPendientes(usuario: string, deposito: string) {
 
     // console.log('PackingService - getPendientes');
-    const url = URL_REST + '/packing' + '/' + usuario + '/' + deposito;
+    const url = this.urlRestService.getUrl() + '/packing' + '/' + usuario + '/' + deposito;
     return this.http.get<any[]>(url);
 
   }
@@ -35,7 +37,7 @@ export class PackingService {
       return;
     }
 
-    const url = URL_REST + '/packing/items/' + item.MODFOR + '/' + item.CODFOR + '/' + item.NROFOR;
+    const url = this.urlRestService.getUrl() + '/packing/items/' + item.MODFOR + '/' + item.CODFOR + '/' + item.NROFOR;
     return this.http.get(url);
 
   }
@@ -46,7 +48,7 @@ export class PackingService {
       return;
     }
 
-    const url = URL_REST + '/packing/' + id;
+    const url = this.urlRestService.getUrl() + '/packing/' + id;
     return this.http.get(url);
 
   }
@@ -74,13 +76,13 @@ export class PackingService {
 
   confirmarItem(item: any) {
 
-    const url = URL_REST + '/packing';
+    const url = this.urlRestService.getUrl() + '/packing';
     return this.http.put<any>(url, item);
   }
 
   guardarItem(item: any) {
 
-    const url = URL_REST + '/packing';
+    const url = this.urlRestService.getUrl() + '/packing';
     return this.http.put<any>(url, item)
       .subscribe(resp => {
 
@@ -94,7 +96,7 @@ export class PackingService {
 
   confirmarPacking(nombreUsuario: any) {
 
-    const url = URL_REST + '/packing/confirmar';
+    const url = this.urlRestService.getUrl() + '/packing/confirmar';
     return this.http.put<any>(url, { usuario: nombreUsuario });
   }
 

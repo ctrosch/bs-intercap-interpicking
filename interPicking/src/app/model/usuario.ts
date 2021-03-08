@@ -7,4 +7,5 @@ export interface Usuario {
   DESDEP?: string;
   PASSWORD?: string;
   IMAGEN?: string;
+  EMPRESA?: string;
 }
