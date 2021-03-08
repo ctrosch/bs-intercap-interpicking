@@ -56,7 +56,7 @@ export class HomePage implements OnInit {
 
   constructor(private menuController: MenuController,
               private usuarioService: UsuarioService,
-              private urlRestService: UrlRestService,
+              public urlRestService: UrlRestService,
               private appUpdate: AppUpdate,
               private appVersion: AppVersion) {
 

@@ -15,8 +15,8 @@ export class MenuComponent implements OnInit {
   usuario: Usuario = {};
   version: string;
 
-  constructor(private usuarioService: UsuarioService,
-              private urlRestService: UrlRestService,
+  constructor(public usuarioService: UsuarioService,
+              public urlRestService: UrlRestService,
               private appVersion: AppVersion) { 
 
     this.appVersion.getVersionNumber().then(value => {
